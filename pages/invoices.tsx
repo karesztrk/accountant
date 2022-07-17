@@ -1,7 +1,11 @@
 import { Table } from "@mantine/core";
 import type { NextPage } from "next";
-import Head from "next/head";
 import Layout from "../components/Layout";
+import {
+  User,
+  withPageAuth,
+  supabaseServerClient,
+} from "@supabase/auth-helpers-nextjs";
 
 const Income: NextPage = () => {
   return (
@@ -16,11 +20,19 @@ const Income: NextPage = () => {
               <th>Atomic mass</th>
             </tr>
           </thead>
-          <tbody>content</tbody>
+          <tbody>
+            <tr>
+              <td>content</td>
+            </tr>
+          </tbody>
         </Table>
       </Layout>
     </>
   );
 };
+
+export const getServerSideProps = withPageAuth({
+  redirectTo: "/",
+});
 
 export default Income;

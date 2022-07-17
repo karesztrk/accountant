@@ -6,6 +6,8 @@ import {
   MantineProvider,
 } from "@mantine/core";
 import { useState } from "react";
+import { UserProvider } from "@supabase/auth-helpers-react";
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
@@ -15,7 +17,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
   return (
     <>
       <Head>
-        <title>Page title</title>
+        <title>Accountant</title>
         <meta
           name="viewport"
           content="minimum-scale=1, initial-scale=1, width=device-width"
@@ -31,7 +33,9 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           withNormalizeCSS
           theme={{ colorScheme }}
         >
-          <Component {...pageProps} />
+          <UserProvider supabaseClient={supabaseClient}>
+            <Component {...pageProps} />
+          </UserProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

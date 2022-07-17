@@ -1,11 +1,6 @@
-import {
-  AppShell,
-  Container,
-  Footer,
-  useMantineColorScheme,
-} from "@mantine/core";
+import { AppShell, Container, useMantineColorScheme } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
-import Navbar from "./Navbar";
+import Navbar from "./navbar/Navbar";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
   const { colorScheme, toggleColorScheme } = useMantineColorScheme();
@@ -14,11 +9,6 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
     <AppShell
       padding="md"
       navbar={<Navbar />}
-      footer={
-        <Footer height={60} p="md">
-          Károly Török &copy;{new Date().getFullYear()}
-        </Footer>
-      }
       styles={(theme) => ({
         main: {
           backgroundColor:

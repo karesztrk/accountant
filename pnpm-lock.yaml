@@ -4,6 +4,8 @@ specifiers:
   '@mantine/core': ^4.2.12
   '@mantine/hooks': ^4.2.12
   '@mantine/next': ^4.2.12
+  '@supabase/auth-helpers-nextjs': ^0.2.5
+  '@supabase/auth-helpers-react': ^0.2.3
   '@supabase/supabase-js': ^1.35.4
   '@types/node': 18.0.3
   '@types/react': 18.0.15
@@ -20,6 +22,8 @@ dependencies:
   '@mantine/core': 4.2.12_bhlenwkd723lhai3utuqqpcmru
   '@mantine/hooks': 4.2.12_react@18.2.0
   '@mantine/next': 4.2.12_2gqzyayxaiqf33ltv5ghxbozne
+  '@supabase/auth-helpers-nextjs': 0.2.5
+  '@supabase/auth-helpers-react': 0.2.3
   '@supabase/supabase-js': 1.35.4
   next: 12.2.2_biqbaboplfbrettd7655fr4n2y
   react: 18.2.0
@@ -510,6 +514,24 @@ packages:
   /@rushstack/eslint-patch/1.1.4:
     resolution: {integrity: sha512-LwzQKA4vzIct1zNZzBmRKI9QuNpLgTQMEjsQLf3BXuGYb3QPTP4Yjf6mkdX+X1mYttZ808QpOwAzZjv28kq7DA==}
     dev: true
+
+  /@supabase/auth-helpers-nextjs/0.2.5:
+    resolution: {integrity: sha512-/l1gUR46xFf+fSUEwPEHak5FQMk/ZsQLdKm2k7RV7jV6RLmQVF7nZ2u9YOy88xZat7XbIkc4SYAM/sa9U6sjAw==}
+    dependencies:
+      '@supabase/auth-helpers-shared': 0.1.3
+    dev: false
+
+  /@supabase/auth-helpers-react/0.2.3:
+    resolution: {integrity: sha512-r2XIajhZed4lvdoJ9sD/YNy/5b1Zturj2A9Ye2PcswBuuOkf1iAC+aAYPoSWllbgYpTC5hCHmcbG5yErcZyNmQ==}
+    dependencies:
+      '@supabase/auth-helpers-shared': 0.1.3
+    dev: false
+
+  /@supabase/auth-helpers-shared/0.1.3:
+    resolution: {integrity: sha512-Rwpa8LG21guoJ+CC/6bXObHjuhnNygV/9QqdNFA9a3pEJL6R/fGBxMaV3/6uEdnYIjY1V4CUpcqEzC1BC3mVfw==}
+    dependencies:
+      jose: 4.8.3
+    dev: false
 
   /@supabase/functions-js/1.3.4:
     resolution: {integrity: sha512-yYVgkECjv7IZEBKBI3EB5Q7R1p0FJ10g8Q9N7SWKIHUU6i6DnbEGHIMFLyQRm1hmiNWD8fL7bRVEYacmTRJhHw==}
@@ -1723,6 +1745,10 @@ packages:
   /isexe/2.0.0:
     resolution: {integrity: sha512-RHxMLp9lnKHGHRng9QFhRCMbYAcVpn69smSGcq3f36xjgVVWThj4qqLbTLlq7Ssj8B+fIQ1EuCEGI2lKsyQeIw==}
     dev: true
+
+  /jose/4.8.3:
+    resolution: {integrity: sha512-7rySkpW78d8LBp4YU70Wb7+OTgE3OwAALNVZxhoIhp4Kscp+p/fBkdpxGAMKxvCAMV4QfXBU9m6l9nX/vGwd2g==}
+    dev: false
 
   /js-tokens/4.0.0:
     resolution: {integrity: sha512-RdJUflcE3cUzKiMqQgsCu06FPu9UdIJO0beYbPhHN4k6apgJtifcoCtT9bcxOpYBtpD2kCM6Sbzg4CausW/PKQ==}

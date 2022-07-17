@@ -1,20 +1,14 @@
-import { Session } from "@supabase/supabase-js";
+import { useUser } from "@supabase/auth-helpers-react";
 import { NextPage } from "next";
 import Head from "next/head";
-import { useEffect, useState } from "react";
+import Link from "next/link";
+import SignIn from "../components/SignIn";
+import Dashboard from "../components/Dashboard";
 import Layout from "../components/Layout";
-import Auth from "../components/Auth";
-import { supabase } from "../utils/supabaseClient";
 
 const Home: NextPage = () => {
-  const [session, setSession] = useState<Session | null>(null);
-  useEffect(() => {
-    setSession(supabase.auth.session());
+  const { user } = useUser();
 
-    supabase.auth.onAuthStateChange((_event, session) => {
-      setSession(session);
-    });
-  }, []);
   return (
     <>
       <Head>
@@ -22,7 +16,8 @@ const Home: NextPage = () => {
         <meta name="description" content="Accountant application" />
         <link rel="icon" href="/favicon.ico" />
       </Head>
-      <Layout>{!session && <Auth />}</Layout>
+
+      <Layout>{!user ? <SignIn /> : <Dashboard />}</Layout>
     </>
   );
 };
