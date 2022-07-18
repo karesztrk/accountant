@@ -2,8 +2,8 @@ import { useUser } from "@supabase/auth-helpers-react";
 import { NextPage } from "next";
 import Head from "next/head";
 import Link from "next/link";
-import SignIn from "../components/SignIn";
-import Dashboard from "../components/Dashboard";
+import SignIn from "../components/sign-in/SignIn";
+import Dashboard from "../components/dashboard/Dashboard";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {

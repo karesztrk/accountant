@@ -58,7 +58,7 @@ const SignIn = () => {
           value={password}
           onChange={onPasswordChange}
         />
-        <Button fullWidth mt="xl" onClick={onLogin}>
+        <Button fullWidth mt="xl" onClick={onLogin} loading={loading}>
           Sign in
         </Button>
       </Paper>

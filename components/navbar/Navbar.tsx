@@ -1,12 +1,4 @@
-import {
-  Center,
-  createStyles,
-  Group,
-  Icon as TablerIcon,
-  Navbar as MantineNavbar,
-  Tooltip,
-  UnstyledButton,
-} from "@mantine/core";
+import { Center, Group, Navbar as MantineNavbar } from "@mantine/core";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { Logout } from "tabler-icons-react";

@@ -1,10 +1,8 @@
-import { AppShell, Container, useMantineColorScheme } from "@mantine/core";
+import { AppShell, Container } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
 
 const Layout: FC<PropsWithChildren> = ({ children }) => {
-  const { colorScheme, toggleColorScheme } = useMantineColorScheme();
-
   return (
     <AppShell
       padding="md"

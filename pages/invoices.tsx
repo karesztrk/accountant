@@ -1,31 +1,28 @@
-import { Table } from "@mantine/core";
+import { supabaseClient, withPageAuth } from "@supabase/auth-helpers-nextjs";
 import type { NextPage } from "next";
+import { useEffect, useState } from "react";
+import InvoiceTable from "../components/invoice-table/InvoiceTable";
 import Layout from "../components/Layout";
-import {
-  User,
-  withPageAuth,
-  supabaseServerClient,
-} from "@supabase/auth-helpers-nextjs";
+import { Invoice } from "types/database";
 
 const Income: NextPage = () => {
+  const [invoices, setInvoices] = useState<Invoice[]>([]);
+
+  useEffect(() => {
+    supabaseClient
+      .from<Invoice>("invoice")
+      .select()
+      .then((result) => {
+        if (result.data) {
+          setInvoices(result.data);
+        }
+      });
+  }, []);
+
   return (
     <>
       <Layout>
-        <Table>
-          <thead>
-            <tr>
-              <th>Element position</th>
-              <th>Element name</th>
-              <th>Symbol</th>
-              <th>Atomic mass</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td>content</td>
-            </tr>
-          </tbody>
-        </Table>
+        <InvoiceTable invoices={invoices} />
       </Layout>
     </>
   );
