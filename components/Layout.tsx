@@ -1,8 +1,12 @@
-import { AppShell, Container } from "@mantine/core";
+import { AppShell, Container, MantineNumberSize } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
 
-const Layout: FC<PropsWithChildren> = ({ children }) => {
+type LayoutProps = PropsWithChildren<{
+  size?: MantineNumberSize;
+}>;
+
+const Layout: FC<LayoutProps> = ({ size, children }) => {
   return (
     <AppShell
       padding="md"
@@ -16,7 +20,7 @@ const Layout: FC<PropsWithChildren> = ({ children }) => {
         },
       })}
     >
-      <Container>{children}</Container>
+      <Container size={size}>{children}</Container>
     </AppShell>
   );
 };
