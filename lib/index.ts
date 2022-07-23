@@ -1,6 +1,6 @@
 export const cacheKeys = {
   invoices: "invoices",
-  invoice: "invoice",
+  invoice: (id?: string) => `invoice/${id}`,
 };
 
 export const tableNames = {

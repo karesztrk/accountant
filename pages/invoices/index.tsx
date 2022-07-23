@@ -1,4 +1,5 @@
 import {
+  supabaseClient,
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
@@ -9,7 +10,7 @@ import NavigationButton from "components/navigation-button/NavigationButton";
 import { Group } from "@mantine/core";
 import { Invoice } from "types/database";
 import { SWRConfig } from "swr";
-import { cacheKeys } from "lib";
+import { cacheKeys, tableNames } from "lib";
 
 interface InvoicesProps {
   data: Invoice[];
@@ -36,7 +37,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
   async getServerSideProps(ctx) {
     const { data = [] } = await supabaseServerClient(ctx)
-      .from<Invoice[]>("invoice")
+      .from<Invoice[]>(tableNames.invoice)
       .select("*");
     return { props: { data } };
   },

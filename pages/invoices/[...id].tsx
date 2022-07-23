@@ -1,24 +1,27 @@
 import {
+  supabaseClient,
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
-import { cacheKeys } from "lib";
+import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { SWRConfig } from "swr";
 import { Invoice } from "types/database";
 
 interface UpdateInvoiceProps {
+  id?: string;
   data?: Invoice;
 }
 
-const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({ data }) => {
+const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({ id, data }) => {
   const fallback = data
     ? {
-        [cacheKeys.invoice]: data,
+        [cacheKeys.invoice(id)]: data,
       }
     : {};
+
   return (
     <SWRConfig value={{ fallback }}>
       <Layout size="xs">
@@ -36,12 +39,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       return { props: { data: undefined } };
     }
     const { data } = await supabaseServerClient(ctx)
-      .from("invoice")
+      .from(tableNames.invoice)
       .select()
       .eq("id", id)
       .single();
 
-    return { props: { data } };
+    return { props: { id, data } };
   },
 });
 
