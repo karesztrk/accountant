@@ -1,12 +1,13 @@
 import { Table } from "@mantine/core";
+import NavigationButton from "components/navigation-button/NavigationButton";
+import { cacheKeys } from "lib";
 import { FC } from "react";
+import useSWR from "swr";
 import { Invoice } from "types/database";
 
-interface InvoiceTableProps {
-  invoices: Invoice[];
-}
+const InvoiceTable: FC = () => {
+  const { data: invoices, error } = useSWR<Invoice[]>(cacheKeys.invoices);
 
-const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
   return (
     <Table>
       <thead>
@@ -19,7 +20,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
         </tr>
       </thead>
       <tbody>
-        {invoices.map((invoice) => (
+        {invoices!.map((invoice) => (
           <tr key={invoice.id}>
             <td>{invoice.invoice_number}</td>
             <td>{new Date(invoice.issued_on).toLocaleDateString()}</td>
@@ -28,6 +29,10 @@ const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
               {invoice.amount} {invoice.currency}
             </td>
             <td>{invoice.paid ? "true" : "false"}</td>
+            <td>
+              {/* TODO context menu */}
+              <NavigationButton href={`/invoices/${invoice.id}`} text="Edit" />
+            </td>
           </tr>
         ))}
       </tbody>

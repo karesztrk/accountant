@@ -7,6 +7,7 @@ interface CurrencyInputProps {
   placeholder?: string;
   label?: string;
   value?: string;
+  currency?: string;
   onChange?: (value: string) => void;
   onCurrenyChange?: (value: string) => void;
   required?: boolean;
@@ -18,6 +19,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
   onChange: onChangeProp,
   onCurrenyChange: onCurrenyChangeProp,
   value,
+  currency,
   required,
 }) => {
   const { classes } = useStyles();
@@ -38,6 +40,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
     <NativeSelect
       data={data}
       className={classes.input}
+      value={currency}
       onChange={onCurrenyChange}
     />
   );
