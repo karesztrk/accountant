@@ -1,9 +1,11 @@
-import { Group, Table } from "@mantine/core";
+import { Group, Stack, Table, Tooltip } from "@mantine/core";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useInvoices } from "hooks/use-invoices";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useStyles } from "./styles";
+import { Cashoff, Cash } from "tabler-icons-react";
+import PaidIcon from "./PaidIcon";
 
 const InvoiceTable: FC = () => {
   const { data: invoices, error } = useInvoices();
@@ -16,7 +18,7 @@ const InvoiceTable: FC = () => {
   };
 
   return (
-    <>
+    <Stack>
       {error && <div>{error.message}</div>}
       <Group position="right">
         <NavigationButton href="/invoices/new" text="New" />
@@ -44,12 +46,14 @@ const InvoiceTable: FC = () => {
               <td>
                 {invoice.amount} {invoice.currency}
               </td>
-              <td>{invoice.paid ? "true" : "false"}</td>
+              <td>
+                <PaidIcon paid={invoice.paid} />
+              </td>
             </tr>
           ))}
         </tbody>
       </Table>
-    </>
+    </Stack>
   );
 };
 
