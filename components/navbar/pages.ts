@@ -1,6 +1,7 @@
-import { FileInvoice, Home2 } from "tabler-icons-react";
+import { Receipt2, Home2, Users } from "tabler-icons-react";
 
 export const pages = [
   { icon: Home2, label: "Home", href: "/" },
-  { icon: FileInvoice, label: "Invoices", href: "/invoices" },
+  { icon: Users, label: "Partners", href: "/partners" },
+  { icon: Receipt2, label: "Invoices", href: "/invoices" },
 ];
