@@ -4,7 +4,7 @@ import { NextPage } from "next";
 
 const UpdateInvoice: NextPage = () => {
   return (
-    <Layout size="xs">
+    <Layout size="xs" title="Edit invoice">
       <InvoiceForm />
     </Layout>
   );

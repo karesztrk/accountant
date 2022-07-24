@@ -4,7 +4,7 @@ import type { NextPage } from "next";
 
 const Invoices: NextPage = () => {
   return (
-    <Layout>
+    <Layout title="Invoices">
       <InvoiceTable />
     </Layout>
   );

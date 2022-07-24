@@ -3,7 +3,7 @@ import Layout from "components/Layout";
 
 const NewInvoice = () => {
   return (
-    <Layout size="xs">
+    <Layout size="xs" title="New invoice">
       <InvoiceForm />
     </Layout>
   );

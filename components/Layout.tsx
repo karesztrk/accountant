@@ -1,12 +1,16 @@
-import { AppShell, Container, MantineNumberSize } from "@mantine/core";
+import { AppShell, Container, MantineNumberSize, Title } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
+import { useStyles } from "./styles";
 
 type LayoutProps = PropsWithChildren<{
   size?: MantineNumberSize;
+  title?: string;
 }>;
 
-const Layout: FC<LayoutProps> = ({ size, children }) => {
+const Layout: FC<LayoutProps> = ({ size, title, children }) => {
+  const { classes } = useStyles();
+
   return (
     <AppShell
       padding="md"
@@ -20,7 +24,14 @@ const Layout: FC<LayoutProps> = ({ size, children }) => {
         },
       })}
     >
-      <Container size={size}>{children}</Container>
+      <Container size={size}>
+        {title && (
+          <Title className={classes.title} order={1}>
+            {title}
+          </Title>
+        )}
+        {children}
+      </Container>
     </AppShell>
   );
 };
