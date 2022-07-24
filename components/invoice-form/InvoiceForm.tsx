@@ -2,7 +2,7 @@ import { Button, Checkbox, Group, TextInput } from "@mantine/core";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { FC, useMemo } from "react";
+import { FC, useEffect, useMemo } from "react";
 import { Invoice as ClientInvoice } from "types/client";
 import useSWR, { useSWRConfig } from "swr";
 import { cacheKeys, tableNames } from "lib";
@@ -10,26 +10,16 @@ import { Invoice } from "types/database";
 import { useRouter } from "next/router";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
+import NavigationButton from "components/navigation-button/NavigationButton";
+import { useInvoice } from "hooks/use-invoice";
 
-const defaultValues: ClientInvoice = {
+const initialValues: ClientInvoice = {
   partner_name: "",
   amount: 0,
   issued_on: new Date(),
   invoice_number: "",
   currency: "EUR",
   paid: false,
-};
-
-const fetcher = (id?: string) => async () => {
-  const { data, error } = await supabaseClient
-    .from(tableNames.invoice)
-    .select()
-    .eq("id", id)
-    .single();
-  if (error) {
-    throw new Error(error.message);
-  }
-  return data;
 };
 
 const updateInvoice = async (id: string, invoice: Partial<Invoice>) => {
@@ -43,6 +33,13 @@ const updateInvoice = async (id: string, invoice: Partial<Invoice>) => {
   }
 };
 
+const toInvoice = (invoice: Invoice) => {
+  return {
+    ...invoice,
+    issued_on: invoice?.issued_on ? new Date(invoice.issued_on) : new Date(),
+  };
+};
+
 const InvoiceForm: FC = () => {
   const { user } = useUser();
   const router = useRouter();
@@ -51,22 +48,11 @@ const InvoiceForm: FC = () => {
   const { id: idQuery } = router.query;
   const id = idQuery ? String(idQuery) : undefined;
 
-  const { data, error } = useSWR<Invoice, Error>(
-    id ? cacheKeys.invoice(id) : null
-  );
+  const { data, error } = useInvoice(id);
 
-  const initialValues: ClientInvoice = useMemo(
-    () =>
-      data
-        ? {
-            ...data,
-            issued_on: data?.issued_on ? new Date(data.issued_on) : new Date(),
-          }
-        : defaultValues,
-    [data]
-  );
-
-  const form = useForm<ClientInvoice>({ initialValues });
+  const form = useForm<ClientInvoice>({
+    initialValues: data ? toInvoice(data) : initialValues,
+  });
 
   const onSubmit = (values: ClientInvoice) => {
     if (!user) {
@@ -86,11 +72,11 @@ const InvoiceForm: FC = () => {
     };
 
     if (id) {
-      updateInvoice(id, invoice);
-      document.cookie =
-        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      mutate(cacheKeys.invoice(id), invoice);
-      mutate(cacheKeys.invoices);
+      // updateInvoice(id, invoice);
+      // document.cookie =
+      //   "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+      // mutate(cacheKeys.invoice(id), invoice);
+      // mutate(cacheKeys.invoices);
       router.push("/invoices");
     }
   };
@@ -136,6 +122,7 @@ const InvoiceForm: FC = () => {
         />
 
         <Group position="right" mt="md">
+          <NavigationButton variant="outline" text="Cancel" href="/invoices" />
           <Button type="submit">Submit</Button>
         </Group>
       </form>

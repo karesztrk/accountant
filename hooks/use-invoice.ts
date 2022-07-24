@@ -1,13 +1,23 @@
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { cacheKeys, tableNames } from "lib";
 import useSWR from "swr";
 import { Invoice } from "types/database";
 
-export const path = "/api/invoice";
-
-const fetcher = (url: string) =>
-  fetch(url, { method: "GET" }).then((res) => res.json());
+const fetcher = async (key: string) => {
+  const [_, id] = key.split("/");
+  const { data } = await supabaseClient
+    .from<Invoice>(tableNames.invoice)
+    .select()
+    .eq("id", id)
+    .throwOnError()
+    .single();
+  return data;
+};
 
 export const useInvoice = (id?: string) => {
-  return useSWR<Invoice>(id ? `${path}/${id}` : null, fetcher, {
+  const key = id ? cacheKeys.invoice(id) : null;
+  console.log("🚀 ~ file: use-invoice.ts ~ line 22 ~ useInvoice ~ key", key);
+  return useSWR(key, fetcher, {
     revalidateIfStale: true,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
