@@ -8,6 +8,7 @@ import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
   const { user } = useUser();
+  console.log("🚀 ~ file: index.tsx ~ line 11 ~ user", user);
 
   return (
     <>

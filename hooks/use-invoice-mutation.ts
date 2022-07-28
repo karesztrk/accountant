@@ -1,23 +1,28 @@
-import { useSWRConfig } from "swr";
-import { path } from "./use-invoices";
+import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { tableNames } from "lib";
+import { Invoice } from "types/database";
+
+const fetcher = async (id?: string, invoice?: Partial<Invoice>) => {
+  if (!invoice) {
+    return undefined;
+  }
+
+  const table = supabaseClient.from<Invoice>(tableNames.invoice);
+
+  if (!id) {
+    return await table.insert(invoice).throwOnError().single();
+  }
+
+  const { data } = await table
+    .update(invoice)
+    .eq("id", id)
+    .throwOnError()
+    .single();
+  return data || undefined;
+};
 
 export const useInvoiceMutation = () => {
-  const { mutate } = useSWRConfig();
-
-  const fetcher = (values: unknown) =>
-    fetch(path, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(values),
-    }).then(() => {
-      document.cookie =
-        "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
-      mutate(path);
-    });
-
   return {
-    fetcher,
+    trigger: fetcher,
   };
 };

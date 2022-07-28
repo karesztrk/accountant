@@ -11,15 +11,15 @@ const fetcher = async (key: string) => {
     .eq("id", id)
     .throwOnError()
     .single();
-  return data;
+  return data || undefined;
 };
 
-export const useInvoice = (id?: string) => {
+export const useInvoice = (id?: string, fallbackData?: Invoice) => {
   const key = id ? cacheKeys.invoice(id) : null;
-  console.log("🚀 ~ file: use-invoice.ts ~ line 22 ~ useInvoice ~ key", key);
-  return useSWR(key, fetcher, {
-    revalidateIfStale: true,
+  return useSWR<Invoice | undefined>(key, fetcher, {
+    revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
+    fallbackData,
   });
 };

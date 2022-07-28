@@ -1,14 +1,17 @@
-import { Group, Stack, Table, Tooltip } from "@mantine/core";
+import { Group, Stack, Table } from "@mantine/core";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useInvoices } from "hooks/use-invoices";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useStyles } from "./styles";
-import { Cashoff, Cash } from "tabler-icons-react";
 import PaidIcon from "./PaidIcon";
+import { Invoice } from "types/database";
 
-const InvoiceTable: FC = () => {
-  const { data: invoices, error } = useInvoices();
+interface InvoiceTableProps {
+  invoices: Invoice[];
+}
+
+const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
   const router = useRouter();
 
   const { classes } = useStyles();
@@ -19,7 +22,6 @@ const InvoiceTable: FC = () => {
 
   return (
     <Stack>
-      {error && <div>{error.message}</div>}
       <Group position="right">
         <NavigationButton href="/invoices/new" text="New" />
       </Group>

@@ -8,13 +8,14 @@ const fetcher = async () => {
     .from<Invoice>(tableNames.invoice)
     .throwOnError()
     .select();
-  return data;
+  return data || [];
 };
 
-export const useInvoices = () => {
-  return useSWR(cacheKeys.invoices, fetcher, {
-    revalidateIfStale: true,
+export const useInvoices = (fallbackData?: Invoice[]) => {
+  return useSWR<Invoice[]>(cacheKeys.invoices, fetcher, {
+    revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
+    fallbackData,
   });
 };
