@@ -9,3 +9,12 @@ export interface Invoice {
   invoice_number: string;
   paid: boolean;
 }
+
+export interface Partner {
+  id: number;
+  created_at: string;
+  name: string;
+  address: string;
+  vat: string;
+  email?: string;
+}

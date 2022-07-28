@@ -4,7 +4,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
-import { useInvoices } from "hooks/use-invoices";
+import { useInvoices } from "hooks/invoice/use-invoices";
 import { tableNames } from "lib";
 import type { GetServerSideProps, NextPage } from "next";
 import { Invoice } from "types/database";
@@ -30,10 +30,6 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     const { data = [] } = await supabaseServerClient(ctx)
       .from<Invoice[]>(tableNames.invoice)
       .select("*");
-    console.log(
-      "🚀 ~ file: index.tsx ~ line 31 ~ getServerSideProps ~ data",
-      data
-    );
     return { props: { fallbackData: data } };
   },
 });

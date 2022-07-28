@@ -1,6 +1,5 @@
 import { Group, Stack, Table } from "@mantine/core";
 import NavigationButton from "components/navigation-button/NavigationButton";
-import { useInvoices } from "hooks/use-invoices";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { useStyles } from "./styles";
@@ -36,7 +35,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
           </tr>
         </thead>
         <tbody>
-          {invoices?.map((invoice) => (
+          {invoices.map((invoice) => (
             <tr
               key={invoice.id}
               className={classes.row}

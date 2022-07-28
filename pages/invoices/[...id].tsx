@@ -4,8 +4,8 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
-import { useInvoice } from "hooks/use-invoice";
-import { useInvoiceMutation } from "hooks/use-invoice-mutation";
+import { useInvoice } from "hooks/invoice/use-invoice";
+import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useSWRConfig } from "swr";

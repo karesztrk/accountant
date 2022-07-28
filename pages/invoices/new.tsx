@@ -1,6 +1,6 @@
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
-import { useInvoiceMutation } from "hooks/use-invoice-mutation";
+import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { cacheKeys } from "lib";
 import { useSWRConfig } from "swr";
 import { Invoice } from "types/database";

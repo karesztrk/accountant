@@ -16,7 +16,7 @@ const Navbar = () => {
 
   return (
     <MantineNavbar width={{ base: 80 }} p="md">
-      <Center>🚀</Center>
+      <Center>💰</Center>
       <MantineNavbar.Section grow mt={50}>
         <Group direction="column" align="center" spacing={0}>
           {pages.map((link) => (
