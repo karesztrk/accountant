@@ -1,5 +1,3 @@
-import { Partner as ServerPartner } from "../database";
-
 export interface Invoice {
   partner_name: string;
   amount: number;
@@ -9,4 +7,9 @@ export interface Invoice {
   paid: boolean;
 }
 
-export type Partner = ServerPartner;
+export interface Partner {
+  name: string;
+  address: string;
+  vat: string;
+  email?: string;
+}

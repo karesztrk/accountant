@@ -2,33 +2,35 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
-import { useInvoice } from "hooks/invoice/use-invoice";
+import PartnerForm from "components/partner-form/PartnerForm";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
+import { usePartner } from "hooks/partner/use-partner";
+import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Invoice } from "types/database";
+import { Partner } from "types/database";
 
-interface UpdateInvoiceProps {
+interface UpdatePartnerProps {
   id?: string;
-  fallbackData?: Invoice;
+  fallbackData?: Partner;
 }
 
-const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({ id, fallbackData }) => {
-  const { mutate } = useSWRConfig();
+const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   const router = useRouter();
-  const { data, error } = useInvoice(id, fallbackData);
-  const { trigger } = useInvoiceMutation();
+  const { mutate } = useSWRConfig();
+  const { data, error } = usePartner(id, fallbackData);
+  const { trigger } = usePartnerMutation();
 
-  const onSubmit = (values: Partial<Invoice>) => {
+  const onSubmit = (values: Partial<Partner>) => {
+    router.push("/partners");
     if (id && values) {
       trigger(id, values)
         .then(() => {
-          mutate(cacheKeys.invoices);
-          router.push("/invoices");
+          mutate(cacheKeys.partners);
+          router.push("/partners");
         })
         .catch((err) => console.error(err));
     }
@@ -37,7 +39,7 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({ id, fallbackData }) => {
   return (
     <Layout size="xs" title="Edit invoice">
       {error && <div>{error.message}</div>}
-      <InvoiceForm invoice={data} onSubmit={onSubmit} />
+      <PartnerForm partner={data} onSubmit={onSubmit} />
     </Layout>
   );
 };
@@ -50,7 +52,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       return { props: { data: undefined } };
     }
     const { data } = await supabaseServerClient(ctx)
-      .from(tableNames.invoice)
+      .from(tableNames.partner)
       .select()
       .eq("id", id)
       .single();
@@ -59,4 +61,4 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   },
 });
 
-export default UpdateInvoice;
+export default UpdatePartner;

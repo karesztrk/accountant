@@ -1,15 +1,28 @@
-import { Stack, Table } from "@mantine/core";
+import { Group, Stack, Table } from "@mantine/core";
+import NavigationButton from "components/navigation-button/NavigationButton";
+import { useRouter } from "next/router";
 import { FC } from "react";
 import { Partner } from "types/database";
+import { useStyles } from "./styles";
 
 interface PartnerTableProps {
   partners: Partner[];
 }
 
 const PartnerTable: FC<PartnerTableProps> = ({ partners }) => {
+  const router = useRouter();
+  const { classes } = useStyles();
+
+  const onRowClick = (id: number) => () => {
+    router.push(`/partners/${id}`);
+  };
+
   return (
     <Stack>
-      <Table>
+      <Group position="right">
+        <NavigationButton href="/partners/new" text="New" />
+      </Group>
+      <Table highlightOnHover>
         <thead>
           <tr>
             <th>Name</th>
@@ -20,7 +33,11 @@ const PartnerTable: FC<PartnerTableProps> = ({ partners }) => {
         </thead>
         <tbody>
           {partners.map((partner) => (
-            <tr key={partner.id}>
+            <tr
+              key={partner.id}
+              className={classes.row}
+              onClick={onRowClick(partner.id)}
+            >
               <td>{partner.name}</td>
               <td>{partner.address}</td>
               <td>{partner.vat}</td>
