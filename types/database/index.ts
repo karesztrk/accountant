@@ -1,7 +1,13 @@
+export interface InvoiceWithPartner extends Invoice {
+  partner: {
+    name: string;
+  };
+}
+
 export interface Invoice {
   id: number;
   created_at: string;
-  partner_name: string;
+  partner_id: number;
   amount: number;
   issued_on: string;
   currency: string;
@@ -18,3 +24,5 @@ export interface Partner {
   vat: string;
   email?: string;
 }
+
+export type PartnerName = Pick<Partner, "id" | "name">;

@@ -6,11 +6,15 @@ import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { tableNames } from "lib";
-import type { GetServerSideProps, NextPage } from "next";
-import { Invoice } from "types/database";
+import type {
+  GetServerSideProps,
+  GetServerSidePropsResult,
+  NextPage,
+} from "next";
+import { Invoice, InvoiceWithPartner } from "types/database";
 
 interface InvoicesProps {
-  fallbackData: Invoice[];
+  fallbackData: InvoiceWithPartner[];
 }
 
 const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
@@ -26,11 +30,16 @@ const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
-  async getServerSideProps(ctx) {
-    const { data = [] } = await supabaseServerClient(ctx)
-      .from<Invoice[]>(tableNames.invoice)
-      .select("*");
-    return { props: { fallbackData: data } };
+  async getServerSideProps(ctx): Promise<
+    GetServerSidePropsResult<{
+      fallbackData: InvoiceWithPartner[];
+    }>
+  > {
+    const { data } = await supabaseServerClient(ctx)
+      .from<InvoiceWithPartner>(tableNames.invoice)
+      .select(`*, partner!inner(name)`);
+
+    return { props: { fallbackData: data || [] } };
   },
 });
 

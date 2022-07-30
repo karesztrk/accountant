@@ -1,5 +1,5 @@
 export interface Invoice {
-  partner_name: string;
+  partner_id: string;
   amount: number;
   issued_on: Date;
   currency: string;

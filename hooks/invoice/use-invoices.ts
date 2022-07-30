@@ -1,18 +1,18 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { cacheKeys, tableNames } from "lib";
 import useSWR from "swr";
-import { Invoice } from "types/database";
+import { InvoiceWithPartner } from "types/database";
 
 const fetcher = async () => {
   const { data } = await supabaseClient
-    .from<Invoice>(tableNames.invoice)
+    .from<InvoiceWithPartner>(tableNames.invoice)
     .throwOnError()
-    .select();
+    .select(`*, partner!inner(name)`);
   return data || [];
 };
 
-export const useInvoices = (fallbackData?: Invoice[]) => {
-  return useSWR<Invoice[]>(cacheKeys.invoices, fetcher, {
+export const useInvoices = (fallbackData?: InvoiceWithPartner[]) => {
+  return useSWR<InvoiceWithPartner[]>(cacheKeys.invoices, fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

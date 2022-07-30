@@ -4,10 +4,10 @@ import { useRouter } from "next/router";
 import { FC } from "react";
 import { useStyles } from "./styles";
 import PaidIcon from "./PaidIcon";
-import { Invoice } from "types/database";
+import { InvoiceWithPartner } from "types/database";
 
 interface InvoiceTableProps {
-  invoices: Invoice[];
+  invoices: InvoiceWithPartner[];
 }
 
 const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
@@ -43,7 +43,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({ invoices }) => {
             >
               <td>{invoice.invoice_number}</td>
               <td>{new Date(invoice.issued_on).toLocaleDateString()}</td>
-              <td>{invoice.partner_name}</td>
+              <td>{invoice.partner.name}</td>
               <td>
                 {invoice.amount} {invoice.currency}
               </td>

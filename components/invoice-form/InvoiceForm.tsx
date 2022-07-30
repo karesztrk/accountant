@@ -1,18 +1,16 @@
-import { Button, Checkbox, Group, TextInput } from "@mantine/core";
+import { Button, Checkbox, Group, Select, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import { FC } from "react";
-import { useSWRConfig } from "swr";
+import { FC, useMemo } from "react";
 import { Invoice as ClientInvoice } from "types/client";
-import { Invoice } from "types/database";
+import { Invoice, PartnerName } from "types/database";
 
 const initialValues: ClientInvoice = {
-  partner_name: "",
+  partner_id: "0",
   amount: 0,
   issued_on: new Date(),
   invoice_number: "",
@@ -20,20 +18,30 @@ const initialValues: ClientInvoice = {
   paid: false,
 };
 
-const toInvoice = (invoice: Invoice) => {
+const toInvoice = (invoice: Invoice): ClientInvoice => {
   return {
     ...invoice,
     issued_on: invoice?.issued_on ? new Date(invoice.issued_on) : new Date(),
+    partner_id: String(invoice.partner_id),
   };
+};
+
+const toPartners = (partners: PartnerName[]) => {
+  return partners.map((partner) => ({
+    label: partner.name,
+    value: String(partner.id),
+  }));
 };
 
 interface InvoiceFormProps {
   invoice?: Invoice;
+  partners: PartnerName[];
   onSubmit?: (values: Partial<Invoice>) => void;
 }
 
 const InvoiceForm: FC<InvoiceFormProps> = ({
   invoice,
+  partners = [],
   onSubmit: onSubmitProps,
 }) => {
   const { user } = useUser();
@@ -43,11 +51,13 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
     initialValues: invoice ? toInvoice(invoice) : initialValues,
   });
 
+  const partnerData = useMemo(() => toPartners(partners), [partners]);
+
   const onSubmit = (values: ClientInvoice) => {
     if (!user) {
       return;
     }
-    const { invoice_number, amount, currency, issued_on, partner_name, paid } =
+    const { invoice_number, amount, currency, issued_on, partner_id, paid } =
       values;
 
     const invoice: Partial<Invoice> = {
@@ -55,7 +65,7 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
       amount,
       currency,
       issued_on: issued_on.toISOString(),
-      partner_name,
+      partner_id: Number(partner_id),
       paid,
       user_id: user.id,
     };
@@ -75,12 +85,15 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
           placeholder="INV-1"
           {...form.getInputProps("invoice_number")}
         />
-        <TextInput
+        <Select
           required
           label="Partner"
-          placeholder="Company name"
+          placeholder="Invoiced partner"
+          searchable
+          nothingFound="Not found"
+          data={partnerData}
           mt="md"
-          {...form.getInputProps("partner_name")}
+          {...form.getInputProps("partner_id")}
         />
         <CurrencyInput
           label="Amount"
