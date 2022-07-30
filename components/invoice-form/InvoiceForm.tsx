@@ -5,7 +5,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import { FC, useMemo } from "react";
+import { FC, useMemo, useState } from "react";
 import { Invoice as ClientInvoice } from "types/client";
 import { Invoice, PartnerName } from "types/database";
 
@@ -47,6 +47,8 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   const { user } = useUser();
   const router = useRouter();
 
+  const [loading, setLoading] = useState(false);
+
   const form = useForm<ClientInvoice>({
     initialValues: invoice ? toInvoice(invoice) : initialValues,
   });
@@ -71,8 +73,8 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
     };
 
     if (onSubmitProps) {
+      setLoading(true);
       onSubmitProps(invoice);
-      router.push("/invoices");
     }
   };
 
@@ -120,7 +122,9 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
 
         <Group position="right" mt="md">
           <NavigationButton variant="outline" text="Cancel" href="/invoices" />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
         </Group>
       </form>
     </>

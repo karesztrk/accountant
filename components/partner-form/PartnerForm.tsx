@@ -2,7 +2,7 @@ import { Button, Group, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useUser } from "@supabase/auth-helpers-react";
 import NavigationButton from "components/navigation-button/NavigationButton";
-import { FC } from "react";
+import { FC, useState } from "react";
 import { Partner as ClientPartner } from "types/client";
 import { Partner } from "types/database";
 
@@ -23,6 +23,8 @@ const PartnerForm: FC<PartnerFormProps> = ({
   onSubmit: onSubmitProps,
 }) => {
   const { user } = useUser();
+
+  const [loading, setLoading] = useState(false);
 
   const form = useForm<ClientPartner>({
     initialValues: partner || initialValues,
@@ -79,7 +81,9 @@ const PartnerForm: FC<PartnerFormProps> = ({
 
         <Group position="right" mt="md">
           <NavigationButton variant="outline" text="Cancel" href="/partners" />
-          <Button type="submit">Submit</Button>
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
         </Group>
       </form>
     </>
