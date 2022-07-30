@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
@@ -11,7 +12,8 @@ import type {
   GetServerSidePropsResult,
   NextPage,
 } from "next";
-import { Invoice, InvoiceWithPartner } from "types/database";
+import { useEffect } from "react";
+import { InvoiceWithPartner } from "types/database";
 
 interface InvoicesProps {
   fallbackData: InvoiceWithPartner[];
@@ -20,9 +22,19 @@ interface InvoicesProps {
 const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
   const { data = [], error } = useInvoices(fallbackData);
 
+  useEffect(() => {
+    if (error) {
+      showNotification({
+        id: error.code,
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    }
+  }, [error]);
+
   return (
     <Layout title="Invoices">
-      {error && <div>{error.message}</div>}
       <InvoiceTable invoices={data} />
     </Layout>
   );

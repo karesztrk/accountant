@@ -8,6 +8,7 @@ import {
 import { useState } from "react";
 import { UserProvider } from "@supabase/auth-helpers-react";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { NotificationsProvider } from "@mantine/notifications";
 
 const MyApp = ({ Component, pageProps }: AppProps) => {
   const [colorScheme, setColorScheme] = useState<ColorScheme>("dark");
@@ -33,9 +34,11 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
           withNormalizeCSS
           theme={{ colorScheme }}
         >
-          <UserProvider supabaseClient={supabaseClient}>
-            <Component {...pageProps} />
-          </UserProvider>
+          <NotificationsProvider>
+            <UserProvider supabaseClient={supabaseClient}>
+              <Component {...pageProps} />
+            </UserProvider>
+          </NotificationsProvider>
         </MantineProvider>
       </ColorSchemeProvider>
     </>

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import Layout from "components/Layout";
 import {
   supabaseServerClient,
@@ -9,13 +9,24 @@ import { tableNames } from "lib";
 import { Partner } from "types/database";
 import { usePartners } from "hooks/partner/use-partners";
 import PartnerTable from "components/partner-table/PartnerTable";
+import { showNotification } from "@mantine/notifications";
 
 const Partners = () => {
   const { data = [], error } = usePartners();
 
+  useEffect(() => {
+    if (error) {
+      showNotification({
+        id: error.code,
+        title: "Error",
+        message: error.message,
+        color: "red",
+      });
+    }
+  }, [error]);
+
   return (
     <Layout title="Partners">
-      {error && <div>{error.message}</div>}
       <PartnerTable partners={data} />
     </Layout>
   );

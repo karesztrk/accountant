@@ -1,4 +1,5 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { PostgrestError } from "@supabase/supabase-js";
 import { cacheKeys, tableNames } from "lib";
 import useSWR from "swr";
 import { Invoice } from "types/database";
@@ -16,7 +17,7 @@ const fetcher = async (key: string) => {
 
 export const useInvoice = (id?: string, fallbackData?: Invoice) => {
   const key = id ? cacheKeys.invoice(id) : null;
-  return useSWR<Invoice | undefined>(key, fetcher, {
+  return useSWR<Invoice | undefined, PostgrestError>(key, fetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

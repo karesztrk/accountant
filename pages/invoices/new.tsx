@@ -1,17 +1,14 @@
+import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
+import { PostgrestError } from "@supabase/supabase-js";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { cacheKeys, tableNames } from "lib";
-import {
-  GetServerSideProps,
-  GetServerSidePropsContext,
-  GetServerSidePropsResult,
-  NextPage,
-} from "next";
+import { GetServerSidePropsResult, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { Invoice, PartnerName } from "types/database";
@@ -31,7 +28,14 @@ const NewInvoice: NextPage<NewInvoiceProps> = ({ partners }) => {
           mutate(cacheKeys.invoices);
           router.push("/invoices");
         })
-        .catch((err) => console.error(err));
+        .catch((error: PostgrestError) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
     }
   };
 

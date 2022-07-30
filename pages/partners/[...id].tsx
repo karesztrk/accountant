@@ -1,10 +1,11 @@
+import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
+import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
 import PartnerForm from "components/partner-form/PartnerForm";
-import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { usePartner } from "hooks/partner/use-partner";
 import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
 import { cacheKeys, tableNames } from "lib";
@@ -32,13 +33,19 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
           mutate(cacheKeys.partners);
           router.push("/partners");
         })
-        .catch((err) => console.error(err));
+        .catch((error: PostgrestError) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
     }
   };
 
   return (
     <Layout size="xs" title="Edit invoice">
-      {error && <div>{error.message}</div>}
       <PartnerForm partner={data} onSubmit={onSubmit} />
     </Layout>
   );

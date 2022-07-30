@@ -6,6 +6,7 @@ specifiers:
   '@mantine/form': ^4.2.12
   '@mantine/hooks': ^4.2.12
   '@mantine/next': ^4.2.12
+  '@mantine/notifications': ^5.0.2
   '@supabase/auth-helpers-nextjs': ^0.2.5
   '@supabase/auth-helpers-react': ^0.2.3
   '@supabase/supabase-js': ^1.35.4
@@ -28,6 +29,7 @@ dependencies:
   '@mantine/form': 4.2.12_react@18.2.0
   '@mantine/hooks': 4.2.12_react@18.2.0
   '@mantine/next': 4.2.12_2gqzyayxaiqf33ltv5ghxbozne
+  '@mantine/notifications': 5.0.2_n5fi23fjjzlwcbqhnnpdtjftw4
   '@supabase/auth-helpers-nextjs': 0.2.5
   '@supabase/auth-helpers-react': 0.2.3
   '@supabase/supabase-js': 1.35.4
@@ -242,6 +244,22 @@ packages:
       - '@types/react'
     dev: false
 
+  /@mantine/notifications/5.0.2_n5fi23fjjzlwcbqhnnpdtjftw4:
+    resolution: {integrity: sha512-EicBoabJAV2G9y/g+/id76ERfz9ap+veN5rd3gkuYJssYnm98kfbgO73pLLm7ZaacNEGNlqWIIN2OYLcaoQ4Dw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/notifications/-/notifications-5.0.2.tgz}
+    peerDependencies:
+      '@mantine/core': 5.0.2
+      '@mantine/hooks': 5.0.2
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 4.2.12_bhlenwkd723lhai3utuqqpcmru
+      '@mantine/hooks': 4.2.12_react@18.2.0
+      '@mantine/utils': 5.0.2_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
+      react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
+    dev: false
+
   /@mantine/ssr/4.2.12_bb2bxwco6ptpubzwpazr52qf6i:
     resolution: {integrity: sha512-PhM+nYzKs7ooPgMyJGPrdE0KaBB1T72yln3K/3ydkJBAMb/gl08Gm8gpzInzfn2kB7bdRVNwuF0i8Ba0pDbvJg==}
     peerDependencies:
@@ -281,6 +299,14 @@ packages:
     transitivePeerDependencies:
       - '@babel/core'
       - '@types/react'
+    dev: false
+
+  /@mantine/utils/5.0.2_react@18.2.0:
+    resolution: {integrity: sha512-WCuUL+mJ0+8n3anMYb5no93ohyuMilIG49ZJ7XNZUN3g/ZxoKnKF3dEUpXqIUxKgUIwzAsiS9AFFpZSStgAPvw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/utils/-/utils-5.0.2.tgz}
+    peerDependencies:
+      react: '>=16.8.0'
+    dependencies:
+      react: 18.2.0
     dev: false
 
   /@next/env/12.2.2:
@@ -935,7 +961,7 @@ packages:
     dev: true
 
   /dayjs/1.11.3:
-    resolution: {integrity: sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/dayjs/-/dayjs-1.11.3.tgz}
+    resolution: {integrity: sha512-xxwlswWOlGhzgQ4TKzASQkUhqERI3egRNqgV4ScR8wlANA/A9tZ7miXa44vTTKEq5l7vWoL5G57bG3zA+Kow0A==}
     dev: false
 
   /debug/2.6.9:
@@ -1003,6 +1029,13 @@ packages:
     dependencies:
       esutils: 2.0.3
     dev: true
+
+  /dom-helpers/5.2.1:
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/dom-helpers/-/dom-helpers-5.2.1.tgz}
+    dependencies:
+      '@babel/runtime': 7.18.6
+      csstype: 3.1.0
+    dev: false
 
   /dom-serializer/1.4.1:
     resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==}
@@ -2142,7 +2175,6 @@ packages:
       loose-envify: 1.4.0
       object-assign: 4.1.1
       react-is: 16.13.1
-    dev: true
 
   /punycode/2.1.1:
     resolution: {integrity: sha512-XRsRjdf+j5ml+y/6GKHPZbrF/8p2Yga0JPtdqTIY2Xe5ohJPD9saDJJLPvp9+NSBprVvevdXZybnj2cv8OEd0A==}
@@ -2200,6 +2232,20 @@ packages:
       use-latest: 1.2.1_3hx2ussxxho4jajbwrd6gq34qe
     transitivePeerDependencies:
       - '@types/react'
+    dev: false
+
+  /react-transition-group/4.4.2_biqbaboplfbrettd7655fr4n2y:
+    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/react-transition-group/-/react-transition-group-4.4.2.tgz}
+    peerDependencies:
+      react: '>=16.6.0'
+      react-dom: '>=16.6.0'
+    dependencies:
+      '@babel/runtime': 7.18.6
+      dom-helpers: 5.2.1
+      loose-envify: 1.4.0
+      prop-types: 15.8.1
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /react/18.2.0:

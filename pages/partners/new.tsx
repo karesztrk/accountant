@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications";
 import Layout from "components/Layout";
 import PartnerForm from "components/partner-form/PartnerForm";
 import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
@@ -18,7 +19,14 @@ const NewPartner = () => {
           mutate(cacheKeys.partners, undefined, {});
           router.push("/partners");
         })
-        .catch((err) => console.error(err));
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
     }
   };
 

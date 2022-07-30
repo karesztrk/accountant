@@ -1,3 +1,4 @@
+import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
@@ -39,13 +40,19 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
           mutate(cacheKeys.invoices);
           router.push("/invoices");
         })
-        .catch((err) => console.error(err));
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
     }
   };
 
   return (
     <Layout size="xs" title="Edit invoice">
-      {error && <div>{error.message}</div>}
       <InvoiceForm invoice={data} partners={partners} onSubmit={onSubmit} />
     </Layout>
   );
