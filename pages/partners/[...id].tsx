@@ -22,7 +22,7 @@ interface UpdatePartnerProps {
 const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
-  const { data, error } = usePartner(id, fallbackData);
+  const { data } = usePartner(id, fallbackData);
   const { trigger } = usePartnerMutation();
 
   const onSubmit = (values: Partial<Partner>) => {

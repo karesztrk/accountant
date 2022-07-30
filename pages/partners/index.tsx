@@ -10,6 +10,7 @@ import { Partner } from "types/database";
 import { usePartners } from "hooks/partner/use-partners";
 import PartnerTable from "components/partner-table/PartnerTable";
 import { showNotification } from "@mantine/notifications";
+import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
 
 interface PartnersProps {
   fallbackData: Partner[];
@@ -17,6 +18,20 @@ interface PartnersProps {
 
 const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
   const { data = [], error } = usePartners(fallbackData);
+  const { trigger } = usePartnerDeletion();
+
+  const onDelete = (ids: number[]) => {
+    trigger(ids)
+      .then(() => {})
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      });
+  };
 
   useEffect(() => {
     if (error) {
@@ -31,7 +46,7 @@ const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
 
   return (
     <Layout title="Partners">
-      <PartnerTable partners={data} />
+      <PartnerTable partners={data} onDelete={onDelete} />
     </Layout>
   );
 };
