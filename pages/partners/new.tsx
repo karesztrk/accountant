@@ -5,16 +5,16 @@ import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
 import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Invoice as Partner } from "types/database";
+import { Partner } from "types/database";
 
 const NewPartner = () => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { trigger } = usePartnerMutation();
 
-  const onSubmit = (values: Partial<Partner>) => {
+  const onSubmit = (values: Partner) => {
     if (values) {
-      trigger(undefined, values)
+      trigger(values)
         .then(() => {
           mutate(cacheKeys.partners, undefined, {});
           router.push("/partners");

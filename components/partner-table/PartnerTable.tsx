@@ -44,6 +44,9 @@ const PartnerTable: FC<PartnerTableProps> = ({
   const onDelete = () => {
     if (onDeleteProps && selection.length > 0) {
       onDeleteProps(selection);
+      setSelection((current) =>
+        current.filter((item) => !selection.includes(item))
+      );
     }
   };
 

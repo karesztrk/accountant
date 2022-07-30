@@ -25,10 +25,10 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   const { data } = usePartner(id, fallbackData);
   const { trigger } = usePartnerMutation();
 
-  const onSubmit = (values: Partial<Partner>) => {
+  const onSubmit = (values: Partner) => {
     router.push("/partners");
     if (id && values) {
-      trigger(id, values)
+      trigger(values)
         .then(() => {
           mutate(cacheKeys.partners);
           router.push("/partners");

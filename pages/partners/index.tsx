@@ -5,24 +5,28 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import { GetServerSideProps, NextPage } from "next";
-import { tableNames } from "lib";
+import { cacheKeys, tableNames } from "lib";
 import { Partner } from "types/database";
 import { usePartners } from "hooks/partner/use-partners";
 import PartnerTable from "components/partner-table/PartnerTable";
 import { showNotification } from "@mantine/notifications";
 import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
+import { useSWRConfig } from "swr";
 
 interface PartnersProps {
   fallbackData: Partner[];
 }
 
 const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
+  const { mutate } = useSWRConfig();
   const { data = [], error } = usePartners(fallbackData);
   const { trigger } = usePartnerDeletion();
 
   const onDelete = (ids: number[]) => {
     trigger(ids)
-      .then(() => {})
+      .then(() => {
+        mutate(cacheKeys.partners);
+      })
       .catch((error) => {
         showNotification({
           id: error.code,

@@ -16,7 +16,7 @@ const initialValues: ClientPartner = {
 
 interface PartnerFormProps {
   partner?: Partner;
-  onSubmit?: (values: Partial<Partner>) => void;
+  onSubmit?: (values: Partner) => void;
 }
 
 const PartnerForm: FC<PartnerFormProps> = ({
