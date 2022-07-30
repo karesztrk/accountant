@@ -17,13 +17,15 @@ const NavbarLink = ({ icon: Icon, label, href }: NavbarLinkProps) => {
 
   return (
     <Tooltip label={label} position="right" withArrow transitionDuration={0}>
-      <NextLink href={href} passHref>
-        <UnstyledButton
-          className={cx(classes.link, { [classes.active]: active })}
-        >
-          <Icon />
-        </UnstyledButton>
-      </NextLink>
+      <div>
+        <NextLink href={href} passHref>
+          <UnstyledButton
+            className={cx(classes.link, { [classes.active]: active })}
+          >
+            <Icon />
+          </UnstyledButton>
+        </NextLink>
+      </div>
     </Tooltip>
   );
 };

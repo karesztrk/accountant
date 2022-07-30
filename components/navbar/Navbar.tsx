@@ -18,14 +18,14 @@ const Navbar = () => {
     <MantineNavbar width={{ base: 80 }} p="md">
       <Center>💰</Center>
       <MantineNavbar.Section grow mt={50}>
-        <Group direction="column" align="center" spacing={0}>
+        <Group direction="column" align="center" spacing={4}>
           {pages.map((link) => (
             <NavbarLink {...link} key={link.label} />
           ))}
         </Group>
       </MantineNavbar.Section>
       <MantineNavbar.Section>
-        <Group direction="column" align="center" spacing={0}>
+        <Group direction="column" align="center" spacing={4}>
           <NavbarButton icon={Logout} label="Logout" onClick={onLogout} />
         </Group>
       </MantineNavbar.Section>
