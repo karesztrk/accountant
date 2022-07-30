@@ -5,7 +5,7 @@ import useSWR from "swr";
 import { Partner } from "types/database";
 
 const fetcher = async () => {
-  const { data, error } = await supabaseClient
+  const { data } = await supabaseClient
     .from<Partner>(tableNames.partner)
     .throwOnError()
     .select();

@@ -4,15 +4,19 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { GetServerSideProps } from "next";
+import { GetServerSideProps, NextPage } from "next";
 import { tableNames } from "lib";
 import { Partner } from "types/database";
 import { usePartners } from "hooks/partner/use-partners";
 import PartnerTable from "components/partner-table/PartnerTable";
 import { showNotification } from "@mantine/notifications";
 
-const Partners = () => {
-  const { data = [], error } = usePartners();
+interface PartnersProps {
+  fallbackData: Partner[];
+}
+
+const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
+  const { data = [], error } = usePartners(fallbackData);
 
   useEffect(() => {
     if (error) {

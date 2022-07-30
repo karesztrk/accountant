@@ -5,8 +5,7 @@ export interface InvoiceWithPartner extends Invoice {
 }
 
 export interface Invoice {
-  id: number;
-  created_at: string;
+  id?: number;
   partner_id: number;
   amount: number;
   issued_on: string;
@@ -17,12 +16,12 @@ export interface Invoice {
 }
 
 export interface Partner {
-  id: number;
-  created_at: string;
+  id?: number;
   name: string;
   address: string;
   vat: string;
   email?: string;
+  user_id: string;
 }
 
 export type PartnerName = Pick<Partner, "id" | "name">;

@@ -4,10 +4,10 @@ import { useForm } from "@mantine/form";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import NavigationButton from "components/navigation-button/NavigationButton";
-import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
 import { Invoice as ClientInvoice } from "types/client";
 import { Invoice, PartnerName } from "types/database";
+import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
 
 const initialValues: ClientInvoice = {
   partner_id: "0",
@@ -16,21 +16,6 @@ const initialValues: ClientInvoice = {
   invoice_number: "",
   currency: "EUR",
   paid: false,
-};
-
-const toInvoice = (invoice: Invoice): ClientInvoice => {
-  return {
-    ...invoice,
-    issued_on: invoice?.issued_on ? new Date(invoice.issued_on) : new Date(),
-    partner_id: String(invoice.partner_id),
-  };
-};
-
-const toPartners = (partners: PartnerName[]) => {
-  return partners.map((partner) => ({
-    label: partner.name,
-    value: String(partner.id),
-  }));
 };
 
 interface InvoiceFormProps {
@@ -45,7 +30,6 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   onSubmit: onSubmitProps,
 }) => {
   const { user } = useUser();
-  const router = useRouter();
 
   const [loading, setLoading] = useState(false);
 
@@ -59,22 +43,10 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
     if (!user) {
       return;
     }
-    const { invoice_number, amount, currency, issued_on, partner_id, paid } =
-      values;
-
-    const invoice: Partial<Invoice> = {
-      invoice_number,
-      amount,
-      currency,
-      issued_on: issued_on.toISOString(),
-      partner_id: Number(partner_id),
-      paid,
-      user_id: user.id,
-    };
 
     if (onSubmitProps) {
       setLoading(true);
-      onSubmitProps(invoice);
+      onSubmitProps(toRemoteInvoice(user.id, values, invoice?.id));
     }
   };
 

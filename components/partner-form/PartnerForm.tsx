@@ -5,6 +5,7 @@ import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useState } from "react";
 import { Partner as ClientPartner } from "types/client";
 import { Partner } from "types/database";
+import { toRemotePartner } from "./PartnerForm.util";
 
 const initialValues: ClientPartner = {
   name: "",
@@ -34,17 +35,10 @@ const PartnerForm: FC<PartnerFormProps> = ({
     if (!user) {
       return;
     }
-    const { name, address, vat, email } = values;
-
-    const partner: Partial<Partner> = {
-      name,
-      address,
-      vat,
-      email,
-    };
 
     if (onSubmitProps) {
-      onSubmitProps(partner);
+      setLoading(true);
+      onSubmitProps(toRemotePartner(user.id, values, partner?.id));
     }
   };
 
