@@ -1,4 +1,4 @@
-import { Center, Group, Navbar as MantineNavbar } from "@mantine/core";
+import { Center, Navbar as MantineNavbar, Stack } from "@mantine/core";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { Logout } from "tabler-icons-react";
@@ -18,16 +18,16 @@ const Navbar = () => {
     <MantineNavbar width={{ base: 80 }} p="md">
       <Center>💰</Center>
       <MantineNavbar.Section grow mt={50}>
-        <Group direction="column" align="center" spacing={4}>
+        <Stack align="center" spacing={4}>
           {pages.map((link) => (
             <NavbarLink {...link} key={link.label} />
           ))}
-        </Group>
+        </Stack>
       </MantineNavbar.Section>
       <MantineNavbar.Section>
-        <Group direction="column" align="center" spacing={4}>
+        <Stack align="center" spacing={4}>
           <NavbarButton icon={Logout} label="Logout" onClick={onLogout} />
-        </Group>
+        </Stack>
       </MantineNavbar.Section>
     </MantineNavbar>
   );

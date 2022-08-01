@@ -7,48 +7,49 @@ import {
   Transition,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
+import { newPaymentPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import { ChangeEvent, FC, MouseEvent } from "react";
-import { Partner } from "types/database";
-import { useStyles } from "./PartnerTable.styles";
+import React, { ChangeEvent, FC, MouseEvent } from "react";
+import { Payment } from "types/database";
+import { useStyles } from "./PaymentTable.styles";
 
-interface PartnerTableProps {
-  partners: Partner[];
+interface PaymentTableProps {
+  payments: Payment[];
   onDelete?: (ids: number[]) => void;
 }
 
-const PartnerTable: FC<PartnerTableProps> = ({
-  partners,
+const PaymentTable: FC<PaymentTableProps> = ({
+  payments,
   onDelete: onDeleteProp,
 }) => {
   const router = useRouter();
-  const { classes } = useStyles();
-
   const [selection, handlers] = useListState<number>([]);
 
+  const { classes } = useStyles();
+
   const allChecked =
-    partners.length > 0 && selection.length === partners.length;
+    payments.length > 0 && selection.length === payments.length;
 
   const indeterminate =
-    selection.length > 0 && selection.length !== partners.length;
+    selection.length > 0 && selection.length !== payments.length;
 
   const onRowClick =
-    (partner: Partner) => (e: MouseEvent<HTMLTableRowElement>) => {
-      if (!(e.target instanceof HTMLInputElement) && partner.id) {
-        router.push(`/partners/${partner.id}`);
+    (payment: Payment) => (e: MouseEvent<HTMLTableRowElement>) => {
+      if (!(e.target instanceof HTMLInputElement) && payment.id) {
+        router.push(`/payments/${payment.id}`);
       }
     };
 
   const onToggleRow =
-    (partner: Partner) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (!partner.id) {
+    (payment: Payment) => (e: ChangeEvent<HTMLInputElement>) => {
+      if (!payment.id) {
         return;
       }
       if (e.target.checked) {
-        handlers.append(partner.id);
+        handlers.append(payment.id);
       } else {
-        handlers.filter((item) => item !== partner.id);
+        handlers.filter((item) => item !== payment.id);
       }
     };
 
@@ -56,7 +57,7 @@ const PartnerTable: FC<PartnerTableProps> = ({
     if (allChecked) {
       handlers.setState([]);
     } else {
-      handlers.setState(partners.map((item) => item.id || 0).filter(Boolean));
+      handlers.setState(payments.map((item) => item.id || 0).filter(Boolean));
     }
   };
 
@@ -67,7 +68,7 @@ const PartnerTable: FC<PartnerTableProps> = ({
     }
   };
 
-  const isChecked = (item: Partner) => !!item.id && selection.includes(item.id);
+  const isChecked = (item: Payment) => !!item.id && selection.includes(item.id);
 
   return (
     <Stack>
@@ -89,7 +90,7 @@ const PartnerTable: FC<PartnerTableProps> = ({
             </Button>
           )}
         </Transition>
-        <NavigationButton href="/partners/new" text="New" />
+        <NavigationButton href={newPaymentPage.href} text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>
@@ -101,30 +102,28 @@ const PartnerTable: FC<PartnerTableProps> = ({
                 indeterminate={indeterminate}
               />
             </th>
-            <th>Name</th>
-            <th>Address</th>
-            <th>VAT</th>
-            <th>Email</th>
+            <th>Price</th>
+            <th>Related invoice</th>
           </tr>
         </thead>
         <tbody>
-          {partners.map((partner) =>
-            partner.id ? (
+          {payments.map((payment) =>
+            payment.id ? (
               <tr
-                key={partner.id}
+                key={payment.id}
+                onClick={onRowClick(payment)}
                 className={classes.row}
-                onClick={onRowClick(partner)}
               >
                 <td>
                   <Checkbox
-                    checked={isChecked(partner)}
-                    onChange={onToggleRow(partner)}
+                    checked={isChecked(payment)}
+                    onChange={onToggleRow(payment)}
                   />
                 </td>
-                <td>{partner.name}</td>
-                <td>{partner.address}</td>
-                <td>{partner.vat}</td>
-                <td>{partner.email}</td>
+                <td>
+                  {payment.amount} {payment.currency}
+                </td>
+                <td>{payment.invoice_id}</td>
               </tr>
             ) : null
           )}
@@ -134,4 +133,4 @@ const PartnerTable: FC<PartnerTableProps> = ({
   );
 };
 
-export default PartnerTable;
+export default PaymentTable;

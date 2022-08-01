@@ -27,7 +27,8 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
 
   const [selection, handlers] = useListState<number>([]);
 
-  const allChecked = selection.length === invoices.length;
+  const allChecked =
+    invoices.length > 0 && selection.length === invoices.length;
 
   const indeterminate =
     selection.length > 0 && selection.length !== invoices.length;

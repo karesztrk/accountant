@@ -24,3 +24,11 @@ export interface Partner {
 }
 
 export type PartnerName = Pick<Partner, "id" | "name">;
+
+export interface Payment {
+  id?: number;
+  invoice_id?: number;
+  amount: number;
+  currency: string;
+  paid_on: string;
+}

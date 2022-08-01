@@ -28,7 +28,7 @@ const initialValues: ClientInvoice = {
 interface InvoiceFormProps {
   invoice?: Invoice;
   partners: PartnerName[];
-  onSubmit?: (values: Partial<Invoice>) => void;
+  onSubmit?: (values: Invoice) => void;
 }
 
 const InvoiceForm: FC<InvoiceFormProps> = ({
@@ -47,10 +47,6 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   const partnerData = useMemo(() => toPartners(partners), [partners]);
 
   const onSubmit = (values: ClientInvoice) => {
-    console.log(
-      "🚀 ~ file: InvoiceForm.tsx ~ line 55 ~ onSubmit ~ values",
-      values
-    );
     if (!user) {
       return;
     }

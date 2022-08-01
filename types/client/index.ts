@@ -13,3 +13,10 @@ export interface Partner {
   vat: string;
   email?: string;
 }
+
+export interface Payment {
+  invoice_id?: string;
+  amount: number;
+  currency: string;
+  paid_on: Date;
+}

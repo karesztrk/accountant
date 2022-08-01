@@ -5,33 +5,33 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { partnersPage } from "components/navbar/pages";
-import PartnerForm from "components/partner-form/PartnerForm";
-import { usePartner } from "hooks/partner/use-partner";
-import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
+import { paymentsPage } from "components/navbar/pages";
+import PaymentForm from "components/payment-form/PaymentForm";
+import { usePayment } from "hooks/payment/use-payment";
+import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Partner } from "types/database";
+import { Payment } from "types/database";
 
 interface UpdatePartnerProps {
   id?: string;
-  fallbackData?: Partner;
+  fallbackData?: Payment;
 }
 
 const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
-  const { data } = usePartner(id, fallbackData);
-  const { trigger } = usePartnerMutation();
+  const { data } = usePayment(id, fallbackData);
+  const { trigger } = usePaymentMutation();
 
-  const onSubmit = (values: Partner) => {
+  const onSubmit = (values: Payment) => {
     if (id && values) {
       trigger(values)
         .then(() => {
           mutate(cacheKeys.partners);
-          router.push(partnersPage.href);
+          router.push(paymentsPage.href);
         })
         .catch((error: PostgrestError) => {
           showNotification({
@@ -45,8 +45,8 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   };
 
   return (
-    <Layout size="xs" title="Edit invoice">
-      <PartnerForm partner={data} onSubmit={onSubmit} />
+    <Layout size="xs" title="Edit payment">
+      <PaymentForm payment={data} onSubmit={onSubmit} />
     </Layout>
   );
 };
@@ -59,7 +59,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       return { props: { data: undefined } };
     }
     const { data } = await supabaseServerClient(ctx)
-      .from(tableNames.partner)
+      .from(tableNames.payment)
       .select()
       .eq("id", id)
       .single();
