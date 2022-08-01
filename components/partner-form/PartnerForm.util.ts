@@ -1,10 +1,11 @@
-import { Partner } from "types/client";
+import { Partner as ClientPartner } from "types/client";
+import { Partner } from "types/database";
 
 export const toRemotePartner = (
   userId: string,
-  { name, address, vat, email }: Partner,
+  { name, address, vat, email }: ClientPartner,
   id?: number
-) => ({
+): Partner => ({
   id,
   name,
   address,

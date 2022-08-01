@@ -17,7 +17,6 @@ export const toPartners = (partners: PartnerName[]) => {
 };
 
 export const toRemoteInvoice = (
-  userId: string,
   {
     invoice_number,
     amount,
@@ -27,7 +26,7 @@ export const toRemoteInvoice = (
     paid,
   }: ClientInvoice,
   id?: number
-) => ({
+): Invoice => ({
   id,
   invoice_number,
   amount,
@@ -35,5 +34,4 @@ export const toRemoteInvoice = (
   issued_on: issued_on.toISOString(),
   partner_id: Number(partner_id),
   paid,
-  user_id: userId,
 });

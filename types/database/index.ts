@@ -10,7 +10,6 @@ export interface Invoice {
   amount: number;
   issued_on: string;
   currency: string;
-  user_id: string;
   invoice_number: string;
   paid: boolean;
 }

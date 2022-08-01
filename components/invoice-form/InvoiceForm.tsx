@@ -46,7 +46,7 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
 
     if (onSubmitProps) {
       setLoading(true);
-      onSubmitProps(toRemoteInvoice(user.id, values, invoice?.id));
+      onSubmitProps(toRemoteInvoice(values, invoice?.id));
     }
   };
 
