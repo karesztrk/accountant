@@ -9,7 +9,7 @@ interface PaidIconProps {
 const PaidIcon: FC<PaidIconProps> = ({ paid }) => {
   return (
     <Tooltip label={paid ? "Paid" : "Pending"}>
-      {paid ? <Cash /> : <CashOff />}
+      <span>{paid ? <Cash /> : <CashOff />}</span>
     </Tooltip>
   );
 };

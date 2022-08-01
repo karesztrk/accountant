@@ -16,7 +16,7 @@ const NavbarLink = ({ icon: Icon, label, href }: NavbarLinkProps) => {
   const active = pathname === href;
 
   return (
-    <Tooltip label={label} position="right" withArrow transitionDuration={0}>
+    <Tooltip label={label} position="right">
       <div>
         <NextLink href={href} passHref>
           <UnstyledButton

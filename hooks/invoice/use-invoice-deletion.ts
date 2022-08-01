@@ -3,14 +3,15 @@ import { tableNames } from "lib";
 
 const fetcher = async (ids: number[]) => {
   const { data } = await supabaseClient
-    .from(tableNames.partner)
+    .from(tableNames.invoice)
     .delete()
     .in("id", ids)
     .throwOnError();
+
   return data || undefined;
 };
 
-export const usePartnerDeletion = () => {
+export const useInvoiceDeletion = () => {
   return {
     trigger: fetcher,
   };

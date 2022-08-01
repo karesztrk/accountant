@@ -5,14 +5,16 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
+import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
 import { useInvoices } from "hooks/invoice/use-invoices";
-import { tableNames } from "lib";
+import { cacheKeys, tableNames } from "lib";
 import type {
   GetServerSideProps,
   GetServerSidePropsResult,
   NextPage,
 } from "next";
 import { useEffect } from "react";
+import { useSWRConfig } from "swr";
 import { InvoiceWithPartner } from "types/database";
 
 interface InvoicesProps {
@@ -20,7 +22,24 @@ interface InvoicesProps {
 }
 
 const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
+  const { mutate } = useSWRConfig();
   const { data = [], error } = useInvoices(fallbackData);
+  const { trigger } = useInvoiceDeletion();
+
+  const onDelete = (ids: number[]) => {
+    trigger(ids)
+      .then(() => {
+        mutate(cacheKeys.invoices);
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      });
+  };
 
   useEffect(() => {
     if (error) {
@@ -35,7 +54,7 @@ const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
 
   return (
     <Layout title="Invoices">
-      <InvoiceTable invoices={data} />
+      <InvoiceTable invoices={data} onDelete={onDelete} />
     </Layout>
   );
 };

@@ -11,7 +11,7 @@ const NavbarButton = ({ icon: Icon, label, onClick }: NavbarButtonProps) => {
   const { classes } = useStyles();
 
   return (
-    <Tooltip label={label} position="right" withArrow transitionDuration={0}>
+    <Tooltip label={label} position="right">
       <UnstyledButton onClick={onClick} className={classes.link}>
         <Icon />
       </UnstyledButton>
