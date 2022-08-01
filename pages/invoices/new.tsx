@@ -21,9 +21,9 @@ const NewInvoice: NextPage<NewInvoiceProps> = ({ partners }) => {
   const { mutate } = useSWRConfig();
   const { trigger } = useInvoiceMutation();
 
-  const onSubmit = (values: Partial<Invoice>) => {
+  const onSubmit = (values: Invoice) => {
     if (values) {
-      trigger(undefined, values)
+      trigger(values)
         .then(() => {
           mutate(cacheKeys.invoices);
           router.push("/invoices");

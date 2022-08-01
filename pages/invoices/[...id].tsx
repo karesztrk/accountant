@@ -35,7 +35,7 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
 
   const onSubmit = (values: Partial<Invoice>) => {
     if (id && values) {
-      trigger(id, values)
+      trigger(values)
         .then(() => {
           mutate(cacheKeys.invoices);
           router.push("/invoices");
