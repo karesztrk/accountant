@@ -1,5 +1,5 @@
 import { Icon as TablerIcon, Tooltip, UnstyledButton } from "@mantine/core";
-import { useStyles } from "./styles";
+import { useStyles } from "./Navbar.styles";
 
 interface NavbarButtonProps {
   icon: TablerIcon;

@@ -11,7 +11,7 @@ import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent } from "react";
 import { Partner } from "types/database";
-import { useStyles } from "./styles";
+import { useStyles } from "./PartnerTable.styles";
 
 interface PartnerTableProps {
   partners: Partner[];

@@ -1,7 +1,7 @@
 import { Icon as TablerIcon, Tooltip, UnstyledButton } from "@mantine/core";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
-import { useStyles } from "./styles";
+import { useStyles } from "./Navbar.styles";
 
 interface NavbarLinkProps {
   icon: TablerIcon;

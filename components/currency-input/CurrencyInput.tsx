@@ -1,7 +1,7 @@
 import { NativeSelect, TextInput } from "@mantine/core";
 import React, { ChangeEvent, FC } from "react";
 import { data } from "./data";
-import { useStyles } from "./styles";
+import { useStyles } from "./CurrencyInput.styles";
 
 interface CurrencyInputProps {
   placeholder?: string;
