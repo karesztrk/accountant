@@ -1,4 +1,11 @@
-import { Button, Checkbox, Group, Select, TextInput } from "@mantine/core";
+import {
+  Button,
+  Checkbox,
+  Group,
+  Select,
+  Stack,
+  TextInput,
+} from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useUser } from "@supabase/auth-helpers-react";
@@ -40,6 +47,10 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   const partnerData = useMemo(() => toPartners(partners), [partners]);
 
   const onSubmit = (values: ClientInvoice) => {
+    console.log(
+      "🚀 ~ file: InvoiceForm.tsx ~ line 55 ~ onSubmit ~ values",
+      values
+    );
     if (!user) {
       return;
     }
@@ -53,51 +64,57 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   return (
     <>
       <form onSubmit={form.onSubmit(onSubmit)}>
-        <TextInput
-          required
-          label="Invoice number"
-          placeholder="INV-1"
-          {...form.getInputProps("invoice_number")}
-        />
-        <Select
-          required
-          label="Partner"
-          placeholder="Invoiced partner"
-          searchable
-          nothingFound="Not found"
-          data={partnerData}
-          mt="md"
-          {...form.getInputProps("partner_id")}
-        />
-        <CurrencyInput
-          label="Amount"
-          placeholder="1000"
-          value={form.getInputProps("amount").value}
-          currency={form.getInputProps("currency").value}
-          onChange={form.getInputProps("amount").onChange}
-          onCurrenyChange={form.getInputProps("currency").onChange}
-          required
-        />
-        <DatePicker
-          mt="md"
-          placeholder="Pick date"
-          label="Issued on"
-          required
-          {...form.getInputProps("issued_on")}
-        />
+        <Stack spacing="md">
+          <TextInput
+            required
+            label="Invoice number"
+            placeholder="INV-1"
+            {...form.getInputProps("invoice_number")}
+          />
 
-        <Checkbox
-          mt="md"
-          label="Paid"
-          {...form.getInputProps("paid", { type: "checkbox" })}
-        />
+          <Select
+            required
+            label="Partner"
+            placeholder="Invoiced partner"
+            searchable
+            nothingFound="Not found"
+            data={partnerData}
+            {...form.getInputProps("partner_id")}
+          />
 
-        <Group position="right" mt="md">
-          <NavigationButton variant="outline" text="Cancel" href="/invoices" />
-          <Button type="submit" loading={loading}>
-            Submit
-          </Button>
-        </Group>
+          <CurrencyInput
+            label="Amount"
+            placeholder="1000"
+            value={form.getInputProps("amount").value}
+            currency={form.getInputProps("currency").value}
+            onChange={form.getInputProps("amount").onChange}
+            onCurrenyChange={form.getInputProps("currency").onChange}
+            required
+          />
+
+          <DatePicker
+            placeholder="Pick date"
+            label="Issued on"
+            required
+            {...form.getInputProps("issued_on")}
+          />
+
+          <Checkbox
+            label="Paid"
+            {...form.getInputProps("paid", { type: "checkbox" })}
+          />
+
+          <Group position="right" mt="md">
+            <NavigationButton
+              variant="outline"
+              text="Cancel"
+              href="/invoices"
+            />
+            <Button type="submit" loading={loading}>
+              Submit
+            </Button>
+          </Group>
+        </Stack>
       </form>
     </>
   );

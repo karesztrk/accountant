@@ -1,4 +1,4 @@
-import { NativeSelect, TextInput } from "@mantine/core";
+import { NativeSelect, NumberInput } from "@mantine/core";
 import React, { ChangeEvent, FC } from "react";
 import { data } from "./data";
 import { useStyles } from "./CurrencyInput.styles";
@@ -6,9 +6,9 @@ import { useStyles } from "./CurrencyInput.styles";
 interface CurrencyInputProps {
   placeholder?: string;
   label?: string;
-  value?: string;
+  value?: number;
   currency?: string;
-  onChange?: (value: string) => void;
+  onChange?: (value: number) => void;
   onCurrenyChange?: (value: string) => void;
   required?: boolean;
 }
@@ -24,9 +24,9 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
 }) => {
   const { classes } = useStyles();
 
-  const onChange = (e: ChangeEvent<HTMLInputElement>) => {
+  const onChange = (value: number) => {
     if (onChangeProp) {
-      onChangeProp(e.target.value);
+      onChangeProp(value);
     }
   };
 
@@ -46,9 +46,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
   );
 
   return (
-    <TextInput
-      mt="md"
-      type="number"
+    <NumberInput
       placeholder={placeholder}
       label={label}
       rightSection={select}
@@ -56,6 +54,8 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
       value={value}
       onChange={onChange}
       required={required}
+      min={0}
+      hideControls
     />
   );
 };

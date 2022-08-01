@@ -1,4 +1,4 @@
-import { Button, Group, TextInput } from "@mantine/core";
+import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
 import { useUser } from "@supabase/auth-helpers-react";
 import NavigationButton from "components/navigation-button/NavigationButton";
@@ -19,6 +19,10 @@ interface PartnerFormProps {
   onSubmit?: (values: Partner) => void;
 }
 
+const validate = {
+  email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+};
+
 const PartnerForm: FC<PartnerFormProps> = ({
   partner,
   onSubmit: onSubmitProps,
@@ -29,6 +33,7 @@ const PartnerForm: FC<PartnerFormProps> = ({
 
   const form = useForm<ClientPartner>({
     initialValues: partner || initialValues,
+    validate,
   });
 
   const onSubmit = (values: ClientPartner) => {
@@ -45,40 +50,46 @@ const PartnerForm: FC<PartnerFormProps> = ({
   return (
     <>
       <form onSubmit={form.onSubmit(onSubmit)}>
-        <TextInput
-          required
-          label="Name"
-          placeholder="Acme Inc."
-          {...form.getInputProps("name")}
-        />
+        <Stack spacing="md">
+          <TextInput
+            required
+            label="Name"
+            placeholder="Acme Inc."
+            {...form.getInputProps("name")}
+          />
 
-        <TextInput
-          required
-          label="Address"
-          placeholder="Postal address"
-          {...form.getInputProps("address")}
-        />
+          <TextInput
+            required
+            label="Address"
+            placeholder="Postal address"
+            {...form.getInputProps("address")}
+          />
 
-        <TextInput
-          required
-          label="VAT"
-          placeholder="VAT number"
-          {...form.getInputProps("vat")}
-        />
+          <TextInput
+            required
+            label="VAT"
+            placeholder="VAT number"
+            {...form.getInputProps("vat")}
+          />
 
-        <TextInput
-          required
-          label="Email address"
-          placeholder="acme@inc.com"
-          {...form.getInputProps("email")}
-        />
+          <TextInput
+            required
+            label="Email address"
+            placeholder="acme@inc.com"
+            {...form.getInputProps("email")}
+          />
 
-        <Group position="right" mt="md">
-          <NavigationButton variant="outline" text="Cancel" href="/partners" />
-          <Button type="submit" loading={loading}>
-            Submit
-          </Button>
-        </Group>
+          <Group position="right" mt="md">
+            <NavigationButton
+              variant="outline"
+              text="Cancel"
+              href="/partners"
+            />
+            <Button type="submit" loading={loading}>
+              Submit
+            </Button>
+          </Group>
+        </Stack>
       </form>
     </>
   );
