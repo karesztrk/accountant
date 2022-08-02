@@ -30,3 +30,14 @@ export const deletionFetcher =
 
     return data || undefined;
   };
+
+export const mutationFetcher =
+  (table: string) =>
+  async <T extends Base>(values: T) => {
+    const { data } = await supabaseClient
+      .from<T>(table)
+      .upsert(values)
+      .throwOnError()
+      .single();
+    return data || undefined;
+  };
