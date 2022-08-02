@@ -10,7 +10,12 @@ import PaymentForm from "components/payment-form/PaymentForm";
 import { usePayment } from "hooks/payment/use-payment";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextPage,
+} from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { Payment } from "types/database";
@@ -46,25 +51,32 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
 
   return (
     <Layout size="xs" title="Edit payment">
-      <PaymentForm payment={data} onSubmit={onSubmit} />
+      {data && <PaymentForm payment={data} onSubmit={onSubmit} />}
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
-  async getServerSideProps(ctx: GetServerSidePropsContext<{ id?: string }>) {
-    const id = ctx.params?.id;
+  async getServerSideProps(
+    ctx: GetServerSidePropsContext<{ id?: string }>
+  ): Promise<
+    GetServerSidePropsResult<{
+      id?: string;
+      fallbackData?: Payment;
+    }>
+  > {
+    const id = ctx.query.id;
     if (!id) {
-      return { props: { data: undefined } };
+      return { props: {} };
     }
     const { data } = await supabaseServerClient(ctx)
       .from(tableNames.payment)
       .select()
-      .eq("id", id)
+      .eq("id", id[0])
       .single();
 
-    return { props: { id, fallbackData: data } };
+    return { props: { id: id[0], fallbackData: data } };
   },
 });
 

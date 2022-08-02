@@ -1,23 +1,14 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
+import { useUser } from "@supabase/auth-helpers-react";
 import { PostgrestError } from "@supabase/supabase-js";
-import { cacheKeys, tableNames } from "lib";
+import { tableNames } from "lib";
+import { singleFetcher } from "lib/fetcher";
 import useSWR from "swr";
 import { Payment } from "types/database";
 
-const fetcher = async (key: string) => {
-  const [_, id] = key.split("/");
-  const { data } = await supabaseClient
-    .from<Payment>(tableNames.payment)
-    .select()
-    .eq("id", id)
-    .throwOnError()
-    .single();
-  return data || undefined;
-};
-
 export const usePayment = (id?: string, fallbackData?: Payment) => {
-  const key = id ? cacheKeys.payment(id) : null;
-  return useSWR<Payment | undefined, PostgrestError>(key, fetcher, {
+  const { user } = useUser();
+  const key = user ? [id, tableNames.payment] : null;
+  return useSWR<Payment | undefined, PostgrestError>(key, singleFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,

@@ -1,3 +1,7 @@
+export interface Base {
+  id?: any;
+}
+
 export interface InvoiceWithPartner extends Invoice {
   partner: {
     name: string;

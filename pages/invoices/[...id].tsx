@@ -1,8 +1,10 @@
+import { LoadingOverlay } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
+import { useUser } from "@supabase/auth-helpers-react";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
 import { useInvoice } from "hooks/invoice/use-invoice";
@@ -53,7 +55,9 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
 
   return (
     <Layout size="xs" title="Edit invoice">
-      <InvoiceForm invoice={data} partners={partners} onSubmit={onSubmit} />
+      {data && (
+        <InvoiceForm invoice={data} partners={partners} onSubmit={onSubmit} />
+      )}
     </Layout>
   );
 };
@@ -69,14 +73,15 @@ export const getServerSideProps = withPageAuth({
       partners: PartnerName[];
     }>
   > {
-    const id = ctx.params?.id;
+    const id = ctx.query.id;
     if (!id) {
       return { props: { partners: [] } };
     }
+
     const { data } = await supabaseServerClient(ctx)
       .from<Invoice>(tableNames.invoice)
       .select()
-      .eq("id", id)
+      .eq("id", id[0])
       .single();
 
     const { data: partners } = await supabaseServerClient(ctx)
@@ -84,7 +89,11 @@ export const getServerSideProps = withPageAuth({
       .select("id, name");
 
     return {
-      props: { id, fallbackData: data || undefined, partners: partners || [] },
+      props: {
+        id: id[0],
+        fallbackData: data || undefined,
+        partners: partners || [],
+      },
     };
   },
 });

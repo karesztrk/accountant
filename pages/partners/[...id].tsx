@@ -10,7 +10,12 @@ import PartnerForm from "components/partner-form/PartnerForm";
 import { usePartner } from "hooks/partner/use-partner";
 import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
 import { cacheKeys, tableNames } from "lib";
-import { GetServerSideProps, GetServerSidePropsContext, NextPage } from "next";
+import {
+  GetServerSideProps,
+  GetServerSidePropsContext,
+  GetServerSidePropsResult,
+  NextPage,
+} from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
 import { Partner } from "types/database";
@@ -45,26 +50,33 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
   };
 
   return (
-    <Layout size="xs" title="Edit invoice">
-      <PartnerForm partner={data} onSubmit={onSubmit} />
+    <Layout size="xs" title="Edit partner">
+      {data && <PartnerForm partner={data} onSubmit={onSubmit} />}
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
-  async getServerSideProps(ctx: GetServerSidePropsContext<{ id?: string }>) {
-    const id = ctx.params?.id;
+  async getServerSideProps(
+    ctx: GetServerSidePropsContext<{ id?: string }>
+  ): Promise<
+    GetServerSidePropsResult<{
+      id?: string;
+      fallbackData?: Partner;
+    }>
+  > {
+    const id = ctx.query.id;
     if (!id) {
-      return { props: { data: undefined } };
+      return { props: {} };
     }
     const { data } = await supabaseServerClient(ctx)
-      .from(tableNames.partner)
+      .from<Partner>(tableNames.partner)
       .select()
-      .eq("id", id)
+      .eq("id", id[0])
       .single();
 
-    return { props: { id, fallbackData: data } };
+    return { props: { id: id[0], fallbackData: data || undefined } };
   },
 });
 
