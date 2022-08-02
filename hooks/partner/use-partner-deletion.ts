@@ -1,17 +1,10 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tableNames } from "lib";
-
-const fetcher = async (ids: number[]) => {
-  const { data } = await supabaseClient
-    .from(tableNames.partner)
-    .delete()
-    .in("id", ids)
-    .throwOnError();
-  return data || undefined;
-};
+import { deletionFetcher } from "lib/fetcher";
 
 export const usePartnerDeletion = () => {
+  const trigger = deletionFetcher(tableNames.partner);
+
   return {
-    trigger: fetcher,
+    trigger,
   };
 };
