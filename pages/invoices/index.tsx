@@ -7,14 +7,13 @@ import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
 import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
 import { useInvoices } from "hooks/invoice/use-invoices";
-import { cacheKeys, tableNames } from "lib";
+import { tableNames } from "lib";
 import type {
   GetServerSideProps,
   GetServerSidePropsResult,
   NextPage,
 } from "next";
 import { useEffect } from "react";
-import { useSWRConfig } from "swr";
 import { InvoiceWithPartner } from "types/database";
 
 interface InvoicesProps {
@@ -22,14 +21,13 @@ interface InvoicesProps {
 }
 
 const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
-  const { mutate } = useSWRConfig();
-  const { data = [], error } = useInvoices(fallbackData);
+  const { data = [], error, mutate } = useInvoices(fallbackData);
   const { trigger } = useInvoiceDeletion();
 
   const onDelete = (ids: number[]) => {
     trigger(ids)
       .then(() => {
-        mutate(cacheKeys.invoices);
+        mutate();
       })
       .catch((error) => {
         showNotification({

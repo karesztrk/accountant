@@ -5,6 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import Layout from "components/Layout";
 import PaymentTable from "components/payment-table/PaymentTable";
+import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
 import { usePayments } from "hooks/payment/use-payments";
 import { tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
@@ -16,7 +17,23 @@ interface PaymentsProps {
 }
 
 const Payments: NextPage<PaymentsProps> = ({ fallbackData }) => {
-  const { data = [], error } = usePayments(fallbackData);
+  const { data = [], error, mutate } = usePayments(fallbackData);
+  const { trigger } = usePaymentDeletion();
+
+  const onDelete = (ids: number[]) => {
+    trigger(ids)
+      .then(() => {
+        mutate();
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      });
+  };
 
   useEffect(() => {
     if (error) {
@@ -30,7 +47,9 @@ const Payments: NextPage<PaymentsProps> = ({ fallbackData }) => {
   }, [error]);
 
   return (
-    <Layout title="Payments">{data && <PaymentTable payments={data} />}</Layout>
+    <Layout title="Payments">
+      {data && <PaymentTable payments={data} onDelete={onDelete} />}
+    </Layout>
   );
 };
 

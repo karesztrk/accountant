@@ -1,31 +1,29 @@
-import React, { useEffect } from "react";
-import Layout from "components/Layout";
+import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
-import { cacheKeys, tableNames } from "lib";
-import { Partner } from "types/database";
-import { usePartners } from "hooks/partner/use-partners";
+import Layout from "components/Layout";
 import PartnerTable from "components/partner-table/PartnerTable";
-import { showNotification } from "@mantine/notifications";
 import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
-import { useSWRConfig } from "swr";
+import { usePartners } from "hooks/partner/use-partners";
+import { tableNames } from "lib";
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
+import { useEffect } from "react";
+import { Partner } from "types/database";
 
 interface PartnersProps {
   fallbackData: Partner[];
 }
 
 const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
-  const { mutate } = useSWRConfig();
-  const { data = [], error } = usePartners(fallbackData);
+  const { data = [], error, mutate } = usePartners(fallbackData);
   const { trigger } = usePartnerDeletion();
 
   const onDelete = (ids: number[]) => {
     trigger(ids)
       .then(() => {
-        mutate(cacheKeys.partners);
+        mutate();
       })
       .catch((error) => {
         showNotification({
