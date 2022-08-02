@@ -7,7 +7,7 @@ import Layout from "components/Layout";
 import PaymentTable from "components/payment-table/PaymentTable";
 import { usePayments } from "hooks/payment/use-payments";
 import { tableNames } from "lib";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { useEffect } from "react";
 import { Payment } from "types/database";
 
@@ -30,19 +30,21 @@ const Payments: NextPage<PaymentsProps> = ({ fallbackData }) => {
   }, [error]);
 
   return (
-    <Layout title="Payments">
-      <PaymentTable payments={data} />
-    </Layout>
+    <Layout title="Payments">{data && <PaymentTable payments={data} />}</Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
-  async getServerSideProps(ctx) {
-    const { data = [] } = await supabaseServerClient(ctx)
-      .from<Payment[]>(tableNames.payment)
+  async getServerSideProps(ctx): Promise<
+    GetServerSidePropsResult<{
+      fallbackData: Payment[];
+    }>
+  > {
+    const { data } = await supabaseServerClient(ctx)
+      .from<Payment>(tableNames.payment)
       .select("*");
-    return { props: { fallbackData: data } };
+    return { props: { fallbackData: data || [] } };
   },
 });
 

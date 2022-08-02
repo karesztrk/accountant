@@ -54,7 +54,7 @@ const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
 
   return (
     <Layout title="Invoices">
-      <InvoiceTable invoices={data} onDelete={onDelete} />
+      {data && <InvoiceTable invoices={data} onDelete={onDelete} />}
     </Layout>
   );
 };

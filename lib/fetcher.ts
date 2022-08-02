@@ -13,3 +13,8 @@ export const singleFetcher = async <T extends Base>(
     .single();
   return data || undefined;
 };
+
+export const listFetcher = async <T extends Base>(table: string) => {
+  const { data } = await supabaseClient.from<T>(table).throwOnError().select();
+  return data || [];
+};

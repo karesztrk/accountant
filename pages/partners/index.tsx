@@ -4,7 +4,7 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { GetServerSideProps, NextPage } from "next";
+import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { cacheKeys, tableNames } from "lib";
 import { Partner } from "types/database";
 import { usePartners } from "hooks/partner/use-partners";
@@ -50,18 +50,22 @@ const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
 
   return (
     <Layout title="Partners">
-      <PartnerTable partners={data} onDelete={onDelete} />
+      {data && <PartnerTable partners={data} onDelete={onDelete} />}
     </Layout>
   );
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: "/",
-  async getServerSideProps(ctx) {
-    const { data = [] } = await supabaseServerClient(ctx)
-      .from<Partner[]>(tableNames.partner)
+  async getServerSideProps(ctx): Promise<
+    GetServerSidePropsResult<{
+      fallbackData: Partner[];
+    }>
+  > {
+    const { data } = await supabaseServerClient(ctx)
+      .from<Partner>(tableNames.partner)
       .select("*");
-    return { props: { fallbackData: data } };
+    return { props: { fallbackData: data || [] } };
   },
 });
 
