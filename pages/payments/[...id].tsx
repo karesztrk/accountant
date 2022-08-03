@@ -18,14 +18,19 @@ import {
 } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Payment } from "types/database";
+import { InvoiceNumber, Payment } from "types/database";
 
 interface UpdatePartnerProps {
   id?: string;
   fallbackData?: Payment;
+  invoiceNumbers: InvoiceNumber[];
 }
 
-const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
+const UpdatePartner: NextPage<UpdatePartnerProps> = ({
+  id,
+  fallbackData,
+  invoiceNumbers,
+}) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { data } = usePayment(id, fallbackData);
@@ -51,7 +56,13 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
 
   return (
     <Layout size="xs" title="Edit payment">
-      {data && <PaymentForm payment={data} onSubmit={onSubmit} />}
+      {data && (
+        <PaymentForm
+          payment={data}
+          onSubmit={onSubmit}
+          invoiceNumbers={invoiceNumbers}
+        />
+      )}
     </Layout>
   );
 };
@@ -64,11 +75,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     GetServerSidePropsResult<{
       id?: string;
       fallbackData?: Payment;
+      invoiceNumbers: InvoiceNumber[];
     }>
   > {
     const id = ctx.query.id;
     if (!id) {
-      return { props: {} };
+      return { props: { invoiceNumbers: [] } };
     }
     const { data } = await supabaseServerClient(ctx)
       .from(tableNames.payment)
@@ -76,7 +88,17 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       .eq("id", id[0])
       .single();
 
-    return { props: { id: id[0], fallbackData: data } };
+    const { data: invoiceNumbers } = await supabaseServerClient(ctx)
+      .from<InvoiceNumber>(tableNames.invoice)
+      .select("id, invoice_number");
+
+    return {
+      props: {
+        id: id[0],
+        fallbackData: data,
+        invoiceNumbers: invoiceNumbers || [],
+      },
+    };
   },
 });
 

@@ -3,9 +3,7 @@ export interface Base {
 }
 
 export interface InvoiceWithPartner extends Invoice {
-  partner: {
-    name: string;
-  };
+  partner: Pick<Partner, "name">;
 }
 
 export interface Invoice {
@@ -17,6 +15,8 @@ export interface Invoice {
   invoice_number: string;
   paid: boolean;
 }
+
+export type InvoiceNumber = Pick<Invoice, "id" | "invoice_number">;
 
 export interface Partner {
   id?: number;
@@ -35,4 +35,8 @@ export interface Payment {
   amount: number;
   currency: string;
   paid_on: string;
+}
+
+export interface PaymentWithInvoice extends Payment {
+  invoice: Pick<Invoice, "invoice_number">;
 }

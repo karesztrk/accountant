@@ -1,7 +1,7 @@
 export const tableNames = {
-  invoice: "invoice",
-  partner: "partner",
-  payment: "payment",
+  invoice: "invoice" as const,
+  partner: "partner" as const,
+  payment: "payment" as const,
 };
 
 export const cacheKeys = {

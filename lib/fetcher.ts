@@ -1,5 +1,11 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { Base } from "types/database";
+import { tableNames } from "lib";
+import {
+  Base,
+  Invoice,
+  InvoiceWithPartner,
+  PaymentWithInvoice,
+} from "types/database";
 
 export const singleFetcher = async <T extends Base>(
   id: T[keyof T],
@@ -16,6 +22,20 @@ export const singleFetcher = async <T extends Base>(
 
 export const listFetcher = async <T extends Base>(table: string) => {
   const { data } = await supabaseClient.from<T>(table).throwOnError().select();
+  return data || [];
+};
+
+export const invoiceWithPartnerFetcher = async () => {
+  const { data } = await supabaseClient
+    .from<InvoiceWithPartner>(tableNames.invoice)
+    .select("*, partner!inner(name)");
+  return data || [];
+};
+
+export const paymentWithInvoiceFetcher = async () => {
+  const { data } = await supabaseClient
+    .from<PaymentWithInvoice>(tableNames.invoice)
+    .select("*, invoice!inner(invoice_number)");
   return data || [];
 };
 
@@ -41,3 +61,12 @@ export const mutationFetcher =
       .single();
     return data || undefined;
   };
+
+export const setPaidFetcher = async (ids: number[]) => {
+  const { data } = await supabaseClient
+    .from<Invoice>(tableNames.invoice)
+    .update({ paid: true })
+    .in("id", ids)
+    .throwOnError();
+  return data || undefined;
+};

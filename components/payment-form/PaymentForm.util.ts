@@ -1,4 +1,4 @@
-import { Payment } from "types/database";
+import { InvoiceNumber, Payment } from "types/database";
 import { Payment as ClientPayment } from "types/client";
 
 export const toPayment = (payment: Payment): ClientPayment => {
@@ -9,6 +9,13 @@ export const toPayment = (payment: Payment): ClientPayment => {
     amount: payment.amount,
     currency: payment.currency,
   };
+};
+
+export const toInvoices = (invoiceNumbers: InvoiceNumber[]) => {
+  return invoiceNumbers.map((invoice) => ({
+    label: invoice.invoice_number,
+    value: String(invoice.id),
+  }));
 };
 
 export const toRemotePayment = (

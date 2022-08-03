@@ -5,10 +5,10 @@ import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import { paymentsPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
-import { FC, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Payment as ClientPayment } from "types/client";
-import { Payment } from "types/database";
-import { toPayment, toRemotePayment } from "./PaymentForm.util";
+import { InvoiceNumber, Payment } from "types/database";
+import { toInvoices, toPayment, toRemotePayment } from "./PaymentForm.util";
 
 const initialValues: ClientPayment = {
   amount: 0,
@@ -19,11 +19,13 @@ const initialValues: ClientPayment = {
 interface PaymentFormProps {
   payment?: Payment;
   onSubmit?: (values: Payment) => void;
+  invoiceNumbers: InvoiceNumber[];
 }
 
 const PaymentForm: FC<PaymentFormProps> = ({
   payment,
   onSubmit: onSubmitProps,
+  invoiceNumbers,
 }) => {
   const { user } = useUser();
 
@@ -32,6 +34,8 @@ const PaymentForm: FC<PaymentFormProps> = ({
   const form = useForm<ClientPayment>({
     initialValues: payment ? toPayment(payment) : initialValues,
   });
+
+  const invoices = useMemo(() => toInvoices(invoiceNumbers), [invoiceNumbers]);
 
   const onSubmit = (values: ClientPayment) => {
     if (!user) {
@@ -70,7 +74,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
             placeholder="Related invoice"
             searchable
             nothingFound="Not found"
-            data={[]}
+            data={invoices}
             {...form.getInputProps("invoice_id")}
           />
 
