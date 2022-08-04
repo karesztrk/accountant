@@ -10,6 +10,7 @@ specifiers:
   '@mantine/hooks': 5.0.2
   '@mantine/next': 5.0.2
   '@mantine/notifications': 5.0.2
+  '@mantine/nprogress': ^5.0.2
   '@supabase/auth-helpers-nextjs': ^0.2.5
   '@supabase/auth-helpers-react': ^0.2.3
   '@supabase/supabase-js': ^1.35.4
@@ -35,6 +36,7 @@ dependencies:
   '@mantine/hooks': 5.0.2_react@18.2.0
   '@mantine/next': 5.0.2_kwjmcdwflwvih3sdpc7dflnd6e
   '@mantine/notifications': 5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq
+  '@mantine/nprogress': 5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq
   '@supabase/auth-helpers-nextjs': 0.2.5
   '@supabase/auth-helpers-react': 0.2.3
   '@supabase/supabase-js': 1.35.4
@@ -547,6 +549,21 @@ packages:
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
+    dev: false
+
+  /@mantine/nprogress/5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq:
+    resolution: {integrity: sha512-LNUlwhvbxabj9ZAsa27ipGsydMtbky66KDxchETTKAeW9dQAo6Zio0wnJBXg3I4U9+UXeJr/p4dpmUuX4Jafeg==}
+    peerDependencies:
+      '@mantine/core': 5.0.2
+      '@mantine/hooks': 5.0.2
+      react: '>=16.8.0'
+      react-dom: '>=16.8.0'
+    dependencies:
+      '@mantine/core': 5.0.2_rzoqdthat7zppl2mohsyufa5he
+      '@mantine/hooks': 5.0.2_react@18.2.0
+      '@mantine/utils': 5.0.2_react@18.2.0
+      react: 18.2.0
+      react-dom: 18.2.0_react@18.2.0
     dev: false
 
   /@mantine/ssr/5.0.2_f4mhxzmjvffij27rnlwlqfoeom:
@@ -2902,7 +2919,7 @@ packages:
     dev: false
 
   /tabler-icons-react/1.54.0_react@18.2.0:
-    resolution: {integrity: sha512-k+OlS1qm4Ab0RaSapBG3cyMTd2sFJOaBAhzXHek+Y7wZayoACYTOUtcNAtkD/Y+MmFM1DTs0dqOKGan3VXKyPA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/tabler-icons-react/-/tabler-icons-react-1.54.0.tgz}
+    resolution: {integrity: sha512-k+OlS1qm4Ab0RaSapBG3cyMTd2sFJOaBAhzXHek+Y7wZayoACYTOUtcNAtkD/Y+MmFM1DTs0dqOKGan3VXKyPA==}
     peerDependencies:
       react: '>= 16.8.0'
     dependencies:
