@@ -13,7 +13,6 @@ export interface Invoice {
   issued_on: string;
   currency: string;
   invoice_number: string;
-  paid: boolean;
 }
 
 export type InvoiceNumber = Pick<Invoice, "id" | "invoice_number">;

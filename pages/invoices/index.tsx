@@ -6,7 +6,6 @@ import {
 import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
 import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
-import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { tableNames } from "lib";
 import type {
@@ -24,25 +23,9 @@ interface InvoicesProps {
 const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
   const { data = [], error, mutate } = useInvoices(fallbackData);
   const { trigger: triggerDeletion } = useInvoiceDeletion();
-  const { setPaid } = useInvoiceMutation();
 
   const onDelete = (ids: number[]) => {
     triggerDeletion(ids)
-      .then(() => {
-        mutate();
-      })
-      .catch((error) => {
-        showNotification({
-          id: error.code,
-          title: "Error",
-          message: error.message,
-          color: "red",
-        });
-      });
-  };
-
-  const onPaid = (ids: number[]) => {
-    setPaid(ids)
       .then(() => {
         mutate();
       })
@@ -69,9 +52,7 @@ const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
 
   return (
     <Layout title="Invoices">
-      {data && (
-        <InvoiceTable invoices={data} onDelete={onDelete} onPaid={onPaid} />
-      )}
+      {data && <InvoiceTable invoices={data} onDelete={onDelete} />}
     </Layout>
   );
 };

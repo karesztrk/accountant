@@ -61,12 +61,3 @@ export const mutationFetcher =
       .single();
     return data || undefined;
   };
-
-export const setPaidFetcher = async (ids: number[]) => {
-  const { data } = await supabaseClient
-    .from<Invoice>(tableNames.invoice)
-    .update({ paid: true })
-    .in("id", ids)
-    .throwOnError();
-  return data || undefined;
-};

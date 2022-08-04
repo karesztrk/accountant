@@ -1,10 +1,8 @@
-import { LoadingOverlay } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { useUser } from "@supabase/auth-helpers-react";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
 import { useInvoice } from "hooks/invoice/use-invoice";

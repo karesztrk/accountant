@@ -1,6 +1,5 @@
 import {
   Button,
-  Checkbox,
   Group,
   Select,
   Stack,
@@ -22,7 +21,6 @@ const initialValues: ClientInvoice = {
   issued_on: new Date(),
   invoice_number: "",
   currency: "EUR",
-  paid: false,
 };
 
 interface InvoiceFormProps {
@@ -93,11 +91,6 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
             label="Issued on"
             required
             {...form.getInputProps("issued_on")}
-          />
-
-          <Checkbox
-            label="Paid"
-            {...form.getInputProps("paid", { type: "checkbox" })}
           />
 
           <Group position="right" mt="md">

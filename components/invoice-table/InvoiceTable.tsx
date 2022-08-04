@@ -17,13 +17,11 @@ import { useListState } from "@mantine/hooks";
 interface InvoiceTableProps {
   invoices: InvoiceWithPartner[];
   onDelete?: (ids: number[]) => void;
-  onPaid?: (ids: number[]) => void;
 }
 
 const InvoiceTable: FC<InvoiceTableProps> = ({
   invoices,
   onDelete: onDeleteProp,
-  onPaid: onPaidProp,
 }) => {
   const router = useRouter();
 
@@ -71,22 +69,8 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
     }
   };
 
-  const onPaid = () => {
-    if (onPaidProp && selection.length > 0) {
-      onPaidProp(selection);
-      handlers.filter((item) => !selection.includes(item));
-    }
-  };
-
   const isChecked = (item: InvoiceWithPartner) =>
     !!item.id && selection.includes(item.id);
-
-  const unpaidSelected = useMemo(() => {
-    return invoices
-      .filter((invoice) => !invoice.paid)
-      .map((invoice) => invoice.id)
-      .some((id) => selection.includes(Number(id)));
-  }, [selection, invoices]);
 
   return (
     <Stack>
@@ -108,23 +92,6 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
             </Button>
           )}
         </Transition>
-        <Transition
-          mounted={unpaidSelected}
-          transition="fade"
-          duration={250}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button
-              color="green"
-              variant="light"
-              onClick={onPaid}
-              style={styles}
-            >
-              Mark paid
-            </Button>
-          )}
-        </Transition>
         <NavigationButton href="/invoices/new" text="New" />
       </Group>
       <Table highlightOnHover>
@@ -141,7 +108,6 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
             <th>Issused on</th>
             <th>Partner</th>
             <th>Price</th>
-            <th>Paid</th>
           </tr>
         </thead>
         <tbody>
@@ -162,9 +128,6 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
               <td>{invoice.partner.name}</td>
               <td>
                 {invoice.amount} {invoice.currency}
-              </td>
-              <td>
-                <PaidIcon paid={invoice.paid} />
               </td>
             </tr>
           ))}

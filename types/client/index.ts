@@ -4,7 +4,6 @@ export interface Invoice {
   issued_on: Date;
   currency: string;
   invoice_number: string;
-  paid: boolean;
 }
 
 export interface Partner {
