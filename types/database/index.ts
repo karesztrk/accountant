@@ -39,3 +39,11 @@ export interface Payment {
 export interface PaymentWithInvoice extends Payment {
   invoice: Pick<Invoice, "invoice_number">;
 }
+
+export interface Tax {
+  id?: number;
+  amount: number;
+  currency: string;
+  type?: string;
+  description?: string;
+}

@@ -1,4 +1,11 @@
-import { Receipt2, Home2, Users, Cash, Icon } from "tabler-icons-react";
+import {
+  Receipt2,
+  Home2,
+  Users,
+  Cash,
+  Icon,
+  ReceiptTax,
+} from "tabler-icons-react";
 
 interface Page {
   icon: Icon;
@@ -26,10 +33,22 @@ export const paymentsPage: Page = {
   href: "/payments",
 };
 
+export const taxesPage: Page = {
+  icon: ReceiptTax,
+  label: "Taxes",
+  href: "/taxes",
+};
+
 export const newPaymentPage: Page = {
   icon: Cash,
   label: "New Payment",
   href: "/payments/new",
+};
+
+export const newTaxPage: Page = {
+  icon: Cash,
+  label: "New Tax",
+  href: "/taxes/new",
 };
 
 export const pages: Page[] = [
@@ -37,4 +56,5 @@ export const pages: Page[] = [
   partnersPage,
   invoicesPage,
   paymentsPage,
+  taxesPage,
 ];

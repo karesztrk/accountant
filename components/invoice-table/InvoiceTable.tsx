@@ -8,9 +8,8 @@ import {
 } from "@mantine/core";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import { ChangeEvent, FC, MouseEvent, useMemo } from "react";
-import { useStyles } from "./InvoiceType.styles";
-import PaidIcon from "./PaidIcon";
+import { ChangeEvent, FC, MouseEvent } from "react";
+import { useStyles } from "../DataTable.styles";
 import { InvoiceWithPartner } from "types/database";
 import { useListState } from "@mantine/hooks";
 

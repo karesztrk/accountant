@@ -1,7 +1,7 @@
 import { AppShell, Container, MantineNumberSize, Title } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
-import { useStyles } from "./styles";
+import { useStyles } from "./Layout.styles";
 
 type LayoutProps = PropsWithChildren<{
   size?: MantineNumberSize;

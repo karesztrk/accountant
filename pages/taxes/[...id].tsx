@@ -5,10 +5,10 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { paymentsPage } from "components/navbar/pages";
-import PaymentForm from "components/payment-form/PaymentForm";
-import { usePayment } from "hooks/payment/use-payment";
-import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
+import { taxesPage } from "components/navbar/pages";
+import TaxForm from "components/tax-form/TaxForm";
+import { useTax } from "hooks/tax/use-tax";
+import { useTaxMutation } from "hooks/tax/use-tax-mutation";
 import { cacheKeys, tableNames } from "lib";
 import {
   GetServerSideProps,
@@ -18,30 +18,25 @@ import {
 } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { InvoiceNumber, Payment } from "types/database";
+import { Tax } from "types/database";
 
-interface UpdatePaymentProps {
+interface UpdateTaxProps {
   id?: string;
-  fallbackData?: Payment;
-  invoiceNumbers: InvoiceNumber[];
+  fallbackData?: Tax;
 }
 
-const UpdatePayment: NextPage<UpdatePaymentProps> = ({
-  id,
-  fallbackData,
-  invoiceNumbers,
-}) => {
+const UpdateTax: NextPage<UpdateTaxProps> = ({ id, fallbackData }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
-  const { data } = usePayment(id, fallbackData);
-  const { trigger } = usePaymentMutation();
+  const { data } = useTax(id, fallbackData);
+  const { trigger } = useTaxMutation();
 
-  const onSubmit = (values: Payment) => {
+  const onSubmit = (values: Tax) => {
     if (id && values) {
       trigger(values)
         .then(() => {
-          mutate(cacheKeys.partners);
-          router.push(paymentsPage.href);
+          mutate(cacheKeys.taxes);
+          router.push(taxesPage.href);
         })
         .catch((error: PostgrestError) => {
           showNotification({
@@ -55,14 +50,8 @@ const UpdatePayment: NextPage<UpdatePaymentProps> = ({
   };
 
   return (
-    <Layout size="xs" title="Edit payment">
-      {data && (
-        <PaymentForm
-          payment={data}
-          onSubmit={onSubmit}
-          invoiceNumbers={invoiceNumbers}
-        />
-      )}
+    <Layout size="xs" title="Edit tax">
+      {data && <TaxForm tax={data} onSubmit={onSubmit} />}
     </Layout>
   );
 };
@@ -74,32 +63,26 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   ): Promise<
     GetServerSidePropsResult<{
       id?: string;
-      fallbackData?: Payment;
-      invoiceNumbers: InvoiceNumber[];
+      fallbackData?: Tax;
     }>
   > {
     const id = ctx.query.id;
     if (!id) {
-      return { props: { invoiceNumbers: [] } };
+      return { props: {} };
     }
     const { data } = await supabaseServerClient(ctx)
-      .from(tableNames.payment)
+      .from(tableNames.tax)
       .select()
       .eq("id", id[0])
       .single();
-
-    const { data: invoiceNumbers } = await supabaseServerClient(ctx)
-      .from<InvoiceNumber>(tableNames.invoice)
-      .select("id, invoice_number");
 
     return {
       props: {
         id: id[0],
         fallbackData: data,
-        invoiceNumbers: invoiceNumbers || [],
       },
     };
   },
 });
 
-export default UpdatePayment;
+export default UpdateTax;

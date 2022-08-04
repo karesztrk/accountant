@@ -7,57 +7,51 @@ import {
   Transition,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
-import { newPaymentPage } from "components/navbar/pages";
+import { newTaxPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FC, MouseEvent } from "react";
-import { Payment, PaymentWithInvoice } from "types/database";
+import { ChangeEvent, FC, MouseEvent } from "react";
+import { Tax } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
-interface PaymentTableProps {
-  payments: PaymentWithInvoice[];
+interface TaxTableProps {
+  taxes: Tax[];
   onDelete?: (ids: number[]) => void;
 }
 
-const PaymentTable: FC<PaymentTableProps> = ({
-  payments,
-  onDelete: onDeleteProp,
-}) => {
+const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
   const router = useRouter();
-  const [selection, handlers] = useListState<number>([]);
-
   const { classes } = useStyles();
 
-  const allChecked =
-    payments.length > 0 && selection.length === payments.length;
+  const [selection, handlers] = useListState<number>([]);
+
+  const allChecked = taxes.length > 0 && selection.length === taxes.length;
 
   const indeterminate =
-    selection.length > 0 && selection.length !== payments.length;
+    selection.length > 0 && selection.length !== taxes.length;
 
-  const onRowClick =
-    (payment: Payment) => (e: MouseEvent<HTMLTableRowElement>) => {
-      if (!(e.target instanceof HTMLInputElement) && payment.id) {
-        router.push(`/payments/${payment.id}`);
-      }
-    };
+  const onRowClick = (tax: Tax) => (e: MouseEvent<HTMLTableRowElement>) => {
+    if (!(e.target instanceof HTMLInputElement) && tax.id) {
+      router.push(`/taxes/${tax.id}`);
+    }
+  };
 
-  const onToggleRow =
-    (payment: Payment) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (!payment.id) {
-        return;
-      }
-      if (e.target.checked) {
-        handlers.append(payment.id);
-      } else {
-        handlers.filter((item) => item !== payment.id);
-      }
-    };
+  const onToggleRow = (tax: Tax) => (e: ChangeEvent<HTMLInputElement>) => {
+    if (!tax.id) {
+      return;
+    }
+    if (e.target.checked) {
+      handlers.append(tax.id);
+    } else {
+      handlers.filter((item) => item !== tax.id);
+    }
+  };
 
   const onToggleAll = () => {
     if (allChecked) {
       handlers.setState([]);
     } else {
-      handlers.setState(payments.map((item) => item.id || 0).filter(Boolean));
+      handlers.setState(taxes.map((item) => item.id || 0).filter(Boolean));
     }
   };
 
@@ -68,7 +62,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
     }
   };
 
-  const isChecked = (item: Payment) => !!item.id && selection.includes(item.id);
+  const isChecked = (item: Tax) => !!item.id && selection.includes(item.id);
 
   return (
     <Stack>
@@ -90,7 +84,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
             </Button>
           )}
         </Transition>
-        <NavigationButton href={newPaymentPage.href} text="New" />
+        <NavigationButton href={newTaxPage.href} text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>
@@ -102,30 +96,30 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 indeterminate={indeterminate}
               />
             </th>
-            <th>Paid on</th>
+            <th>Type</th>
             <th>Price</th>
-            <th>Related invoice</th>
+            <th>Description</th>
           </tr>
         </thead>
         <tbody>
-          {payments.map((payment) =>
-            payment.id ? (
+          {taxes.map((tax) =>
+            tax.id ? (
               <tr
-                key={payment.id}
-                onClick={onRowClick(payment)}
+                key={tax.id}
                 className={classes.row}
+                onClick={onRowClick(tax)}
               >
                 <td>
                   <Checkbox
-                    checked={isChecked(payment)}
-                    onChange={onToggleRow(payment)}
+                    checked={isChecked(tax)}
+                    onChange={onToggleRow(tax)}
                   />
                 </td>
-                <td>{new Date(payment.paid_on).toLocaleDateString()}</td>
+                <td>{tax.type}</td>
                 <td>
-                  {payment.amount} {payment.currency}
+                  {tax.amount} {tax.currency}
                 </td>
-                <td>{payment.invoice.invoice_number}</td>
+                <td>{tax.description}</td>
               </tr>
             ) : null
           )}
@@ -135,4 +129,4 @@ const PaymentTable: FC<PaymentTableProps> = ({
   );
 };
 
-export default PaymentTable;
+export default TaxTable;
