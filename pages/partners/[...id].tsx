@@ -5,7 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { partnersPage } from "components/navbar/pages";
+import { loginPage, partnersPage } from "components/navbar/pages";
 import PartnerForm from "components/partner-form/PartnerForm";
 import { usePartner } from "hooks/partner/use-partner";
 import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
@@ -57,7 +57,7 @@ const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<

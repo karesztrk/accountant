@@ -8,50 +8,55 @@ import {
 } from "tabler-icons-react";
 
 interface Page {
-  icon: Icon;
   label: string;
   href: string;
 }
 
-export const homePage: Page = { icon: Home2, label: "Home", href: "/" };
+interface NavbarPage extends Page {
+  icon: Icon;
+}
 
-export const partnersPage: Page = {
+export const homePage: NavbarPage = { icon: Home2, label: "Home", href: "/" };
+
+export const loginPage = { label: "Login", href: "/login" };
+
+export const partnersPage: NavbarPage = {
   icon: Users,
   label: "Partners",
   href: "/partners",
 };
 
-export const invoicesPage: Page = {
+export const invoicesPage: NavbarPage = {
   icon: Receipt2,
   label: "Invoices",
   href: "/invoices",
 };
 
-export const paymentsPage: Page = {
+export const paymentsPage: NavbarPage = {
   icon: Cash,
   label: "Payments",
   href: "/payments",
 };
 
-export const taxesPage: Page = {
+export const taxesPage: NavbarPage = {
   icon: ReceiptTax,
   label: "Taxes",
   href: "/taxes",
 };
 
-export const newPaymentPage: Page = {
+export const newPaymentPage: NavbarPage = {
   icon: Cash,
   label: "New Payment",
   href: "/payments/new",
 };
 
-export const newTaxPage: Page = {
+export const newTaxPage: NavbarPage = {
   icon: Cash,
   label: "New Tax",
   href: "/taxes/new",
 };
 
-export const pages: Page[] = [
+export const pages: NavbarPage[] = [
   homePage,
   partnersPage,
   invoicesPage,

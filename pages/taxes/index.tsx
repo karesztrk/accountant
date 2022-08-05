@@ -4,6 +4,7 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import Layout from "components/Layout";
+import { loginPage } from "components/navbar/pages";
 import TaxTable from "components/tax-table/TaxTable";
 import { useTaxDeletion } from "hooks/tax/use-tax-deletion";
 import { useTaxes } from "hooks/tax/use-taxes";
@@ -54,7 +55,7 @@ const Taxes: NextPage<TaxesProps> = ({ fallbackData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
       fallbackData: Tax[];

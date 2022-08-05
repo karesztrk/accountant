@@ -5,7 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { taxesPage } from "components/navbar/pages";
+import { loginPage, taxesPage } from "components/navbar/pages";
 import TaxForm from "components/tax-form/TaxForm";
 import { useTax } from "hooks/tax/use-tax";
 import { useTaxMutation } from "hooks/tax/use-tax-mutation";
@@ -57,7 +57,7 @@ const UpdateTax: NextPage<UpdateTaxProps> = ({ id, fallbackData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<

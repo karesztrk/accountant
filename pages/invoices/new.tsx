@@ -6,6 +6,7 @@ import {
 import { PostgrestError } from "@supabase/supabase-js";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
+import { loginPage } from "components/navbar/pages";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSidePropsResult, NextPage } from "next";
@@ -47,7 +48,7 @@ const NewInvoice: NextPage<NewInvoiceProps> = ({ partners }) => {
 };
 
 export const getServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx
   ): Promise<GetServerSidePropsResult<{ partners?: PartnerName[] }>> {

@@ -5,6 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
+import { loginPage } from "components/navbar/pages";
 import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { tableNames } from "lib";
@@ -58,7 +59,7 @@ const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
       fallbackData: InvoiceWithPartner[];

@@ -2,6 +2,7 @@ import { AppShell, Container, MantineNumberSize, Title } from "@mantine/core";
 import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
 import { useStyles } from "./Layout.styles";
+import { useUser } from "@supabase/auth-helpers-react";
 
 type LayoutProps = PropsWithChildren<{
   size?: MantineNumberSize;
@@ -10,11 +11,12 @@ type LayoutProps = PropsWithChildren<{
 
 const Layout: FC<LayoutProps> = ({ size, title, children }) => {
   const { classes } = useStyles();
+  const { user } = useUser();
 
   return (
     <AppShell
       padding="md"
-      navbar={<Navbar />}
+      navbar={user ? <Navbar /> : undefined}
       styles={(theme) => ({
         main: {
           backgroundColor:

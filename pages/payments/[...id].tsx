@@ -5,7 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { paymentsPage } from "components/navbar/pages";
+import { loginPage, paymentsPage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
 import { usePayment } from "hooks/payment/use-payment";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
@@ -68,7 +68,7 @@ const UpdatePayment: NextPage<UpdatePaymentProps> = ({
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<

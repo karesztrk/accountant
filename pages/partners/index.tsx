@@ -4,6 +4,7 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import Layout from "components/Layout";
+import { loginPage } from "components/navbar/pages";
 import PartnerTable from "components/partner-table/PartnerTable";
 import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
 import { usePartners } from "hooks/partner/use-partners";
@@ -54,7 +55,7 @@ const Partners: NextPage<PartnersProps> = ({ fallbackData }) => {
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
       fallbackData: Partner[];

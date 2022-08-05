@@ -4,14 +4,14 @@ import { useRouter } from "next/router";
 import { Logout } from "tabler-icons-react";
 import NavbarButton from "./NavbarButton";
 import NavbarLink from "./NavbarLink";
-import { pages } from "./pages";
+import { loginPage, pages } from "./pages";
 
 const Navbar = () => {
   const { push } = useRouter();
 
   const onLogout = () => {
     supabaseClient.auth.signOut();
-    push("/");
+    push(loginPage.href);
   };
 
   return (

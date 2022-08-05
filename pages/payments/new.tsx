@@ -4,7 +4,7 @@ import {
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
 import Layout from "components/Layout";
-import { paymentsPage } from "components/navbar/pages";
+import { loginPage, paymentsPage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
@@ -48,7 +48,7 @@ const NewPayment: NextPage<NewPaymentProps> = ({ invoiceNumbers }) => {
 };
 
 export const getServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx
   ): Promise<GetServerSidePropsResult<{ invoiceNumbers?: InvoiceNumber[] }>> {

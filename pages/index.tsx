@@ -1,24 +1,19 @@
-import { useUser } from "@supabase/auth-helpers-react";
-import { NextPage } from "next";
-import Head from "next/head";
-import SignIn from "../components/sign-in/SignIn";
+import { withPageAuth } from "@supabase/auth-helpers-nextjs";
+import { loginPage } from "components/navbar/pages";
+import { GetServerSideProps, NextPage } from "next";
 import Dashboard from "../components/dashboard/Dashboard";
 import Layout from "../components/Layout";
 
 const Home: NextPage = () => {
-  const { user } = useUser();
-
   return (
-    <>
-      <Head>
-        <title>Accountant</title>
-        <meta name="description" content="Accountant application" />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-
-      <Layout>{!user ? <SignIn /> : <Dashboard />}</Layout>
-    </>
+    <Layout title="Dashboard">
+      <Dashboard />
+    </Layout>
   );
 };
+
+export const getServerSideProps: GetServerSideProps = withPageAuth({
+  redirectTo: loginPage.href,
+});
 
 export default Home;

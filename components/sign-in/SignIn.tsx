@@ -1,4 +1,5 @@
 import {
+  Alert,
   Button,
   Container,
   Paper,
@@ -6,36 +7,46 @@ import {
   TextInput,
   Title,
 } from "@mantine/core";
+import { useForm } from "@mantine/form";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { ChangeEvent, MouseEvent, useState } from "react";
+import { useRouter } from "next/router";
+import { useState } from "react";
+
+interface FormValues {
+  email: string;
+  password: string;
+}
+
+const validate = {
+  email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+  password: (value: string) =>
+    value.length < 5 ? "Password must have at least 5 characters" : null,
+};
 
 const SignIn = () => {
+  const router = useRouter();
+  const form = useForm<FormValues>({
+    initialValues: { email: "", password: "" },
+    validate,
+  });
+
   const [loading, setLoading] = useState(false);
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
 
-  const onEmailChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setEmail(e.target.value);
-  };
-
-  const onPasswordChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setPassword(e.target.value);
-  };
-
-  const onLogin = async (e: MouseEvent) => {
-    e.preventDefault();
-    try {
-      setLoading(true);
-      const { error } = await supabaseClient.auth.signIn({
+  const onSubmit = ({ email, password }: FormValues) => {
+    setLoading(true);
+    supabaseClient.auth
+      .signIn({
         email,
         password,
-      });
-      if (error) throw error;
-    } catch (error) {
-      alert(error.error_description || error.message);
-    } finally {
-      setLoading(false);
-    }
+      })
+      .then(({ error }) => {
+        if (error) {
+          form.setErrors({ password: error.message });
+        } else {
+          router.push("/");
+        }
+      })
+      .finally(() => setLoading(false));
   };
 
   return (
@@ -43,24 +54,24 @@ const SignIn = () => {
       <Title align="center">Welcome back!</Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
-        <TextInput
-          label="Email"
-          placeholder="you@mantine.dev"
-          required
-          value={email}
-          onChange={onEmailChange}
-        />
-        <PasswordInput
-          label="Password"
-          placeholder="Your password"
-          required
-          mt="md"
-          value={password}
-          onChange={onPasswordChange}
-        />
-        <Button fullWidth mt="xl" onClick={onLogin} loading={loading}>
-          Sign in
-        </Button>
+        <form onSubmit={form.onSubmit(onSubmit)}>
+          <TextInput
+            required
+            label="Email"
+            placeholder="user@yourdomain.com"
+            {...form.getInputProps("email")}
+          />
+          <PasswordInput
+            required
+            label="Password"
+            placeholder="Super secret password"
+            mt="md"
+            {...form.getInputProps("password")}
+          />
+          <Button fullWidth mt="xl" type="submit" loading={loading}>
+            Sign in
+          </Button>
+        </form>
       </Paper>
     </Container>
   );

@@ -5,6 +5,7 @@ import {
 } from "@supabase/auth-helpers-nextjs";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
+import { loginPage } from "components/navbar/pages";
 import { useInvoice } from "hooks/invoice/use-invoice";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { cacheKeys, tableNames } from "lib";
@@ -61,7 +62,7 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
 };
 
 export const getServerSideProps = withPageAuth({
-  redirectTo: "/",
+  redirectTo: loginPage.href,
   async getServerSideProps(
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<
