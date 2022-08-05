@@ -25,6 +25,9 @@ export const toRemotePayment = (
   id,
   amount,
   currency,
-  paid_on: paid_on.toISOString(),
+  paid_on: `${paid_on.getFullYear()}-${String(paid_on.getMonth() + 1).padStart(
+    2,
+    "0"
+  )}-${String(paid_on.getDate()).padStart(2, "0")}`,
   invoice_id: Number(invoice_id),
 });

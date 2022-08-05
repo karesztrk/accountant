@@ -55,6 +55,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
       onChange={onChange}
       required={required}
       min={0}
+      precision={2}
       hideControls
     />
   );

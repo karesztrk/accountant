@@ -6,6 +6,7 @@ import CurrencyInput from "components/currency-input/CurrencyInput";
 import { paymentsPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useMemo, useState } from "react";
+import { Calendar } from "tabler-icons-react";
 import { Payment as ClientPayment } from "types/client";
 import { InvoiceNumber, Payment } from "types/database";
 import { toInvoices, toPayment, toRemotePayment } from "./PaymentForm.util";
@@ -63,6 +64,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
           />
 
           <DatePicker
+            icon={<Calendar size={16} />}
             placeholder="Payment date"
             label="Paid on"
             required

@@ -5,6 +5,7 @@ import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useMemo, useState } from "react";
+import { Calendar } from "tabler-icons-react";
 import { Invoice as ClientInvoice } from "types/client";
 import { Invoice, PartnerName } from "types/database";
 import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
@@ -81,6 +82,7 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
           />
 
           <DatePicker
+            icon={<Calendar size={16} />}
             placeholder="Pick date"
             label="Issued on"
             required
