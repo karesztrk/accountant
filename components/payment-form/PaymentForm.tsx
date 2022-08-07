@@ -84,8 +84,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
       <form onSubmit={form.onSubmit(onSubmit)}>
         <Stack spacing="md">
           <SegmentedControl
-            fullWidth={false}
-            color="blue"
+            color="brand"
             {...form.getInputProps("type")}
             data={paymentTypeOptions}
           />

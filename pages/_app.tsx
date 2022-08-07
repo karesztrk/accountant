@@ -33,7 +33,24 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         <MantineProvider
           withGlobalStyles
           withNormalizeCSS
-          theme={{ colorScheme }}
+          theme={{
+            colorScheme,
+            colors: {
+              brand: [
+                "#C7FCEC",
+                "#98FBDD",
+                "#6CFCD0",
+                "#42FFC6",
+                "#20FAB9",
+                "#0AEFAA",
+                "#0DCE94",
+                "#0FB281",
+                "#109A70",
+                "#108562",
+              ],
+            },
+            primaryColor: "brand",
+          }}
         >
           <NavigationProgress />
           <NotificationsProvider>
