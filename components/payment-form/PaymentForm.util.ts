@@ -1,4 +1,4 @@
-import { InvoiceNumber, Payment } from "types/database";
+import { InvoiceWithPartner, Payment } from "types/database";
 import { Payment as ClientPayment } from "types/client";
 
 export const toPayment = (payment: Payment): ClientPayment => {
@@ -6,28 +6,26 @@ export const toPayment = (payment: Payment): ClientPayment => {
     ...payment,
     paid_on: payment?.paid_on ? new Date(payment.paid_on) : new Date(),
     invoice_id: String(payment.invoice_id),
-    amount: payment.amount,
-    currency: payment.currency,
   };
 };
 
-export const toInvoices = (invoiceNumbers: InvoiceNumber[]) => {
-  return invoiceNumbers.map((invoice) => ({
-    label: invoice.invoice_number,
-    value: String(invoice.id),
+export const toInvoices = (invoices: InvoiceWithPartner[]) => {
+  return invoices.map((invoice) => ({
+    label: `${invoice.invoice_number}`,
+    description: `${invoice.amount} ${invoice.currency}`,
+    value: invoice.id?.toString() || "",
+    group: invoice.partner.name,
   }));
 };
 
 export const toRemotePayment = (
-  { amount, currency, paid_on, invoice_id }: ClientPayment,
+  payment: ClientPayment,
   id?: number
 ): Payment => ({
+  ...payment,
   id,
-  amount,
-  currency,
-  paid_on: `${paid_on.getFullYear()}-${String(paid_on.getMonth() + 1).padStart(
-    2,
-    "0"
-  )}-${String(paid_on.getDate()).padStart(2, "0")}`,
-  invoice_id: Number(invoice_id),
+  paid_on: `${payment.paid_on.getFullYear()}-${String(
+    payment.paid_on.getMonth() + 1
+  ).padStart(2, "0")}-${String(payment.paid_on.getDate()).padStart(2, "0")}`,
+  invoice_id: Number(payment.invoice_id),
 });

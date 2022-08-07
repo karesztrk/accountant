@@ -7,6 +7,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
 import { loginPage, paymentsPage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
+import { useInvoices } from "hooks/invoice/use-invoices";
 import { usePayment } from "hooks/payment/use-payment";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
@@ -18,23 +19,24 @@ import {
 } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { InvoiceNumber, Payment } from "types/database";
+import { InvoiceWithPartner, Payment } from "types/database";
 
 interface UpdatePaymentProps {
   id?: string;
   fallbackData?: Payment;
-  invoiceNumbers: InvoiceNumber[];
+  invoices: InvoiceWithPartner[];
 }
 
 const UpdatePayment: NextPage<UpdatePaymentProps> = ({
   id,
   fallbackData,
-  invoiceNumbers,
+  invoices,
 }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { data } = usePayment(id, fallbackData);
   const { trigger } = usePaymentMutation();
+  const { data: invoicesData = [] } = useInvoices(invoices);
 
   const onSubmit = (values: Payment) => {
     if (id && values) {
@@ -60,7 +62,7 @@ const UpdatePayment: NextPage<UpdatePaymentProps> = ({
         <PaymentForm
           payment={data}
           onSubmit={onSubmit}
-          invoiceNumbers={invoiceNumbers}
+          invoices={invoicesData}
         />
       )}
     </Layout>
@@ -75,12 +77,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     GetServerSidePropsResult<{
       id?: string;
       fallbackData?: Payment;
-      invoiceNumbers: InvoiceNumber[];
+      invoices: InvoiceWithPartner[];
     }>
   > {
     const id = ctx.query.id;
     if (!id) {
-      return { props: { invoiceNumbers: [] } };
+      return { props: { invoices: [] } };
     }
     const { data } = await supabaseServerClient(ctx)
       .from(tableNames.payment)
@@ -88,15 +90,15 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       .eq("id", id[0])
       .single();
 
-    const { data: invoiceNumbers } = await supabaseServerClient(ctx)
-      .from<InvoiceNumber>(tableNames.invoice)
-      .select("id, invoice_number");
+    const { data: invoices } = await supabaseServerClient(ctx)
+      .from<InvoiceWithPartner>(tableNames.invoice)
+      .select(`*, partner!inner(name)`);
 
     return {
       props: {
         id: id[0],
         fallbackData: data,
-        invoiceNumbers: invoiceNumbers || [],
+        invoices: invoices || [],
       },
     };
   },

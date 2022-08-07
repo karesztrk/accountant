@@ -1,5 +1,5 @@
 import { NativeSelect, NumberInput } from "@mantine/core";
-import React, { ChangeEvent, FC } from "react";
+import React, { ChangeEvent, CSSProperties, FC } from "react";
 import { data } from "./data";
 import { useStyles } from "./CurrencyInput.styles";
 
@@ -11,6 +11,7 @@ interface CurrencyInputProps {
   onChange?: (value: number) => void;
   onCurrenyChange?: (value: string) => void;
   required?: boolean;
+  style?: CSSProperties;
 }
 
 const CurrencyInput: FC<CurrencyInputProps> = ({
@@ -21,6 +22,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
   value,
   currency,
   required,
+  style,
 }) => {
   const { classes } = useStyles();
 
@@ -57,6 +59,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
       min={0}
       precision={2}
       hideControls
+      style={style}
     />
   );
 };

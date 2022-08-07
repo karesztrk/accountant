@@ -15,8 +15,6 @@ export interface Invoice {
   invoice_number: string;
 }
 
-export type InvoiceNumber = Pick<Invoice, "id" | "invoice_number">;
-
 export interface Partner {
   id?: number;
   name: string;
@@ -28,12 +26,17 @@ export interface Partner {
 
 export type PartnerName = Pick<Partner, "id" | "name">;
 
+export type PaymentType = "simple" | "foreign";
+
 export interface Payment {
   id?: number;
   invoice_id?: number;
   amount: number;
   currency: string;
   paid_on: string;
+  type: PaymentType;
+  local_amount?: number;
+  local_currency?: string;
 }
 
 export interface PaymentWithInvoice extends Payment {
