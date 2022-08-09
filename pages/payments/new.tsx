@@ -6,23 +6,23 @@ import {
 import Layout from "components/Layout";
 import { loginPage, paymentsPage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
-import { useInvoices } from "hooks/invoice/use-invoices";
+import { usePartners } from "hooks/partner/use-partners";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSidePropsResult, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Payment, Invoice, InvoiceWithPartner } from "types/database";
+import { Payment, Invoice, InvoiceWithPartner, Partner } from "types/database";
 
 interface NewPaymentProps {
-  invoices: InvoiceWithPartner[];
+  partners: Partner[];
 }
 
-const NewPayment: NextPage<NewPaymentProps> = ({ invoices }) => {
+const NewPayment: NextPage<NewPaymentProps> = ({ partners }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { trigger } = usePaymentMutation();
-  const { data: invoicesData = [] } = useInvoices(invoices);
+  const { data: partnersData = [] } = usePartners(partners);
 
   const onSubmit = (values: Payment) => {
     if (values) {
@@ -44,7 +44,7 @@ const NewPayment: NextPage<NewPaymentProps> = ({ invoices }) => {
 
   return (
     <Layout size="xs" title="New payment">
-      <PaymentForm onSubmit={onSubmit} invoices={invoicesData} />
+      <PaymentForm onSubmit={onSubmit} partners={partnersData} />
     </Layout>
   );
 };
@@ -53,12 +53,18 @@ export const getServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(
     ctx
-  ): Promise<GetServerSidePropsResult<{ invoices?: Invoice[] }>> {
+  ): Promise<
+    GetServerSidePropsResult<{ invoices?: Invoice[]; partners?: Partner[] }>
+  > {
     const { data } = await supabaseServerClient(ctx)
       .from<InvoiceWithPartner>(tableNames.invoice)
       .select(`*, partner!inner(name)`);
 
-    return { props: { invoices: data || [] } };
+    const { data: partners } = await supabaseServerClient(ctx)
+      .from<Partner>(tableNames.partner)
+      .select("*");
+
+    return { props: { invoices: data || [], partners: partners || [] } };
   },
 });
 

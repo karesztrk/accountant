@@ -8,25 +8,27 @@ import InvoiceForm from "components/invoice-form/InvoiceForm";
 import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
+import { usePartners } from "hooks/partner/use-partners";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSidePropsResult, NextPage } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Invoice, PartnerName } from "types/database";
+import { Invoice, Partner } from "types/database";
 
 interface NewInvoiceProps {
-  partners: PartnerName[];
+  partners: Partner[];
 }
 const NewInvoice: NextPage<NewInvoiceProps> = ({ partners }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { trigger } = useInvoiceMutation();
+  const { data: partnersData = [] } = usePartners(partners);
 
   const onSubmit = (values: Invoice) => {
     if (values) {
       trigger(values)
         .then(() => {
-          mutate(cacheKeys.invoices);
+          mutate(cacheKeys.invoices());
           router.push("/invoices");
         })
         .catch((error: PostgrestError) => {
@@ -42,7 +44,7 @@ const NewInvoice: NextPage<NewInvoiceProps> = ({ partners }) => {
 
   return (
     <Layout size="xs" title="New invoice">
-      <InvoiceForm onSubmit={onSubmit} partners={partners} />
+      <InvoiceForm onSubmit={onSubmit} partners={partnersData} />
     </Layout>
   );
 };
@@ -51,10 +53,10 @@ export const getServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(
     ctx
-  ): Promise<GetServerSidePropsResult<{ partners?: PartnerName[] }>> {
+  ): Promise<GetServerSidePropsResult<{ partners?: Partner[] }>> {
     const { data: partners } = await supabaseServerClient(ctx)
-      .from<PartnerName>(tableNames.partner)
-      .select("id, name");
+      .from<Partner>(tableNames.partner)
+      .select("*");
 
     return { props: { partners: partners || [] } };
   },

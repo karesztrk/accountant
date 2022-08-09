@@ -16,8 +16,19 @@ import DetailedSelectItem from "components/detailed-select-item/SelectItem";
 import { FC, useEffect, useMemo, useState } from "react";
 import { Calendar } from "tabler-icons-react";
 import { Payment as ClientPayment } from "types/client";
-import { InvoiceWithPartner, Payment, PaymentType } from "types/database";
-import { toInvoices, toPayment, toRemotePayment } from "./PaymentForm.util";
+import {
+  InvoiceWithPartner,
+  Partner,
+  Payment,
+  PaymentType,
+} from "types/database";
+import {
+  toInvoiceOptions,
+  toPartnerOptions,
+  toPayment,
+  toRemotePayment,
+} from "./PaymentForm.util";
+import { useInvoices } from "hooks/invoice/use-invoices";
 
 const initialValues: ClientPayment = {
   amount: 0,
@@ -31,7 +42,7 @@ const initialValues: ClientPayment = {
 interface PaymentFormProps {
   payment?: Payment;
   onSubmit?: (values: Payment) => void;
-  invoices: InvoiceWithPartner[];
+  partners: Partner[];
 }
 
 const paymentTypeOptions: { label: string; value: PaymentType }[] = [
@@ -42,7 +53,7 @@ const paymentTypeOptions: { label: string; value: PaymentType }[] = [
 const PaymentForm: FC<PaymentFormProps> = ({
   payment,
   onSubmit: onSubmitProp,
-  invoices: invoicesProp,
+  partners: partnersProp,
 }) => {
   const { user } = useUser();
 
@@ -52,7 +63,16 @@ const PaymentForm: FC<PaymentFormProps> = ({
     initialValues: payment ? toPayment(payment) : initialValues,
   });
 
-  const invoices = useMemo(() => toInvoices(invoicesProp), [invoicesProp]);
+  const { data: invoices = [] } = useInvoices(undefined, {
+    partner_id: form.values.partner_id || "",
+  });
+
+  const invoiceOptions = useMemo(() => toInvoiceOptions(invoices), [invoices]);
+
+  const partnerOptions = useMemo(
+    () => toPartnerOptions(partnersProp),
+    [partnersProp]
+  );
 
   const onSubmit = (values: ClientPayment) => {
     if (!user) {
@@ -69,7 +89,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
 
   const onInvoiceChange = (id: string) => {
     onChange(id);
-    const invoice = invoicesProp.find(
+    const invoice = invoices.find(
       (invoice) => invoice.id && String(invoice.id) === id
     );
     if (invoice) {
@@ -88,6 +108,27 @@ const PaymentForm: FC<PaymentFormProps> = ({
             {...form.getInputProps("type")}
             data={paymentTypeOptions}
           />
+          <Select
+            required
+            label="Partner"
+            placeholder="Received from"
+            searchable
+            nothingFound="Not found"
+            data={partnerOptions}
+            {...form.getInputProps("partner_id")}
+          />
+
+          <Select
+            label="Invoice"
+            placeholder="Related invoice"
+            searchable
+            nothingFound="Not found"
+            data={invoiceOptions}
+            itemComponent={DetailedSelectItem}
+            onChange={onInvoiceChange}
+            {...invoiceInputProps}
+          />
+
           <CurrencyInput
             label="Price"
             placeholder="1000"
@@ -123,17 +164,6 @@ const PaymentForm: FC<PaymentFormProps> = ({
             label="Paid on"
             required
             {...form.getInputProps("paid_on")}
-          />
-
-          <Select
-            label="Invoice"
-            placeholder="Related invoice"
-            searchable
-            nothingFound="Not found"
-            data={invoices}
-            itemComponent={DetailedSelectItem}
-            onChange={onInvoiceChange}
-            {...invoiceInputProps}
           />
 
           <Group position="right" mt="md">

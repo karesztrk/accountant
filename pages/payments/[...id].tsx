@@ -7,7 +7,7 @@ import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
 import { loginPage, paymentsPage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
-import { useInvoices } from "hooks/invoice/use-invoices";
+import { usePartners } from "hooks/partner/use-partners";
 import { usePayment } from "hooks/payment/use-payment";
 import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys, tableNames } from "lib";
@@ -19,24 +19,24 @@ import {
 } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { InvoiceWithPartner, Payment } from "types/database";
+import { Partner, Payment } from "types/database";
 
 interface UpdatePaymentProps {
   id?: string;
   fallbackData?: Payment;
-  invoices: InvoiceWithPartner[];
+  partners: Partner[];
 }
 
 const UpdatePayment: NextPage<UpdatePaymentProps> = ({
   id,
   fallbackData,
-  invoices,
+  partners,
 }) => {
   const router = useRouter();
   const { mutate } = useSWRConfig();
   const { data } = usePayment(id, fallbackData);
   const { trigger } = usePaymentMutation();
-  const { data: invoicesData = [] } = useInvoices(invoices);
+  const { data: partnersData = [] } = usePartners(partners);
 
   const onSubmit = (values: Payment) => {
     if (id && values) {
@@ -62,7 +62,7 @@ const UpdatePayment: NextPage<UpdatePaymentProps> = ({
         <PaymentForm
           payment={data}
           onSubmit={onSubmit}
-          invoices={invoicesData}
+          partners={partnersData}
         />
       )}
     </Layout>
@@ -77,12 +77,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     GetServerSidePropsResult<{
       id?: string;
       fallbackData?: Payment;
-      invoices: InvoiceWithPartner[];
+      partners: Partner[];
     }>
   > {
     const id = ctx.query.id;
     if (!id) {
-      return { props: { invoices: [] } };
+      return { props: { partners: [] } };
     }
     const { data } = await supabaseServerClient(ctx)
       .from(tableNames.payment)
@@ -90,15 +90,15 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       .eq("id", id[0])
       .single();
 
-    const { data: invoices } = await supabaseServerClient(ctx)
-      .from<InvoiceWithPartner>(tableNames.invoice)
-      .select(`*, partner!inner(name)`);
+    const { data: partners } = await supabaseServerClient(ctx)
+      .from<Partner>(tableNames.partner)
+      .select("*");
 
     return {
       props: {
         id: id[0],
         fallbackData: data,
-        invoices: invoices || [],
+        partners: partners || [],
       },
     };
   },

@@ -1,4 +1,4 @@
-import { Invoice, PartnerName } from "types/database";
+import { Invoice, Partner, PartnerName } from "types/database";
 import { Invoice as ClientInvoice } from "types/client";
 
 export const toInvoice = (invoice: Invoice): ClientInvoice => {
@@ -9,7 +9,7 @@ export const toInvoice = (invoice: Invoice): ClientInvoice => {
   };
 };
 
-export const toPartners = (partners: PartnerName[]) => {
+export const toPartners = (partners: Partner[]) => {
   return partners.map((partner) => ({
     label: partner.name,
     value: String(partner.id),

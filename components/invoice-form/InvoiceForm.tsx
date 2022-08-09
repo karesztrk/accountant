@@ -7,7 +7,7 @@ import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useMemo, useState } from "react";
 import { Calendar } from "tabler-icons-react";
 import { Invoice as ClientInvoice } from "types/client";
-import { Invoice, PartnerName } from "types/database";
+import { Invoice, Partner } from "types/database";
 import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
 
 const initialValues: ClientInvoice = {
@@ -20,7 +20,7 @@ const initialValues: ClientInvoice = {
 
 interface InvoiceFormProps {
   invoice?: Invoice;
-  partners: PartnerName[];
+  partners: Partner[];
   onSubmit?: (values: Invoice) => void;
 }
 

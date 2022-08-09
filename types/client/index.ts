@@ -23,4 +23,5 @@ export interface Payment {
   local_amount?: number;
   local_currency?: string;
   type: PaymentType;
+  partner_id?: string;
 }

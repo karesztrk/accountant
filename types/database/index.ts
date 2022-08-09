@@ -37,6 +37,7 @@ export interface Payment {
   type: PaymentType;
   local_amount?: number;
   local_currency?: string;
+  partner_id: number;
 }
 
 export interface PaymentWithInvoice extends Payment {

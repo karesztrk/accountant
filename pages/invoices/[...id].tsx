@@ -8,6 +8,7 @@ import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
 import { useInvoice } from "hooks/invoice/use-invoice";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
+import { usePartners } from "hooks/partner/use-partners";
 import { cacheKeys, tableNames } from "lib";
 import {
   GetServerSidePropsContext,
@@ -16,12 +17,12 @@ import {
 } from "next";
 import { useRouter } from "next/router";
 import { useSWRConfig } from "swr";
-import { Invoice, PartnerName } from "types/database";
+import { Invoice, Partner } from "types/database";
 
 interface UpdateInvoiceProps {
   id?: string;
   fallbackData?: Invoice;
-  partners: PartnerName[];
+  partners: Partner[];
 }
 
 const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
@@ -33,12 +34,13 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
   const router = useRouter();
   const { data, error } = useInvoice(id, fallbackData);
   const { trigger } = useInvoiceMutation();
+  const { data: partnersData = [] } = usePartners(partners);
 
   const onSubmit = (values: Partial<Invoice>) => {
     if (id && values) {
       trigger(values)
         .then(() => {
-          mutate(cacheKeys.invoices);
+          mutate(cacheKeys.invoices());
           router.push("/invoices");
         })
         .catch((error) => {
@@ -55,7 +57,11 @@ const UpdateInvoice: NextPage<UpdateInvoiceProps> = ({
   return (
     <Layout size="xs" title="Edit invoice">
       {data && (
-        <InvoiceForm invoice={data} partners={partners} onSubmit={onSubmit} />
+        <InvoiceForm
+          invoice={data}
+          partners={partnersData}
+          onSubmit={onSubmit}
+        />
       )}
     </Layout>
   );
@@ -69,7 +75,7 @@ export const getServerSideProps = withPageAuth({
     GetServerSidePropsResult<{
       id?: string;
       fallbackData?: Invoice;
-      partners: PartnerName[];
+      partners: Partner[];
     }>
   > {
     const id = ctx.query.id;
@@ -84,8 +90,8 @@ export const getServerSideProps = withPageAuth({
       .single();
 
     const { data: partners } = await supabaseServerClient(ctx)
-      .from<PartnerName>(tableNames.partner)
-      .select("id, name");
+      .from<Partner>(tableNames.partner)
+      .select("*");
 
     return {
       props: {
