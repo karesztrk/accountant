@@ -81,12 +81,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
           timingFunction="ease"
         >
           {(styles) => (
-            <Button
-              color="red"
-              variant="light"
-              onClick={onDelete}
-              style={styles}
-            >
+            <Button variant="outline" onClick={onDelete} style={styles}>
               Delete
             </Button>
           )}
@@ -123,7 +118,11 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
                 />
               </td>
               <td>{invoice.invoice_number}</td>
-              <td>{new Date(invoice.issued_on).toLocaleDateString()}</td>
+              <td>
+                {new Date(invoice.issued_on).toLocaleDateString(
+                  navigator.language
+                )}
+              </td>
               <td>{invoice.partner.name}</td>
               <td>
                 {invoice.amount} {invoice.currency}

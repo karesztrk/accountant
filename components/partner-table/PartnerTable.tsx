@@ -79,12 +79,7 @@ const PartnerTable: FC<PartnerTableProps> = ({
           timingFunction="ease"
         >
           {(styles) => (
-            <Button
-              color="red"
-              variant="light"
-              onClick={onDelete}
-              style={styles}
-            >
+            <Button variant="outline" onClick={onDelete} style={styles}>
               Delete
             </Button>
           )}

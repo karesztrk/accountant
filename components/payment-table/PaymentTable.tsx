@@ -11,11 +11,11 @@ import { newPaymentPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
 import React, { ChangeEvent, FC, MouseEvent } from "react";
-import { Payment, PaymentWithInvoice } from "types/database";
+import { Payment } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
 interface PaymentTableProps {
-  payments: PaymentWithInvoice[];
+  payments: Payment[];
   onDelete?: (ids: number[]) => void;
 }
 
@@ -80,12 +80,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
           timingFunction="ease"
         >
           {(styles) => (
-            <Button
-              color="red"
-              variant="light"
-              onClick={onDelete}
-              style={styles}
-            >
+            <Button variant="outline" onClick={onDelete} style={styles}>
               Delete
             </Button>
           )}
@@ -104,7 +99,6 @@ const PaymentTable: FC<PaymentTableProps> = ({
             </th>
             <th>Paid on</th>
             <th>Price</th>
-            <th>Related invoice</th>
           </tr>
         </thead>
         <tbody>
@@ -121,11 +115,14 @@ const PaymentTable: FC<PaymentTableProps> = ({
                     onChange={onToggleRow(payment)}
                   />
                 </td>
-                <td>{new Date(payment.paid_on).toLocaleDateString()}</td>
+                <td>
+                  {new Date(payment.paid_on).toLocaleDateString(
+                    navigator.language
+                  )}
+                </td>
                 <td>
                   {payment.amount} {payment.currency}
                 </td>
-                <td>{payment.invoice.invoice_number}</td>
               </tr>
             ) : null
           )}

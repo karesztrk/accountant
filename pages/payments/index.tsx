@@ -11,10 +11,10 @@ import { usePayments } from "hooks/payment/use-payments";
 import { tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { useEffect } from "react";
-import { PaymentWithInvoice } from "types/database";
+import { Payment } from "types/database";
 
 interface PaymentsProps {
-  fallbackData: PaymentWithInvoice[];
+  fallbackData: Payment[];
 }
 
 const Payments: NextPage<PaymentsProps> = ({ fallbackData }) => {
@@ -58,12 +58,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
-      fallbackData: PaymentWithInvoice[];
+      fallbackData: Payment[];
     }>
   > {
     const { data } = await supabaseServerClient(ctx)
-      .from<PaymentWithInvoice>(tableNames.payment)
-      .select("*, invoice!inner(invoice_number)");
+      .from<Payment>(tableNames.payment)
+      .select("*");
 
     return { props: { fallbackData: data || [] } };
   },

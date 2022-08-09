@@ -40,10 +40,6 @@ export interface Payment {
   partner_id: number;
 }
 
-export interface PaymentWithInvoice extends Payment {
-  invoice: Pick<Invoice, "invoice_number">;
-}
-
 export interface Tax {
   id?: number;
   amount: number;

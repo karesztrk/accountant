@@ -74,12 +74,7 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
           timingFunction="ease"
         >
           {(styles) => (
-            <Button
-              color="red"
-              variant="light"
-              onClick={onDelete}
-              style={styles}
-            >
+            <Button variant="outline" onClick={onDelete} style={styles}>
               Delete
             </Button>
           )}
