@@ -33,7 +33,7 @@ export interface Payment {
   invoice_id?: number;
   amount: number;
   currency: string;
-  paid_on: string;
+  received_on: string;
   type: PaymentType;
   local_amount?: number;
   local_currency?: string;
@@ -44,6 +44,13 @@ export interface Tax {
   id?: number;
   amount: number;
   currency: string;
-  type?: string;
+  system?: string;
   description?: string;
+  paid_on: string;
+}
+
+export interface Revenue {
+  date: string;
+  sum: number;
+  currency: string;
 }

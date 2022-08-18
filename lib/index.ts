@@ -5,6 +5,10 @@ export const tableNames = {
   tax: "tax" as const,
 };
 
+export const viewNames = {
+  revenue: "revenue_per_month" as const,
+};
+
 export const cacheKeys = {
   invoices: (condition?: Record<string, unknown>) => {
     return condition ? [tableNames.invoice, condition] : [tableNames.invoice];
@@ -19,4 +23,6 @@ export const cacheKeys = {
 
   taxes: [tableNames.tax],
   tax: (id?: string) => [tableNames.tax, { id }],
+
+  dashboardData: () => [viewNames.revenue],
 };

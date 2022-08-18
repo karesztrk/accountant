@@ -1,5 +1,5 @@
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
-import React from "react";
+import React, { FC, useMemo } from "react";
 import {
   ArrowDownRight,
   ArrowUpRight,
@@ -8,34 +8,13 @@ import {
   Receipt2,
   UserPlus,
 } from "tabler-icons-react";
+import { Revenue } from "types/database";
 import { useStyles } from "./Dashboard.styles";
-
-const data = [
-  {
-    title: "Revenue",
-    icon: "receipt",
-    value: "13,456",
-    diff: 34,
-  },
-  {
-    title: "Profit",
-    icon: "coin",
-    value: "4,145",
-    diff: -13,
-  },
-  {
-    title: "Coupons usage",
-    icon: "discount",
-    value: "745",
-    diff: 18,
-  },
-  {
-    title: "New customers",
-    icon: "user",
-    value: "188",
-    diff: -30,
-  },
-];
+import {
+  getRevenueCurrency,
+  getRevenueDiff,
+  getRevenueValue,
+} from "./Dashboard.util";
 
 const icons = {
   user: UserPlus,
@@ -44,8 +23,31 @@ const icons = {
   coin: Coin,
 };
 
-const Dashboard = () => {
+interface DashboardProps {
+  revenue: Revenue[];
+}
+
+const Dashboard: FC<DashboardProps> = ({ revenue }) => {
   const { classes } = useStyles();
+
+  const data = useMemo(
+    () => [
+      {
+        title: "Revenue",
+        icon: "receipt",
+        value: `${getRevenueValue(revenue)} ${getRevenueCurrency(revenue)}`,
+        diff: getRevenueDiff(revenue),
+      },
+      {
+        title: "Profit",
+        icon: "coin",
+        value: "4,145",
+        diff: -13,
+      },
+    ],
+    [revenue]
+  );
+
   const stats = data.map((stat) => {
     const Icon = icons[stat.icon as keyof typeof icons];
     const DiffIcon = stat.diff > 0 ? ArrowUpRight : ArrowDownRight;

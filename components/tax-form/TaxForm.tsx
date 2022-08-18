@@ -1,4 +1,5 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
+import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
@@ -6,10 +7,14 @@ import { taxesPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useState } from "react";
 import { Tax } from "types/database";
+import { Tax as ClientTax } from "types/client";
+import { toRemoteTax, toTax } from "./TaxForm.util";
+import { Calendar } from "tabler-icons-react";
 
-const initialValues: Tax = {
+const initialValues: ClientTax = {
   amount: 0,
   currency: "EUR",
+  paid_on: new Date(),
 };
 
 interface TaxFormProps {
@@ -22,21 +27,18 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
 
   const [loading, setLoading] = useState(false);
 
-  const form = useForm<Tax>({
-    initialValues: tax ? tax : initialValues,
+  const form = useForm<ClientTax>({
+    initialValues: tax ? toTax(tax) : initialValues,
   });
 
-  const onSubmit = (values: Tax) => {
+  const onSubmit = (values: ClientTax) => {
     if (!user) {
       return;
     }
 
     if (onSubmitProps) {
       setLoading(true);
-      onSubmitProps({
-        ...values,
-        id: tax?.id,
-      });
+      onSubmitProps(toRemoteTax(values, tax?.id));
     }
   };
 
@@ -45,9 +47,17 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
       <form onSubmit={form.onSubmit(onSubmit)}>
         <Stack spacing="md">
           <TextInput
-            label="Tax"
+            label="Tax system"
             placeholder="General"
             {...form.getInputProps("type")}
+          />
+
+          <DatePicker
+            icon={<Calendar size={16} />}
+            placeholder="Payment date"
+            label="Paid on"
+            required
+            {...form.getInputProps("paid_on")}
           />
 
           <CurrencyInput

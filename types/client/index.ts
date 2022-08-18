@@ -19,9 +19,17 @@ export interface Payment {
   invoice_id?: string;
   amount: number;
   currency: string;
-  paid_on: Date;
+  received_on: Date;
   local_amount?: number;
   local_currency?: string;
   type: PaymentType;
   partner_id?: string;
+}
+
+export interface Tax {
+  amount: number;
+  currency: string;
+  system?: string;
+  description?: string;
+  paid_on: Date;
 }

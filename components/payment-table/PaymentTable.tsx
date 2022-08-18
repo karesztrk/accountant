@@ -97,7 +97,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 indeterminate={indeterminate}
               />
             </th>
-            <th>Paid on</th>
+            <th>Received on</th>
             <th>Price</th>
           </tr>
         </thead>
@@ -116,7 +116,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                   />
                 </td>
                 <td>
-                  {new Date(payment.paid_on).toLocaleDateString(
+                  {new Date(payment.received_on).toLocaleDateString(
                     navigator.language
                   )}
                 </td>

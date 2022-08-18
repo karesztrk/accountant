@@ -4,7 +4,9 @@ import { Payment as ClientPayment } from "types/client";
 export const toPayment = (payment: Payment): ClientPayment => {
   return {
     ...payment,
-    paid_on: payment?.paid_on ? new Date(payment.paid_on) : new Date(),
+    received_on: payment?.received_on
+      ? new Date(payment.received_on)
+      : new Date(),
     invoice_id: String(payment.invoice_id),
     partner_id: String(payment.partner_id),
   };
@@ -32,9 +34,12 @@ export const toRemotePayment = (
 ): Payment => ({
   ...payment,
   id,
-  paid_on: `${payment.paid_on.getFullYear()}-${String(
-    payment.paid_on.getMonth() + 1
-  ).padStart(2, "0")}-${String(payment.paid_on.getDate()).padStart(2, "0")}`,
+  received_on: `${payment.received_on.getFullYear()}-${String(
+    payment.received_on.getMonth() + 1
+  ).padStart(2, "0")}-${String(payment.received_on.getDate()).padStart(
+    2,
+    "0"
+  )}`,
   invoice_id: Number(payment.invoice_id),
   partner_id: Number(payment.partner_id),
 });

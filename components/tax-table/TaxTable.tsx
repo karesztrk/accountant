@@ -91,8 +91,9 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                 indeterminate={indeterminate}
               />
             </th>
-            <th>Type</th>
+            <th>Tax system</th>
             <th>Price</th>
+            <th>Paid on</th>
             <th>Description</th>
           </tr>
         </thead>
@@ -110,7 +111,10 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                     onChange={onToggleRow(tax)}
                   />
                 </td>
-                <td>{tax.type}</td>
+                <td>{tax.system}</td>
+                <td>
+                  {new Date(tax.paid_on).toLocaleDateString(navigator.language)}
+                </td>
                 <td>
                   {tax.amount} {tax.currency}
                 </td>

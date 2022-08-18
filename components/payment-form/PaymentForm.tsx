@@ -13,15 +13,10 @@ import CurrencyInput from "components/currency-input/CurrencyInput";
 import { paymentsPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import DetailedSelectItem from "components/detailed-select-item/SelectItem";
-import { FC, useEffect, useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Calendar } from "tabler-icons-react";
 import { Payment as ClientPayment } from "types/client";
-import {
-  InvoiceWithPartner,
-  Partner,
-  Payment,
-  PaymentType,
-} from "types/database";
+import { Partner, Payment, PaymentType } from "types/database";
 import {
   toInvoiceOptions,
   toPartnerOptions,
@@ -33,7 +28,7 @@ import { useInvoices } from "hooks/invoice/use-invoices";
 const initialValues: ClientPayment = {
   amount: 0,
   currency: "EUR",
-  paid_on: new Date(),
+  received_on: new Date(),
   local_amount: 0,
   local_currency: "HUF",
   type: "simple",
@@ -160,10 +155,10 @@ const PaymentForm: FC<PaymentFormProps> = ({
 
           <DatePicker
             icon={<Calendar size={16} />}
-            placeholder="Payment date"
-            label="Paid on"
+            placeholder="Received date"
+            label="Received on"
             required
-            {...form.getInputProps("paid_on")}
+            {...form.getInputProps("received_on")}
           />
 
           <Group position="right" mt="md">
