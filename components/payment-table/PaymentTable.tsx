@@ -117,7 +117,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 </td>
                 <td>
                   {new Date(payment.received_on).toLocaleDateString(
-                    navigator.language
+                    router.locale
                   )}
                 </td>
                 <td>

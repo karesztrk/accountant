@@ -119,9 +119,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
               </td>
               <td>{invoice.invoice_number}</td>
               <td>
-                {new Date(invoice.issued_on).toLocaleDateString(
-                  navigator.language
-                )}
+                {new Date(invoice.issued_on).toLocaleDateString(router.locale)}
               </td>
               <td>{invoice.partner.name}</td>
               <td>

@@ -21,6 +21,7 @@ interface TaxTableProps {
 
 const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
   const router = useRouter();
+
   const { classes } = useStyles();
 
   const [selection, handlers] = useListState<number>([]);
@@ -113,7 +114,7 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                 </td>
                 <td>{tax.system}</td>
                 <td>
-                  {new Date(tax.paid_on).toLocaleDateString(navigator.language)}
+                  {new Date(tax.paid_on).toLocaleDateString(router.locale)}
                 </td>
                 <td>
                   {tax.amount} {tax.currency}

@@ -49,7 +49,7 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
           <TextInput
             label="Tax system"
             placeholder="General"
-            {...form.getInputProps("type")}
+            {...form.getInputProps("system")}
           />
 
           <DatePicker
