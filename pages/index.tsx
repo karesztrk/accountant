@@ -5,12 +5,12 @@ import {
 import { loginPage } from "components/navbar/pages";
 import { useDashboardData } from "hooks/dashboard/use-dashboard-data";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
-import { Revenue } from "types/database";
+import { Income } from "types/database";
 import Dashboard from "../components/dashboard/Dashboard";
 import Layout from "../components/Layout";
 
 interface HomeProps {
-  revenue: Revenue[];
+  revenue: Income[];
 }
 
 const Home: NextPage<HomeProps> = ({ revenue }) => {
@@ -26,11 +26,11 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
-      revenue: Revenue[];
+      revenue: Income[];
     }>
   > {
     const { data } = await supabaseServerClient(ctx)
-      .from<Revenue>("revenue_per_month")
+      .from<Income>("income_per_month")
       .select("*");
 
     return { props: { revenue: data || [] } };

@@ -1,3 +1,4 @@
+import { ChangeEvent, FC, MouseEvent } from "react";
 import {
   Button,
   Checkbox,
@@ -10,7 +11,6 @@ import { useListState } from "@mantine/hooks";
 import { newPaymentPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
-import React, { ChangeEvent, FC, MouseEvent } from "react";
 import { Payment } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
@@ -116,12 +116,12 @@ const PaymentTable: FC<PaymentTableProps> = ({
                   />
                 </td>
                 <td>
-                  {new Date(payment.received_on).toLocaleDateString(
-                    router.locale
-                  )}
+                  {new Date(
+                    payment.transaction.transaction_date
+                  ).toLocaleDateString(router.locale)}
                 </td>
                 <td>
-                  {payment.amount} {payment.currency}
+                  {payment.transaction.amount} {payment.transaction.currency}
                 </td>
               </tr>
             ) : null

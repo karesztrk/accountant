@@ -8,7 +8,7 @@ import {
   Receipt2,
   UserPlus,
 } from "tabler-icons-react";
-import { Revenue } from "types/database";
+import { Income } from "types/database";
 import { useStyles } from "./Dashboard.styles";
 import {
   getRevenueCurrency,
@@ -24,7 +24,7 @@ const icons = {
 };
 
 interface DashboardProps {
-  revenue: Revenue[];
+  revenue: Income[];
 }
 
 const Dashboard: FC<DashboardProps> = ({ revenue }) => {

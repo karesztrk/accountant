@@ -1,12 +1,12 @@
-import { Revenue } from "types/database";
+import { Income } from "types/database";
 
-export const getRevenueValue = (revenue: Revenue[]) =>
-  revenue[revenue.length - 1].sum;
+export const getRevenueValue = (revenue: Income[]) =>
+  revenue[revenue.length - 1].amount;
 
-export const getRevenueCurrency = (revenue: Revenue[]) =>
+export const getRevenueCurrency = (revenue: Income[]) =>
   revenue[revenue.length - 1].currency;
 
-export const getRevenueDiff = (revenue: Revenue[]) =>
-  (revenue[revenue.length - 1].sum / revenue[revenue.length - 2].sum).toFixed(
-    2
-  );
+export const getRevenueDiff = (revenue: Income[]) =>
+  (
+    revenue[revenue.length - 1].amount / revenue[revenue.length - 2].amount
+  ).toFixed(2);

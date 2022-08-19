@@ -28,29 +28,31 @@ export type PartnerName = Pick<Partner, "id" | "name">;
 
 export type PaymentType = "simple" | "foreign";
 
+export interface Transaction {
+  amount: number;
+  currency: string;
+  transaction_date: string;
+}
+
 export interface Payment {
   id?: number;
   invoice_id?: number;
-  amount: number;
-  currency: string;
-  received_on: string;
   type: PaymentType;
   local_amount?: number;
   local_currency?: string;
   partner_id: number;
+  transaction: Transaction;
 }
 
 export interface Tax {
   id?: number;
-  amount: number;
-  currency: string;
   system?: string;
   description?: string;
-  paid_on: string;
+  transaction: Transaction;
 }
 
-export interface Revenue {
-  date: string;
-  sum: number;
+export interface Income {
+  period: string;
+  amount: number;
   currency: string;
 }

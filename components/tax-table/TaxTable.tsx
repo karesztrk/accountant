@@ -93,8 +93,8 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
               />
             </th>
             <th>Tax system</th>
-            <th>Price</th>
             <th>Paid on</th>
+            <th>Price</th>
             <th>Description</th>
           </tr>
         </thead>
@@ -114,10 +114,12 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                 </td>
                 <td>{tax.system}</td>
                 <td>
-                  {new Date(tax.paid_on).toLocaleDateString(router.locale)}
+                  {new Date(
+                    tax.transaction.transaction_date
+                  ).toLocaleDateString(router.locale)}
                 </td>
                 <td>
-                  {tax.amount} {tax.currency}
+                  {tax.transaction.amount} {tax.transaction.currency}
                 </td>
                 <td>{tax.description}</td>
               </tr>

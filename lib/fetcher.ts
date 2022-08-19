@@ -1,6 +1,6 @@
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tableNames, viewNames } from "lib";
-import { Base, InvoiceWithPartner, Payment, Revenue } from "types/database";
+import { Base, InvoiceWithPartner, Payment, Income, Tax } from "types/database";
 
 export const singleFetcher = async <T extends Base>(
   table: string,
@@ -42,7 +42,14 @@ export const invoiceWithPartnerFetcher = async (
 export const paymentFetcher = async () => {
   const { data } = await supabaseClient
     .from<Payment>(tableNames.invoice)
-    .select("*");
+    .select("*, transaction!inner(*)");
+  return data || [];
+};
+
+export const taxFetcher = async () => {
+  const { data } = await supabaseClient
+    .from<Tax>(tableNames.invoice)
+    .select("*, transaction!inner(*)");
   return data || [];
 };
 
@@ -71,7 +78,7 @@ export const mutationFetcher =
 
 export const dashboardFetcher = async () => {
   const { data } = await supabaseClient
-    .from<Revenue>(viewNames.revenue)
+    .from<Income>(viewNames.revenue)
     .select("*");
   return data || [];
 };

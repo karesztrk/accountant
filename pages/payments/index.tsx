@@ -63,7 +63,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   > {
     const { data } = await supabaseServerClient(ctx)
       .from<Payment>(tableNames.payment)
-      .select("*");
+      .select("*, transaction!inner(*)");
 
     return { props: { fallbackData: data || [] } };
   },
