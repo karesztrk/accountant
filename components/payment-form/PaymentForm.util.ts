@@ -3,12 +3,16 @@ import { Payment as ClientPayment } from "types/client";
 
 export const toPayment = (payment: Payment): ClientPayment => {
   return {
-    ...payment,
-    received_on: payment?.received_on
-      ? new Date(payment.received_on)
+    received_on: payment?.transaction.transaction_date
+      ? new Date(payment.transaction.transaction_date)
       : new Date(),
     invoice_id: String(payment.invoice_id),
     partner_id: String(payment.partner_id),
+    amount: payment.transaction.amount,
+    currency: payment.transaction.currency,
+    type: payment.type,
+    local_amount: payment.local_amount,
+    local_currency: payment.local_currency,
   };
 };
 
@@ -29,17 +33,26 @@ export const toPartnerOptions = (partners: Partner[]) => {
 };
 
 export const toRemotePayment = (
+  userId: string,
   payment: ClientPayment,
   id?: number
 ): Payment => ({
-  ...payment,
   id,
-  received_on: `${payment.received_on.getFullYear()}-${String(
-    payment.received_on.getMonth() + 1
-  ).padStart(2, "0")}-${String(payment.received_on.getDate()).padStart(
-    2,
-    "0"
-  )}`,
+  transaction: {
+    amount: payment.amount,
+    currency: payment.currency,
+    transaction_date: `${payment.received_on.getFullYear()}-${String(
+      payment.received_on.getMonth() + 1
+    ).padStart(2, "0")}-${String(payment.received_on.getDate()).padStart(
+      2,
+      "0"
+    )}`,
+    user_id: userId,
+  },
   invoice_id: Number(payment.invoice_id),
   partner_id: Number(payment.partner_id),
+  type: payment.type,
+  local_amount: payment.local_amount,
+  local_currency: payment.local_currency,
+  transaction_id: 0,
 });

@@ -1,7 +1,7 @@
 import { useUser } from "@supabase/auth-helpers-react";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cacheKeys } from "lib";
-import { invoiceWithPartnerFetcher } from "lib/fetcher";
+import { invoiceWithPartnerFetcher } from "lib/fetcher/invoice";
 import useSWR from "swr";
 import { InvoiceWithPartner } from "types/database";
 

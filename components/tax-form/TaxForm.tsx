@@ -38,57 +38,55 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
 
     if (onSubmitProps) {
       setLoading(true);
-      onSubmitProps(toRemoteTax(values, tax?.id));
+      onSubmitProps(toRemoteTax(user.id, values, tax?.id));
     }
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack spacing="md">
-          <TextInput
-            label="Tax system"
-            placeholder="General"
-            {...form.getInputProps("system")}
-          />
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Stack spacing="md">
+        <TextInput
+          label="Tax system"
+          placeholder="General"
+          {...form.getInputProps("system")}
+        />
 
-          <DatePicker
-            icon={<Calendar size={16} />}
-            placeholder="Payment date"
-            label="Paid on"
-            required
-            {...form.getInputProps("paid_on")}
-          />
+        <DatePicker
+          icon={<Calendar size={16} />}
+          placeholder="Payment date"
+          label="Paid on"
+          required
+          {...form.getInputProps("paid_on")}
+        />
 
-          <CurrencyInput
-            label="Amount"
-            placeholder="1000"
-            value={form.getInputProps("amount").value}
-            currency={form.getInputProps("currency").value}
-            onChange={form.getInputProps("amount").onChange}
-            onCurrenyChange={form.getInputProps("currency").onChange}
-            required
-          />
+        <CurrencyInput
+          label="Amount"
+          placeholder="1000"
+          value={form.getInputProps("amount").value}
+          currency={form.getInputProps("currency").value}
+          onChange={form.getInputProps("amount").onChange}
+          onCurrenyChange={form.getInputProps("currency").onChange}
+          required
+        />
 
-          <Textarea
-            label="Description"
-            placeholder="Monthly contractor tax"
-            {...form.getInputProps("description")}
-          />
+        <Textarea
+          label="Description"
+          placeholder="Monthly contractor tax"
+          {...form.getInputProps("description")}
+        />
 
-          <Group position="right" mt="md">
-            <NavigationButton
-              variant="outline"
-              text="Cancel"
-              href={taxesPage.href}
-            />
-            <Button type="submit" loading={loading}>
-              Submit
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </>
+        <Group position="right" mt="md">
+          <NavigationButton
+            variant="outline"
+            text="Cancel"
+            href={taxesPage.href}
+          />
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 };
 

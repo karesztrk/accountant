@@ -86,7 +86,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     }
     const { data } = await supabaseServerClient(ctx)
       .from(tableNames.payment)
-      .select()
+      .select("*, transaction!inner(*)")
       .eq("id", id[0])
       .single();
 

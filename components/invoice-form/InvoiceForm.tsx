@@ -51,57 +51,51 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack spacing="md">
-          <TextInput
-            required
-            label="Invoice number"
-            placeholder="INV-1"
-            {...form.getInputProps("invoice_number")}
-          />
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Stack spacing="md">
+        <TextInput
+          required
+          label="Invoice number"
+          placeholder="INV-1"
+          {...form.getInputProps("invoice_number")}
+        />
 
-          <Select
-            required
-            label="Partner"
-            placeholder="Invoiced partner"
-            searchable
-            nothingFound="Not found"
-            data={partnerData}
-            {...form.getInputProps("partner_id")}
-          />
+        <Select
+          required
+          label="Partner"
+          placeholder="Invoiced partner"
+          searchable
+          nothingFound="Not found"
+          data={partnerData}
+          {...form.getInputProps("partner_id")}
+        />
 
-          <CurrencyInput
-            label="Amount"
-            placeholder="1000"
-            value={form.getInputProps("amount").value}
-            currency={form.getInputProps("currency").value}
-            onChange={form.getInputProps("amount").onChange}
-            onCurrenyChange={form.getInputProps("currency").onChange}
-            required
-          />
+        <CurrencyInput
+          label="Amount"
+          placeholder="1000"
+          value={form.getInputProps("amount").value}
+          currency={form.getInputProps("currency").value}
+          onChange={form.getInputProps("amount").onChange}
+          onCurrenyChange={form.getInputProps("currency").onChange}
+          required
+        />
 
-          <DatePicker
-            icon={<Calendar size={16} />}
-            placeholder="Pick date"
-            label="Issued on"
-            required
-            {...form.getInputProps("issued_on")}
-          />
+        <DatePicker
+          icon={<Calendar size={16} />}
+          placeholder="Pick date"
+          label="Issued on"
+          required
+          {...form.getInputProps("issued_on")}
+        />
 
-          <Group position="right" mt="md">
-            <NavigationButton
-              variant="outline"
-              text="Cancel"
-              href="/invoices"
-            />
-            <Button type="submit" loading={loading}>
-              Submit
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </>
+        <Group position="right" mt="md">
+          <NavigationButton variant="outline" text="Cancel" href="/invoices" />
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 };
 

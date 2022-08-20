@@ -1,8 +1,8 @@
 import { tableNames } from "lib";
-import { mutationFetcher } from "lib/fetcher";
+import { paymentMutationFetcher } from "lib/fetcher/payment";
 
 export const usePaymentMutation = () => {
-  const trigger = mutationFetcher(tableNames.payment);
+  const trigger = paymentMutationFetcher(tableNames.payment);
 
   return {
     trigger,

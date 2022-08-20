@@ -48,50 +48,44 @@ const PartnerForm: FC<PartnerFormProps> = ({
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack spacing="md">
-          <TextInput
-            required
-            label="Name"
-            placeholder="Acme Inc."
-            {...form.getInputProps("name")}
-          />
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Stack spacing="md">
+        <TextInput
+          required
+          label="Name"
+          placeholder="Acme Inc."
+          {...form.getInputProps("name")}
+        />
 
-          <TextInput
-            required
-            label="Address"
-            placeholder="Postal address"
-            {...form.getInputProps("address")}
-          />
+        <TextInput
+          required
+          label="Address"
+          placeholder="Postal address"
+          {...form.getInputProps("address")}
+        />
 
-          <TextInput
-            required
-            label="VAT"
-            placeholder="VAT number"
-            {...form.getInputProps("vat")}
-          />
+        <TextInput
+          required
+          label="VAT"
+          placeholder="VAT number"
+          {...form.getInputProps("vat")}
+        />
 
-          <TextInput
-            required
-            label="Email address"
-            placeholder="acme@inc.com"
-            {...form.getInputProps("email")}
-          />
+        <TextInput
+          required
+          label="Email address"
+          placeholder="acme@inc.com"
+          {...form.getInputProps("email")}
+        />
 
-          <Group position="right" mt="md">
-            <NavigationButton
-              variant="outline"
-              text="Cancel"
-              href="/partners"
-            />
-            <Button type="submit" loading={loading}>
-              Submit
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </>
+        <Group position="right" mt="md">
+          <NavigationButton variant="outline" text="Cancel" href="/partners" />
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 };
 

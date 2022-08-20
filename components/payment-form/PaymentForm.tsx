@@ -76,7 +76,7 @@ const PaymentForm: FC<PaymentFormProps> = ({
 
     if (onSubmitProp) {
       setLoading(true);
-      onSubmitProp(toRemotePayment(values, payment?.id));
+      onSubmitProp(toRemotePayment(user.id, values, payment?.id));
     }
   };
 
@@ -88,92 +88,89 @@ const PaymentForm: FC<PaymentFormProps> = ({
       (invoice) => invoice.id && String(invoice.id) === id
     );
     if (invoice) {
-      console.log(invoice);
       form.setFieldValue("amount", invoice.amount);
       form.setFieldValue("currency", invoice.currency);
     }
   };
 
   return (
-    <>
-      <form onSubmit={form.onSubmit(onSubmit)}>
-        <Stack spacing="md">
-          <SegmentedControl
-            color="brand"
-            {...form.getInputProps("type")}
-            data={paymentTypeOptions}
-          />
-          <Select
-            required
-            label="Partner"
-            placeholder="Received from"
-            searchable
-            nothingFound="Not found"
-            data={partnerOptions}
-            {...form.getInputProps("partner_id")}
-          />
+    <form onSubmit={form.onSubmit(onSubmit)}>
+      <Stack spacing="md">
+        <SegmentedControl
+          color="brand"
+          {...form.getInputProps("type")}
+          data={paymentTypeOptions}
+        />
+        <Select
+          required
+          label="Partner"
+          placeholder="Received from"
+          searchable
+          nothingFound="Not found"
+          data={partnerOptions}
+          {...form.getInputProps("partner_id")}
+        />
 
-          <Select
-            label="Invoice"
-            placeholder="Related invoice"
-            searchable
-            nothingFound="Not found"
-            data={invoiceOptions}
-            itemComponent={DetailedSelectItem}
-            onChange={onInvoiceChange}
-            {...invoiceInputProps}
-          />
+        <Select
+          label="Invoice"
+          placeholder="Related invoice"
+          searchable
+          nothingFound="Not found"
+          data={invoiceOptions}
+          itemComponent={DetailedSelectItem}
+          onChange={onInvoiceChange}
+          {...invoiceInputProps}
+        />
 
-          <CurrencyInput
-            label="Price"
-            placeholder="1000"
-            value={form.getInputProps("amount").value}
-            currency={form.getInputProps("currency").value}
-            onChange={form.getInputProps("amount").onChange}
-            onCurrenyChange={form.getInputProps("currency").onChange}
-            required
-          />
+        <CurrencyInput
+          label="Price"
+          placeholder="1000"
+          value={form.getInputProps("amount").value}
+          currency={form.getInputProps("currency").value}
+          onChange={form.getInputProps("amount").onChange}
+          onCurrenyChange={form.getInputProps("currency").onChange}
+          required
+        />
 
-          <Transition
-            mounted={form.values.type === "foreign"}
-            transition="fade"
-            duration={400}
-            timingFunction="ease-in-out"
-          >
-            {(styles) => (
-              <CurrencyInput
-                style={styles}
-                label="Local price"
-                placeholder="2000"
-                value={form.getInputProps("local_amount").value}
-                currency={form.getInputProps("local_currency").value}
-                onChange={form.getInputProps("local_amount").onChange}
-                onCurrenyChange={form.getInputProps("local_currency").onChange}
-              />
-            )}
-          </Transition>
-
-          <DatePicker
-            icon={<Calendar size={16} />}
-            placeholder="Received date"
-            label="Received on"
-            required
-            {...form.getInputProps("received_on")}
-          />
-
-          <Group position="right" mt="md">
-            <NavigationButton
-              variant="outline"
-              text="Cancel"
-              href={paymentsPage.href}
+        <Transition
+          mounted={form.values.type === "foreign"}
+          transition="fade"
+          duration={400}
+          timingFunction="ease-in-out"
+        >
+          {(styles) => (
+            <CurrencyInput
+              style={styles}
+              label="Local price"
+              placeholder="2000"
+              value={form.getInputProps("local_amount").value}
+              currency={form.getInputProps("local_currency").value}
+              onChange={form.getInputProps("local_amount").onChange}
+              onCurrenyChange={form.getInputProps("local_currency").onChange}
             />
-            <Button type="submit" loading={loading}>
-              Submit
-            </Button>
-          </Group>
-        </Stack>
-      </form>
-    </>
+          )}
+        </Transition>
+
+        <DatePicker
+          icon={<Calendar size={16} />}
+          placeholder="Received date"
+          label="Received on"
+          required
+          {...form.getInputProps("received_on")}
+        />
+
+        <Group position="right" mt="md">
+          <NavigationButton
+            variant="outline"
+            text="Cancel"
+            href={paymentsPage.href}
+          />
+          <Button type="submit" loading={loading}>
+            Submit
+          </Button>
+        </Group>
+      </Stack>
+    </form>
   );
 };
 

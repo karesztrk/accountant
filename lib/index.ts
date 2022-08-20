@@ -3,6 +3,7 @@ export const tableNames = {
   partner: "partner" as const,
   payment: "payment" as const,
   tax: "tax" as const,
+  transaction: "transaction" as const,
 };
 
 export const viewNames = {

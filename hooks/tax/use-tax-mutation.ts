@@ -1,8 +1,8 @@
 import { tableNames } from "lib";
-import { mutationFetcher } from "lib/fetcher";
+import { taxMutationFetcher } from "lib/fetcher/tax";
 
 export const useTaxMutation = () => {
-  const trigger = mutationFetcher(tableNames.tax);
+  const trigger = taxMutationFetcher(tableNames.tax);
 
   return {
     trigger,
