@@ -8,22 +8,29 @@ import {
 } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
+import DetailedSelectItem from "components/detailed-select-item/SelectItem";
 import { paymentsPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
-import DetailedSelectItem from "components/detailed-select-item/SelectItem";
+import { useInvoices } from "hooks/invoice/use-invoices";
+import { usePartners } from "hooks/partner/use-partners";
+import { usePayment } from "hooks/payment/use-payment";
+import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
+import { cacheKeys } from "lib";
+import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
+import { useSWRConfig } from "swr";
 import { Calendar } from "tabler-icons-react";
 import { Payment as ClientPayment } from "types/client";
-import { Partner, Payment, PaymentType } from "types/database";
+import { PaymentType } from "types/database";
 import {
   toInvoiceOptions,
   toPartnerOptions,
   toPayment,
   toRemotePayment,
 } from "./PaymentForm.util";
-import { useInvoices } from "hooks/invoice/use-invoices";
 
 const initialValues: ClientPayment = {
   amount: 0,
@@ -34,23 +41,21 @@ const initialValues: ClientPayment = {
   type: "simple",
 };
 
-interface PaymentFormProps {
-  payment?: Payment;
-  onSubmit?: (values: Payment) => void;
-  partners: Partner[];
-}
-
 const paymentTypeOptions: { label: string; value: PaymentType }[] = [
   { label: "Simple payment", value: "simple" },
   { label: "Foreign payment", value: "foreign" },
 ];
 
-const PaymentForm: FC<PaymentFormProps> = ({
-  payment,
-  onSubmit: onSubmitProp,
-  partners: partnersProp,
-}) => {
+const PaymentForm: FC = () => {
   const { user } = useUser();
+
+  const router = useRouter();
+
+  const id = router.query.id;
+  const { mutate } = useSWRConfig();
+  const { data: payment } = usePayment(id ? id[0] : undefined);
+  const { trigger } = usePaymentMutation();
+  const { data: partners = [] } = usePartners();
 
   const [loading, setLoading] = useState(false);
 
@@ -58,26 +63,37 @@ const PaymentForm: FC<PaymentFormProps> = ({
     initialValues: payment ? toPayment(payment) : initialValues,
   });
 
-  const { data: invoices = [] } = useInvoices(undefined, {
+  const { data: invoices = [] } = useInvoices({
     partner_id: form.values.partner_id || "",
   });
 
   const invoiceOptions = useMemo(() => toInvoiceOptions(invoices), [invoices]);
 
-  const partnerOptions = useMemo(
-    () => toPartnerOptions(partnersProp),
-    [partnersProp]
-  );
+  const partnerOptions = useMemo(() => toPartnerOptions(partners), [partners]);
 
   const onSubmit = (values: ClientPayment) => {
     if (!user) {
       return;
     }
 
-    if (onSubmitProp) {
-      setLoading(true);
-      onSubmitProp(toRemotePayment(user.id, values, payment?.id));
-    }
+    setLoading(true);
+    const data = toRemotePayment(user.id, values, payment?.id);
+    trigger(data)
+      .then(() => {
+        mutate(cacheKeys.payments, undefined, {});
+        router.push(paymentsPage.href);
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   const { onChange, ...invoiceInputProps } = form.getInputProps("invoice_id");

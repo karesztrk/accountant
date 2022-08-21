@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
@@ -6,51 +5,22 @@ import {
 import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
 import PaymentTable from "components/payment-table/PaymentTable";
-import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
-import { usePayments } from "hooks/payment/use-payments";
-import { tableNames } from "lib";
+import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
-import { useEffect } from "react";
+import { SWRConfig, unstable_serialize } from "swr";
 import { Payment } from "types/database";
 
 interface PaymentsProps {
-  fallbackData: Payment[];
+  fallback: Record<string, unknown>;
 }
 
-const Payments: NextPage<PaymentsProps> = ({ fallbackData }) => {
-  const { data = [], error, mutate } = usePayments(fallbackData);
-  const { trigger } = usePaymentDeletion();
-
-  const onDelete = (ids: number[]) => {
-    trigger(ids)
-      .then(() => {
-        mutate();
-      })
-      .catch((error) => {
-        showNotification({
-          id: error.code,
-          title: "Error",
-          message: error.message,
-          color: "red",
-        });
-      });
-  };
-
-  useEffect(() => {
-    if (error) {
-      showNotification({
-        id: error.code,
-        title: "Error",
-        message: error.message,
-        color: "red",
-      });
-    }
-  }, [error]);
-
+const Payments: NextPage<PaymentsProps> = ({ fallback }) => {
   return (
-    <Layout title="Payments">
-      {data && <PaymentTable payments={data} onDelete={onDelete} />}
-    </Layout>
+    <SWRConfig value={{ fallback }}>
+      <Layout title="Payments">
+        <PaymentTable />
+      </Layout>
+    </SWRConfig>
   );
 };
 
@@ -58,14 +28,20 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
-      fallbackData: Payment[];
+      fallback: Record<string, unknown>;
     }>
   > {
     const { data } = await supabaseServerClient(ctx)
       .from<Payment>(tableNames.payment)
       .select("*, transaction!inner(*)");
 
-    return { props: { fallbackData: data || [] } };
+    return {
+      props: {
+        fallback: {
+          [unstable_serialize(cacheKeys.payments)]: data || [],
+        },
+      },
+    };
   },
 });
 

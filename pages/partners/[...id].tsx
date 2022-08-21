@@ -51,7 +51,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     return {
       props: {
         fallback: {
-          [unstable_serialize(cacheKeys.partner(id[0]))]: data || [],
+          [unstable_serialize(cacheKeys.partner(id[0]))]: data || undefined,
         },
       },
     };

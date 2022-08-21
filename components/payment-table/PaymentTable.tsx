@@ -13,17 +13,16 @@ import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
 import { Payment } from "types/database";
 import { useStyles } from "../DataTable.styles";
+import { usePayments } from "hooks/payment/use-payments";
+import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
+import { showNotification } from "@mantine/notifications";
 
-interface PaymentTableProps {
-  payments: Payment[];
-  onDelete?: (ids: number[]) => void;
-}
-
-const PaymentTable: FC<PaymentTableProps> = ({
-  payments,
-  onDelete: onDeleteProp,
-}) => {
+const PaymentTable: FC = ({}) => {
   const router = useRouter();
+
+  const { data: payments = [], mutate } = usePayments();
+  const { trigger } = usePaymentDeletion();
+
   const [selection, handlers] = useListState<number>([]);
 
   const { classes } = useStyles();
@@ -62,10 +61,25 @@ const PaymentTable: FC<PaymentTableProps> = ({
   };
 
   const onDelete = () => {
-    if (onDeleteProp && selection.length > 0) {
-      onDeleteProp(selection);
+    if (selection.length > 0) {
+      trigger(selection)
+        .then(() => {
+          mutate();
+        })
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
       handlers.filter((item) => !selection.includes(item));
     }
+  };
+
+  const onSelectionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
   };
 
   const isChecked = (item: Payment) => !!item.id && selection.includes(item.id);
@@ -90,7 +104,7 @@ const PaymentTable: FC<PaymentTableProps> = ({
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th>
+            <th className={classes.selectionCell}>
               <Checkbox
                 onChange={onToggleAll}
                 checked={allChecked}
@@ -109,7 +123,10 @@ const PaymentTable: FC<PaymentTableProps> = ({
                 onClick={onRowClick(payment)}
                 className={classes.row}
               >
-                <td>
+                <td
+                  className={classes.selectionCell}
+                  onClick={onSelectionCellClick}
+                >
                   <Checkbox
                     checked={isChecked(payment)}
                     onChange={onToggleRow(payment)}
