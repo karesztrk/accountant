@@ -1,17 +1,14 @@
-import { useUser } from "@supabase/auth-helpers-react";
 import { PostgrestError } from "@supabase/supabase-js";
-import { tableNames } from "lib";
+import { cacheKeys } from "lib";
 import { taxesFetcher } from "lib/fetcher/tax";
 import useSWR from "swr";
 import { Tax } from "types/database";
 
-export const useTaxes = (fallbackData?: Tax[]) => {
-  const { user } = useUser();
-  const key = user ? tableNames.tax : null;
+export const useTaxes = () => {
+  const key = cacheKeys.taxes;
   return useSWR<Tax[], PostgrestError>(key, taxesFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    fallbackData,
   });
 };

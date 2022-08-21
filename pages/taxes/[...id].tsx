@@ -1,14 +1,10 @@
-import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { loginPage, taxesPage } from "components/navbar/pages";
+import { loginPage } from "components/navbar/pages";
 import TaxForm from "components/tax-form/TaxForm";
-import { useTax } from "hooks/tax/use-tax";
-import { useTaxMutation } from "hooks/tax/use-tax-mutation";
 import { cacheKeys, tableNames } from "lib";
 import {
   GetServerSideProps,
@@ -16,43 +12,19 @@ import {
   GetServerSidePropsResult,
   NextPage,
 } from "next";
-import { useRouter } from "next/router";
-import { useSWRConfig } from "swr";
-import { Tax } from "types/database";
+import { SWRConfig, unstable_serialize } from "swr";
 
 interface UpdateTaxProps {
-  id?: string;
-  fallbackData?: Tax;
+  fallback: Record<string, unknown>;
 }
 
-const UpdateTax: NextPage<UpdateTaxProps> = ({ id, fallbackData }) => {
-  const router = useRouter();
-  const { mutate } = useSWRConfig();
-  const { data } = useTax(id, fallbackData);
-  const { trigger } = useTaxMutation();
-
-  const onSubmit = (values: Tax) => {
-    if (id && values) {
-      trigger(values)
-        .then(() => {
-          mutate(cacheKeys.taxes);
-          router.push(taxesPage.href);
-        })
-        .catch((error: PostgrestError) => {
-          showNotification({
-            id: error.code,
-            title: "Error",
-            message: error.message,
-            color: "red",
-          });
-        });
-    }
-  };
-
+const UpdateTax: NextPage<UpdateTaxProps> = ({ fallback }) => {
   return (
-    <Layout size="xs" title="Edit tax">
-      {data && <TaxForm tax={data} onSubmit={onSubmit} />}
-    </Layout>
+    <SWRConfig value={{ fallback }}>
+      <Layout size="xs" title="Edit tax">
+        <TaxForm />
+      </Layout>
+    </SWRConfig>
   );
 };
 
@@ -62,8 +34,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<
     GetServerSidePropsResult<{
-      id?: string;
-      fallbackData?: Tax;
+      fallback?: Record<string, unknown>;
     }>
   > {
     const id = ctx.query.id;
@@ -78,8 +49,9 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
 
     return {
       props: {
-        id: id[0],
-        fallbackData: data,
+        fallback: {
+          [unstable_serialize(cacheKeys.tax(id[0]))]: data || undefined,
+        },
       },
     };
   },

@@ -26,7 +26,7 @@ export const toRemoteTax = (
       tax.paid_on.getMonth() + 1
     ).padStart(2, "0")}-${String(tax.paid_on.getDate()).padStart(2, "0")}`,
     user_id: userId,
-  },revenue
+  },
   description: tax.description,
   system: tax.system,
   transaction_id: 0,

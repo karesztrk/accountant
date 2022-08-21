@@ -4,12 +4,11 @@ import { paymentFetcher } from "lib/fetcher/payment";
 import useSWR from "swr";
 import { Payment } from "types/database";
 
-export const usePayment = (id?: string, fallbackData?: Payment) => {
+export const usePayment = (id?: string) => {
   const key = cacheKeys.payment(id);
   return useSWR<Payment | undefined, PostgrestError>(key, paymentFetcher, {
     revalidateIfStale: false,
     revalidateOnFocus: false,
     revalidateOnReconnect: false,
-    fallbackData,
   });
 };

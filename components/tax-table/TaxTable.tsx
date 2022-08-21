@@ -7,22 +7,23 @@ import {
   Transition,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import { newTaxPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import { useTaxDeletion } from "hooks/tax/use-tax-deletion";
+import { useTaxes } from "hooks/tax/use-taxes";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent } from "react";
 import { Tax } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
-interface TaxTableProps {
-  taxes: Tax[];
-  onDelete?: (ids: number[]) => void;
-}
-
-const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
+const TaxTable: FC = () => {
   const router = useRouter();
 
   const { classes } = useStyles();
+
+  const { data: taxes = [], mutate } = useTaxes();
+  const { trigger } = useTaxDeletion();
 
   const [selection, handlers] = useListState<number>([]);
 
@@ -57,10 +58,25 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
   };
 
   const onDelete = () => {
-    if (onDeleteProp && selection.length > 0) {
-      onDeleteProp(selection);
+    if (selection.length > 0) {
+      trigger(selection)
+        .then(() => {
+          mutate();
+        })
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
       handlers.filter((item) => !selection.includes(item));
     }
+  };
+
+  const onSelectionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
   };
 
   const isChecked = (item: Tax) => !!item.id && selection.includes(item.id);
@@ -85,16 +101,16 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th>
+            <th className={classes.selectionCell}>
               <Checkbox
                 onChange={onToggleAll}
                 checked={allChecked}
                 indeterminate={indeterminate}
               />
             </th>
-            <th>Tax system</th>
             <th>Paid on</th>
             <th>Price</th>
+            <th>Tax system</th>
             <th>Description</th>
           </tr>
         </thead>
@@ -106,13 +122,15 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                 className={classes.row}
                 onClick={onRowClick(tax)}
               >
-                <td>
+                <td
+                  className={classes.selectionCell}
+                  onClick={onSelectionCellClick}
+                >
                   <Checkbox
                     checked={isChecked(tax)}
                     onChange={onToggleRow(tax)}
                   />
                 </td>
-                <td>{tax.system}</td>
                 <td>
                   {new Date(
                     tax.transaction.transaction_date
@@ -121,6 +139,7 @@ const TaxTable: FC<TaxTableProps> = ({ taxes, onDelete: onDeleteProp }) => {
                 <td>
                   {tax.transaction.amount} {tax.transaction.currency}
                 </td>
+                <td>{tax.system}</td>
                 <td>{tax.description}</td>
               </tr>
             ) : null

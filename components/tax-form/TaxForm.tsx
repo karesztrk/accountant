@@ -6,10 +6,15 @@ import CurrencyInput from "components/currency-input/CurrencyInput";
 import { taxesPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
 import { FC, useState } from "react";
-import { Tax } from "types/database";
 import { Tax as ClientTax } from "types/client";
 import { toRemoteTax, toTax } from "./TaxForm.util";
 import { Calendar } from "tabler-icons-react";
+import { useRouter } from "next/router";
+import { useSWRConfig } from "swr";
+import { useTaxMutation } from "hooks/tax/use-tax-mutation";
+import { cacheKeys } from "lib";
+import { showNotification } from "@mantine/notifications";
+import { useTax } from "hooks/tax/use-tax";
 
 const initialValues: ClientTax = {
   amount: 0,
@@ -17,13 +22,15 @@ const initialValues: ClientTax = {
   paid_on: new Date(),
 };
 
-interface TaxFormProps {
-  tax?: Tax;
-  onSubmit?: (values: Tax) => void;
-}
-
-const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
+const TaxForm: FC = () => {
   const { user } = useUser();
+
+  const router = useRouter();
+
+  const id = router.query.id;
+  const { mutate } = useSWRConfig();
+  const { data: tax } = useTax(id ? id[0] : undefined);
+  const { trigger } = useTaxMutation();
 
   const [loading, setLoading] = useState(false);
 
@@ -36,21 +43,29 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
       return;
     }
 
-    if (onSubmitProps) {
-      setLoading(true);
-      onSubmitProps(toRemoteTax(user.id, values, tax?.id));
-    }
+    setLoading(true);
+    const data = toRemoteTax(user.id, values, tax?.id);
+    trigger(data)
+      .then(() => {
+        mutate(cacheKeys.taxes, undefined, {});
+        router.push(taxesPage.href);
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack spacing="md">
-        <TextInput
-          label="Tax system"
-          placeholder="General"
-          {...form.getInputProps("system")}
-        />
-
         <DatePicker
           icon={<Calendar size={16} />}
           placeholder="Payment date"
@@ -67,6 +82,12 @@ const TaxForm: FC<TaxFormProps> = ({ tax, onSubmit: onSubmitProps }) => {
           onChange={form.getInputProps("amount").onChange}
           onCurrenyChange={form.getInputProps("currency").onChange}
           required
+        />
+
+        <TextInput
+          label="Tax system"
+          placeholder="General"
+          {...form.getInputProps("system")}
         />
 
         <Textarea
