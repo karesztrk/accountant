@@ -1,10 +1,17 @@
 import { Button, Group, Stack, TextInput } from "@mantine/core";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { useUser } from "@supabase/auth-helpers-react";
+import { PostgrestError } from "@supabase/supabase-js";
+import { partnersPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import { usePartner } from "hooks/partner/use-partner";
+import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
+import { cacheKeys } from "lib";
+import { useRouter } from "next/router";
 import { FC, useState } from "react";
+import { useSWRConfig } from "swr";
 import { Partner as ClientPartner } from "types/client";
-import { Partner } from "types/database";
 import { toRemotePartner } from "./PartnerForm.util";
 
 const initialValues: ClientPartner = {
@@ -14,20 +21,20 @@ const initialValues: ClientPartner = {
   email: "",
 };
 
-interface PartnerFormProps {
-  partner?: Partner;
-  onSubmit?: (values: Partner) => void;
-}
-
 const validate = {
   email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
 };
 
-const PartnerForm: FC<PartnerFormProps> = ({
-  partner,
-  onSubmit: onSubmitProps,
-}) => {
+const PartnerForm: FC = () => {
   const { user } = useUser();
+
+  const router = useRouter();
+
+  const { mutate } = useSWRConfig();
+
+  const id = router.query.id;
+  const { data: partner } = usePartner(id ? id[0] : undefined);
+  const { trigger } = usePartnerMutation();
 
   const [loading, setLoading] = useState(false);
 
@@ -41,10 +48,21 @@ const PartnerForm: FC<PartnerFormProps> = ({
       return;
     }
 
-    if (onSubmitProps) {
-      setLoading(true);
-      onSubmitProps(toRemotePartner(user.id, values, partner?.id));
-    }
+    setLoading(true);
+    const data = toRemotePartner(user.id, values, partner?.id);
+    trigger(data)
+      .then(() => {
+        mutate(cacheKeys.partners);
+        router.push(partnersPage.href);
+      })
+      .catch((error: PostgrestError) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      });
   };
 
   return (

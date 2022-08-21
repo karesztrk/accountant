@@ -1,14 +1,10 @@
-import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
-import { PostgrestError } from "@supabase/supabase-js";
 import Layout from "components/Layout";
-import { loginPage, partnersPage } from "components/navbar/pages";
+import { loginPage } from "components/navbar/pages";
 import PartnerForm from "components/partner-form/PartnerForm";
-import { usePartner } from "hooks/partner/use-partner";
-import { usePartnerMutation } from "hooks/partner/use-partner-mutation";
 import { cacheKeys, tableNames } from "lib";
 import {
   GetServerSideProps,
@@ -16,43 +12,20 @@ import {
   GetServerSidePropsResult,
   NextPage,
 } from "next";
-import { useRouter } from "next/router";
-import { useSWRConfig } from "swr";
+import { SWRConfig, unstable_serialize } from "swr";
 import { Partner } from "types/database";
 
 interface UpdatePartnerProps {
-  id?: string;
-  fallbackData?: Partner;
+  fallback: Record<string, unknown>;
 }
 
-const UpdatePartner: NextPage<UpdatePartnerProps> = ({ id, fallbackData }) => {
-  const router = useRouter();
-  const { mutate } = useSWRConfig();
-  const { data } = usePartner(id, fallbackData);
-  const { trigger } = usePartnerMutation();
-
-  const onSubmit = (values: Partner) => {
-    if (id && values) {
-      trigger(values)
-        .then(() => {
-          mutate(cacheKeys.partners);
-          router.push(partnersPage.href);
-        })
-        .catch((error: PostgrestError) => {
-          showNotification({
-            id: error.code,
-            title: "Error",
-            message: error.message,
-            color: "red",
-          });
-        });
-    }
-  };
-
+const UpdatePartner: NextPage<UpdatePartnerProps> = ({ fallback }) => {
   return (
-    <Layout size="xs" title="Edit partner">
-      {data && <PartnerForm partner={data} onSubmit={onSubmit} />}
-    </Layout>
+    <SWRConfig value={{ fallback }}>
+      <Layout size="xs" title="Edit partner">
+        <PartnerForm />
+      </Layout>
+    </SWRConfig>
   );
 };
 
@@ -62,13 +35,12 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
     ctx: GetServerSidePropsContext<{ id?: string }>
   ): Promise<
     GetServerSidePropsResult<{
-      id?: string;
-      fallbackData?: Partner;
+      fallback: Record<string, unknown>;
     }>
   > {
     const id = ctx.query.id;
     if (!id) {
-      return { props: {} };
+      return { props: { fallback: {} } };
     }
     const { data } = await supabaseServerClient(ctx)
       .from<Partner>(tableNames.partner)
@@ -76,7 +48,13 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
       .eq("id", id[0])
       .single();
 
-    return { props: { id: id[0], fallbackData: data || undefined } };
+    return {
+      props: {
+        fallback: {
+          [unstable_serialize(cacheKeys.partner(id[0]))]: data || [],
+        },
+      },
+    };
   },
 });
 

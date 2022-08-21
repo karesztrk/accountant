@@ -1,5 +1,5 @@
 import { PostgrestError } from "@supabase/supabase-js";
-import { cacheKeys, tableNames } from "lib";
+import { cacheKeys } from "lib";
 import { listFetcher } from "lib/fetcher";
 import useSWR from "swr";
 import { Partner } from "types/database";

@@ -7,23 +7,21 @@ import {
   Transition,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
+import { usePartners } from "hooks/partner/use-partners";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent } from "react";
 import { Partner } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
-interface PartnerTableProps {
-  partners: Partner[];
-  onDelete?: (ids: number[]) => void;
-}
-
-const PartnerTable: FC<PartnerTableProps> = ({
-  partners,
-  onDelete: onDeleteProp,
-}) => {
+const PartnerTable: FC = ({}) => {
   const router = useRouter();
   const { classes } = useStyles();
+
+  const { data: partners = [], mutate } = usePartners();
+  const { trigger } = usePartnerDeletion();
 
   const [selection, handlers] = useListState<number>([]);
 
@@ -62,9 +60,24 @@ const PartnerTable: FC<PartnerTableProps> = ({
 
   const onDelete = () => {
     if (onDeleteProp && selection.length > 0) {
-      onDeleteProp(selection);
+      trigger(selection)
+        .then(() => {
+          mutate();
+        })
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
       handlers.filter((item) => !selection.includes(item));
     }
+  };
+
+  const onSelectionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
   };
 
   const isChecked = (item: Partner) => !!item.id && selection.includes(item.id);
@@ -89,7 +102,7 @@ const PartnerTable: FC<PartnerTableProps> = ({
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th>
+            <th className={classes.selectionCell}>
               <Checkbox
                 onChange={onToggleAll}
                 checked={allChecked}
@@ -110,7 +123,10 @@ const PartnerTable: FC<PartnerTableProps> = ({
                 className={classes.row}
                 onClick={onRowClick(partner)}
               >
-                <td>
+                <td
+                  className={classes.selectionCell}
+                  onClick={onSelectionCellClick}
+                >
                   <Checkbox
                     checked={isChecked(partner)}
                     onChange={onToggleRow(partner)}
