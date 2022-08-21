@@ -1,5 +1,5 @@
 import { NativeSelect, NumberInput } from "@mantine/core";
-import React, { ChangeEvent, CSSProperties, FC } from "react";
+import { ChangeEvent, CSSProperties, FC } from "react";
 import { data } from "./data";
 import { useStyles } from "./CurrencyInput.styles";
 
@@ -12,6 +12,7 @@ interface CurrencyInputProps {
   onCurrenyChange?: (value: string) => void;
   required?: boolean;
   style?: CSSProperties;
+  expense?: boolean;
 }
 
 const CurrencyInput: FC<CurrencyInputProps> = ({
@@ -23,6 +24,7 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
   currency,
   required,
   style,
+  expense,
 }) => {
   const { classes } = useStyles();
 
@@ -47,6 +49,25 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
     />
   );
 
+  const format = (value?: string) => {
+    if (!value) {
+      return "";
+    }
+
+    let number = parseFloat(value);
+    if (Number.isNaN(number)) {
+      return "";
+    }
+
+    if (expense && number > 0) {
+      number *= -1;
+    }
+    return `${number}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+  };
+
+  const parse = (value?: string) =>
+    value ? value.replace(/\$\s?|(,*)/g, "") : "";
+
   return (
     <NumberInput
       placeholder={placeholder}
@@ -56,16 +77,13 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
       value={value}
       onChange={onChange}
       required={required}
-      min={0}
+      max={expense ? 0 : undefined}
+      min={expense ? undefined : 0}
       precision={2}
       hideControls
       style={style}
-      parser={(value) => (value ? value.replace(/\$\s?|(,*)/g, "") : "")}
-      formatter={(value) =>
-        value && !Number.isNaN(parseFloat(value))
-          ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
-          : ""
-      }
+      parser={parse}
+      formatter={format}
     />
   );
 };

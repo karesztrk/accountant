@@ -45,22 +45,23 @@ const TaxForm: FC = () => {
 
     setLoading(true);
     const data = toRemoteTax(user.id, values, tax?.id);
-    trigger(data)
-      .then(() => {
-        mutate(cacheKeys.taxes, undefined, {});
-        router.push(taxesPage.href);
-      })
-      .catch((error) => {
-        showNotification({
-          id: error.code,
-          title: "Error",
-          message: error.message,
-          color: "red",
-        });
-      })
-      .finally(() => {
-        setLoading(false);
-      });
+    console.log("🚀 ~ file: TaxForm.tsx ~ line 48 ~ onSubmit ~ data", data);
+    // trigger(data)
+    //   .then(() => {
+    //     mutate(cacheKeys.taxes, undefined, {});
+    //     router.push(taxesPage.href);
+    //   })
+    //   .catch((error) => {
+    //     showNotification({
+    //       id: error.code,
+    //       title: "Error",
+    //       message: error.message,
+    //       color: "red",
+    //     });
+    //   })
+    //   .finally(() => {
+    //     setLoading(false);
+    //   });
   };
 
   return (
@@ -82,6 +83,7 @@ const TaxForm: FC = () => {
           onChange={form.getInputProps("amount").onChange}
           onCurrenyChange={form.getInputProps("currency").onChange}
           required
+          expense
         />
 
         <TextInput
