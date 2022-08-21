@@ -12,17 +12,15 @@ import { ChangeEvent, FC, MouseEvent } from "react";
 import { useStyles } from "../DataTable.styles";
 import { InvoiceWithPartner } from "types/database";
 import { useListState } from "@mantine/hooks";
+import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
+import { showNotification } from "@mantine/notifications";
+import { useInvoices } from "hooks/invoice/use-invoices";
 
-interface InvoiceTableProps {
-  invoices: InvoiceWithPartner[];
-  onDelete?: (ids: number[]) => void;
-}
-
-const InvoiceTable: FC<InvoiceTableProps> = ({
-  invoices,
-  onDelete: onDeleteProp,
-}) => {
+const InvoiceTable: FC = () => {
   const router = useRouter();
+
+  const { data: invoices = [], mutate } = useInvoices();
+  const { trigger } = useInvoiceDeletion();
 
   const [selection, handlers] = useListState<number>([]);
 
@@ -62,10 +60,25 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
   };
 
   const onDelete = () => {
-    if (onDeleteProp && selection.length > 0) {
-      onDeleteProp(selection);
+    if (selection.length > 0) {
+      trigger(selection)
+        .then(() => {
+          mutate();
+        })
+        .catch((error) => {
+          showNotification({
+            id: error.code,
+            title: "Error",
+            message: error.message,
+            color: "red",
+          });
+        });
       handlers.filter((item) => !selection.includes(item));
     }
+  };
+
+  const onSelectionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
   };
 
   const isChecked = (item: InvoiceWithPartner) =>
@@ -91,7 +104,7 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th>
+            <th className={classes.selectionCell}>
               <Checkbox
                 onChange={onToggleAll}
                 checked={allChecked}
@@ -111,7 +124,10 @@ const InvoiceTable: FC<InvoiceTableProps> = ({
               className={classes.row}
               onClick={onRowClick(invoice)}
             >
-              <td>
+              <td
+                className={classes.selectionCell}
+                onClick={onSelectionCellClick}
+              >
                 <Checkbox
                   checked={isChecked(invoice)}
                   onChange={onToggleRow(invoice)}

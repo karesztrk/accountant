@@ -1,13 +1,20 @@
 import { Button, Group, Select, Stack, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
+import { invoicesPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import { useInvoice } from "hooks/invoice/use-invoice";
+import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
+import { usePartners } from "hooks/partner/use-partners";
+import { cacheKeys } from "lib";
+import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
+import { useSWRConfig } from "swr";
 import { Calendar } from "tabler-icons-react";
 import { Invoice as ClientInvoice } from "types/client";
-import { Invoice, Partner } from "types/database";
 import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
 
 const initialValues: ClientInvoice = {
@@ -18,18 +25,16 @@ const initialValues: ClientInvoice = {
   currency: "EUR",
 };
 
-interface InvoiceFormProps {
-  invoice?: Invoice;
-  partners: Partner[];
-  onSubmit?: (values: Invoice) => void;
-}
-
-const InvoiceForm: FC<InvoiceFormProps> = ({
-  invoice,
-  partners = [],
-  onSubmit: onSubmitProps,
-}) => {
+const InvoiceForm: FC = () => {
   const { user } = useUser();
+
+  const router = useRouter();
+
+  const id = router.query.id;
+  const { mutate } = useSWRConfig();
+  const { data: invoice } = useInvoice(id ? id[0] : undefined);
+  const { data: partners = [] } = usePartners();
+  const { trigger } = useInvoiceMutation();
 
   const [loading, setLoading] = useState(false);
 
@@ -44,10 +49,24 @@ const InvoiceForm: FC<InvoiceFormProps> = ({
       return;
     }
 
-    if (onSubmitProps) {
-      setLoading(true);
-      onSubmitProps(toRemoteInvoice(values, invoice?.id));
-    }
+    setLoading(true);
+    const data = toRemoteInvoice(values, invoice?.id);
+    trigger(data)
+      .then(() => {
+        mutate(cacheKeys.invoices());
+        router.push(invoicesPage.href);
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

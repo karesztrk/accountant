@@ -1,16 +1,11 @@
-import { useUser } from "@supabase/auth-helpers-react";
 import { PostgrestError } from "@supabase/supabase-js";
 import { cacheKeys } from "lib";
 import { invoiceWithPartnerFetcher } from "lib/fetcher/invoice";
 import useSWR from "swr";
 import { InvoiceWithPartner } from "types/database";
 
-export const useInvoices = (
-  fallbackData?: InvoiceWithPartner[],
-  condition?: { partner_id: string }
-) => {
-  const { user } = useUser();
-  const key = user ? cacheKeys.invoices(condition) : null;
+export const useInvoices = (condition?: { partner_id: string }) => {
+  const key = cacheKeys.invoices(condition);
   return useSWR<InvoiceWithPartner[], PostgrestError>(
     key,
     invoiceWithPartnerFetcher,
@@ -18,7 +13,6 @@ export const useInvoices = (
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-      fallbackData,
     }
   );
 };

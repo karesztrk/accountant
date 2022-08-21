@@ -1,4 +1,3 @@
-import { showNotification } from "@mantine/notifications";
 import {
   supabaseServerClient,
   withPageAuth,
@@ -6,55 +5,26 @@ import {
 import InvoiceTable from "components/invoice-table/InvoiceTable";
 import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
-import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
-import { useInvoices } from "hooks/invoice/use-invoices";
-import { tableNames } from "lib";
+import { cacheKeys, tableNames } from "lib";
 import type {
   GetServerSideProps,
   GetServerSidePropsResult,
   NextPage,
 } from "next";
-import { useEffect } from "react";
+import { SWRConfig, unstable_serialize } from "swr";
 import { InvoiceWithPartner } from "types/database";
 
 interface InvoicesProps {
-  fallbackData: InvoiceWithPartner[];
+  fallback: Record<string, unknown>;
 }
 
-const Invoices: NextPage<InvoicesProps> = ({ fallbackData }) => {
-  const { data = [], error, mutate } = useInvoices(fallbackData);
-  const { trigger: triggerDeletion } = useInvoiceDeletion();
-
-  const onDelete = (ids: number[]) => {
-    triggerDeletion(ids)
-      .then(() => {
-        mutate();
-      })
-      .catch((error) => {
-        showNotification({
-          id: error.code,
-          title: "Error",
-          message: error.message,
-          color: "red",
-        });
-      });
-  };
-
-  useEffect(() => {
-    if (error) {
-      showNotification({
-        id: error.code,
-        title: "Error",
-        message: error.message,
-        color: "red",
-      });
-    }
-  }, [error]);
-
+const Invoices: NextPage<InvoicesProps> = ({ fallback }) => {
   return (
-    <Layout title="Invoices">
-      {data && <InvoiceTable invoices={data} onDelete={onDelete} />}
-    </Layout>
+    <SWRConfig value={{ fallback }}>
+      <Layout title="Invoices">
+        <InvoiceTable />
+      </Layout>
+    </SWRConfig>
   );
 };
 
@@ -62,14 +32,20 @@ export const getServerSideProps: GetServerSideProps = withPageAuth({
   redirectTo: loginPage.href,
   async getServerSideProps(ctx): Promise<
     GetServerSidePropsResult<{
-      fallbackData: InvoiceWithPartner[];
+      fallback: Record<string, unknown>;
     }>
   > {
     const { data } = await supabaseServerClient(ctx)
       .from<InvoiceWithPartner>(tableNames.invoice)
       .select(`*, partner!inner(name)`);
 
-    return { props: { fallbackData: data || [] } };
+    return {
+      props: {
+        fallback: {
+          [unstable_serialize(cacheKeys.invoices)]: data || [],
+        },
+      },
+    };
   },
 });
 
