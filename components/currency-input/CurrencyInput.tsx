@@ -60,6 +60,12 @@ const CurrencyInput: FC<CurrencyInputProps> = ({
       precision={2}
       hideControls
       style={style}
+      parser={(value) => (value ? value.replace(/\$\s?|(,*)/g, "") : "")}
+      formatter={(value) =>
+        value && !Number.isNaN(parseFloat(value))
+          ? `${value}`.replace(/\B(?=(\d{3})+(?!\d))/g, ",")
+          : ""
+      }
     />
   );
 };
