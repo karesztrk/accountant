@@ -7,23 +7,24 @@ export const tableNames = {
 };
 
 export const viewNames = {
-  revenue: "revenue_per_month" as const,
+  income: "income_per_month" as const,
+  expense: "expense_per_month" as const,
 };
 
 export const cacheKeys = {
   invoices: (condition?: Record<string, unknown>) => {
     return condition ? [tableNames.invoice, condition] : [tableNames.invoice];
   },
-  invoice: (id?: string) => [tableNames.invoice, { id }],
+  invoice: (id?: string) => (id ? [tableNames.invoice, { id }] : null),
 
   partners: [tableNames.partner],
-  partner: (id?: string) => [tableNames.partner, { id }],
+  partner: (id?: string) => (id ? [tableNames.partner, { id }] : null),
 
   payments: [tableNames.payment],
-  payment: (id?: string) => [tableNames.payment, { id }],
+  payment: (id?: string) => (id ? [tableNames.payment, { id }] : null),
 
   taxes: [tableNames.tax],
-  tax: (id?: string) => [tableNames.tax, { id }],
+  tax: (id?: string) => (id ? [tableNames.tax, { id }] : null),
 
-  dashboardData: () => [viewNames.revenue],
+  dashboardData: () => [viewNames.income],
 };

@@ -60,4 +60,12 @@ export interface Income {
   period: string;
   amount: number;
   currency: string;
+  local_amount: number;
+  local_currency: string;
+}
+
+export interface Expense {
+  period: string;
+  amount: number;
+  currency: string;
 }

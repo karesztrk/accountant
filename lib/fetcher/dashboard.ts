@@ -3,8 +3,15 @@ import { viewNames } from "lib";
 import { Income } from "types/database";
 
 export const dashboardFetcher = async () => {
-  const { data } = await supabaseClient
-    .from<Income>(viewNames.revenue)
+  const { data: income } = await supabaseClient
+    .from<Income>(viewNames.income)
     .select("*");
-  return data || [];
+
+  const { data: expense } = await supabaseClient
+    .from<Income>(viewNames.income)
+    .select("*");
+  return {
+    income: income || [],
+    expense: expense || [],
+  };
 };

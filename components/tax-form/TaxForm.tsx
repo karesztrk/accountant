@@ -29,6 +29,7 @@ const TaxForm: FC = () => {
 
   const id = router.query.id;
   const { mutate } = useSWRConfig();
+  console.log("🚀 ~ file: TaxForm.tsx ~ line 33 ~ id", id);
   const { data: tax } = useTax(id ? id[0] : undefined);
   const { trigger } = useTaxMutation();
 
@@ -45,23 +46,22 @@ const TaxForm: FC = () => {
 
     setLoading(true);
     const data = toRemoteTax(user.id, values, tax?.id);
-    console.log("🚀 ~ file: TaxForm.tsx ~ line 48 ~ onSubmit ~ data", data);
-    // trigger(data)
-    //   .then(() => {
-    //     mutate(cacheKeys.taxes, undefined, {});
-    //     router.push(taxesPage.href);
-    //   })
-    //   .catch((error) => {
-    //     showNotification({
-    //       id: error.code,
-    //       title: "Error",
-    //       message: error.message,
-    //       color: "red",
-    //     });
-    //   })
-    //   .finally(() => {
-    //     setLoading(false);
-    //   });
+    trigger(data)
+      .then(() => {
+        mutate(cacheKeys.taxes, undefined, {});
+        router.push(taxesPage.href);
+      })
+      .catch((error) => {
+        showNotification({
+          id: error.code,
+          title: "Error",
+          message: error.message,
+          color: "red",
+        });
+      })
+      .finally(() => {
+        setLoading(false);
+      });
   };
 
   return (

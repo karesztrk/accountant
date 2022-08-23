@@ -8,12 +8,15 @@ import {
   Receipt2,
   UserPlus,
 } from "tabler-icons-react";
-import { Income } from "types/database";
+import { Expense, Income } from "types/database";
 import { useStyles } from "./Dashboard.styles";
 import {
+  getProfitCurrency,
+  getProfitValue,
   getRevenueCurrency,
   getRevenueDiff,
   getRevenueValue,
+  getProfitDiff,
 } from "./Dashboard.util";
 
 const icons = {
@@ -24,10 +27,13 @@ const icons = {
 };
 
 interface DashboardProps {
-  revenue: Income[];
+  data: {
+    income: Income[];
+    expense: Expense[];
+  };
 }
 
-const Dashboard: FC<DashboardProps> = ({ revenue }) => {
+const Dashboard: FC<DashboardProps> = ({ data: { income, expense } }) => {
   const { classes } = useStyles();
 
   const data = useMemo(
@@ -35,17 +41,19 @@ const Dashboard: FC<DashboardProps> = ({ revenue }) => {
       {
         title: "Revenue",
         icon: "receipt",
-        value: `${getRevenueValue(revenue)} ${getRevenueCurrency(revenue)}`,
-        diff: getRevenueDiff(revenue),
+        value: `${getRevenueValue(income)} ${getRevenueCurrency(income)}`,
+        diff: getRevenueDiff(income),
       },
       {
         title: "Profit",
         icon: "coin",
-        value: "4,145",
-        diff: -13,
+        value: `${getProfitValue(income, expense)} ${getProfitCurrency(
+          expense
+        )}`,
+        diff: getProfitDiff(income, expense),
       },
     ],
-    [revenue]
+    [income, expense]
   );
 
   const stats = data.map((stat) => {
