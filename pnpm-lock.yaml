@@ -4,13 +4,13 @@ specifiers:
   '@babel/core': ^7.18.9
   '@emotion/react': ^11.9.3
   '@emotion/server': ^11.4.0
-  '@mantine/core': 5.0.2
-  '@mantine/dates': 5.0.2
-  '@mantine/form': ^5.0.2
-  '@mantine/hooks': 5.0.2
-  '@mantine/next': 5.0.2
-  '@mantine/notifications': 5.0.2
-  '@mantine/nprogress': ^5.0.2
+  '@mantine/core': 5.2.3
+  '@mantine/dates': 5.2.3
+  '@mantine/form': ^5.2.3
+  '@mantine/hooks': 5.2.3
+  '@mantine/next': 5.2.3
+  '@mantine/notifications': 5.2.3
+  '@mantine/nprogress': ^5.2.3
   '@supabase/auth-helpers-nextjs': ^0.2.5
   '@supabase/auth-helpers-react': ^0.2.3
   '@supabase/supabase-js': ^1.35.4
@@ -30,13 +30,13 @@ specifiers:
 dependencies:
   '@emotion/react': 11.9.3_szkdlbnthht4v3jvm76fn7u6na
   '@emotion/server': 11.4.0
-  '@mantine/core': 5.0.2_rzoqdthat7zppl2mohsyufa5he
-  '@mantine/dates': 5.0.2_3hq7e64qkb7defizs23d2lu6u4
-  '@mantine/form': 5.0.2_react@18.2.0
-  '@mantine/hooks': 5.0.2_react@18.2.0
-  '@mantine/next': 5.0.2_kwjmcdwflwvih3sdpc7dflnd6e
-  '@mantine/notifications': 5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq
-  '@mantine/nprogress': 5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq
+  '@mantine/core': 5.2.3_sgtqbaslgztszshypeuedokiga
+  '@mantine/dates': 5.2.3_ebjjtoejo6bkqcem4hkj5npmay
+  '@mantine/form': 5.2.3_react@18.2.0
+  '@mantine/hooks': 5.2.3_react@18.2.0
+  '@mantine/next': 5.2.3_kwjmcdwflwvih3sdpc7dflnd6e
+  '@mantine/notifications': 5.2.3_gtpyizsqksopg24uajf25sqkj4
+  '@mantine/nprogress': 5.2.3_gtpyizsqksopg24uajf25sqkj4
   '@supabase/auth-helpers-nextjs': 0.2.5
   '@supabase/auth-helpers-react': 0.2.3
   '@supabase/supabase-js': 1.35.4
@@ -381,17 +381,17 @@ packages:
     dev: true
 
   /@floating-ui/core/0.7.3:
-    resolution: {integrity: sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==}
+    resolution: {integrity: sha512-buc8BXHmG9l82+OQXOFU3Kr2XQx9ys01U/Q9HMIrZ300iLc8HLMgh7dcCqgYzAzf4BkoQvDcXf5Y+CuEZ5JBYg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@floating-ui/core/-/core-0.7.3.tgz}
     dev: false
 
   /@floating-ui/dom/0.5.4:
-    resolution: {integrity: sha512-419BMceRLq0RrmTSDxn8hf9R3VCJv2K9PUfugh5JyEFmdjzDo+e8U5EdR8nzKq8Yj1htzLm3b6eQEEam3/rrtg==}
+    resolution: {integrity: sha512-419BMceRLq0RrmTSDxn8hf9R3VCJv2K9PUfugh5JyEFmdjzDo+e8U5EdR8nzKq8Yj1htzLm3b6eQEEam3/rrtg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@floating-ui/dom/-/dom-0.5.4.tgz}
     dependencies:
       '@floating-ui/core': 0.7.3
     dev: false
 
   /@floating-ui/react-dom-interactions/0.6.6_bb2bxwco6ptpubzwpazr52qf6i:
-    resolution: {integrity: sha512-qnao6UPjSZNHnXrF+u4/n92qVroQkx0Umlhy3Avk1oIebm/5ee6yvDm4xbHob0OjY7ya8WmUnV3rQlPwX3Atwg==}
+    resolution: {integrity: sha512-qnao6UPjSZNHnXrF+u4/n92qVroQkx0Umlhy3Avk1oIebm/5ee6yvDm4xbHob0OjY7ya8WmUnV3rQlPwX3Atwg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@floating-ui/react-dom-interactions/-/react-dom-interactions-0.6.6.tgz}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -406,7 +406,7 @@ packages:
     dev: false
 
   /@floating-ui/react-dom/0.7.2_bb2bxwco6ptpubzwpazr52qf6i:
-    resolution: {integrity: sha512-1T0sJcpHgX/u4I1OzIEhlcrvkUN8ln39nz7fMoE/2HDHrPiMFoOGR7++GYyfUmIQHkkrTinaeQsO3XWubjSvGg==}
+    resolution: {integrity: sha512-1T0sJcpHgX/u4I1OzIEhlcrvkUN8ln39nz7fMoE/2HDHrPiMFoOGR7++GYyfUmIQHkkrTinaeQsO3XWubjSvGg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@floating-ui/react-dom/-/react-dom-0.7.2.tgz}
     peerDependencies:
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
@@ -466,17 +466,17 @@ packages:
       '@jridgewell/resolve-uri': 3.1.0
       '@jridgewell/sourcemap-codec': 1.4.14
 
-  /@mantine/core/5.0.2_rzoqdthat7zppl2mohsyufa5he:
-    resolution: {integrity: sha512-E4yXTVcoQByIeAp9Mlvh91jcR1UuzgwtvRC5CC5X7gkqyRWwdRQTwgGpZoYDE188SR4oIgfL2jXlC0vo0lhGrQ==}
+  /@mantine/core/5.2.3_sgtqbaslgztszshypeuedokiga:
+    resolution: {integrity: sha512-1qhlyPE357zS99lSSmeiWLnJe5wubXyX9RiNjKD9N47UeiNXvkFQREfEsKPd6jDn+xQdcY8H8GL62Y9xSkSwuQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/core/-/core-5.2.3.tgz}
     peerDependencies:
-      '@mantine/hooks': 5.0.2
+      '@mantine/hooks': 5.2.3
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
       '@floating-ui/react-dom-interactions': 0.6.6_bb2bxwco6ptpubzwpazr52qf6i
-      '@mantine/hooks': 5.0.2_react@18.2.0
-      '@mantine/styles': 5.0.2_rhnqe6iecjnt44nnqdgjif53uu
-      '@mantine/utils': 5.0.2_react@18.2.0
+      '@mantine/hooks': 5.2.3_react@18.2.0
+      '@mantine/styles': 5.2.3_rhnqe6iecjnt44nnqdgjif53uu
+      '@mantine/utils': 5.2.3_react@18.2.0
       '@radix-ui/react-scroll-area': 1.0.0_biqbaboplfbrettd7655fr4n2y
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -486,47 +486,48 @@ packages:
       - '@types/react'
     dev: false
 
-  /@mantine/dates/5.0.2_3hq7e64qkb7defizs23d2lu6u4:
-    resolution: {integrity: sha512-t3O1TfYoINrX9y9zArbzA90I+SOc+5HR8za/rOaDl9UMCO+uxl9cgiek+B0GSsL0FQRZzE7pDpbltexzUvKvfg==}
+  /@mantine/dates/5.2.3_ebjjtoejo6bkqcem4hkj5npmay:
+    resolution: {integrity: sha512-lmgA4WHvb0rffsgqfR8cK6ICb/d8TGzbcJ5PKQZyQjtgj2WBpMHsfZFKb3a3XscqRLfZHoCZFIAwsOEitDORXA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/dates/-/dates-5.2.3.tgz}
     peerDependencies:
-      '@mantine/core': 5.0.2
-      '@mantine/hooks': 5.0.2
+      '@mantine/core': 5.2.3
+      '@mantine/hooks': 5.2.3
       dayjs: '>=1.0.0'
       react: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.0.2_rzoqdthat7zppl2mohsyufa5he
-      '@mantine/hooks': 5.0.2_react@18.2.0
-      '@mantine/utils': 5.0.2_react@18.2.0
+      '@mantine/core': 5.2.3_sgtqbaslgztszshypeuedokiga
+      '@mantine/hooks': 5.2.3_react@18.2.0
+      '@mantine/utils': 5.2.3_react@18.2.0
       dayjs: 1.11.3
       react: 18.2.0
     dev: false
 
-  /@mantine/form/5.0.2_react@18.2.0:
-    resolution: {integrity: sha512-VkW16orcIeOpQAdpSuXD2rIv/EVnMUCy00VV7zMhibFcT5j/qO4T0kW2gO4V5lp9xVCZuw1y1WthAdBA/GcQZA==}
+  /@mantine/form/5.2.3_react@18.2.0:
+    resolution: {integrity: sha512-unHQo9Dv3o+Pz8kvvC9HnJu35fzdHLAv3fF7+YKcwUjvfYF72Nxom6BW6AVGkrdAsNMQRfao0VwB8lKgoGh0ng==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/form/-/form-5.2.3.tgz}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
+      fast-deep-equal: 3.1.3
       klona: 2.0.5
       react: 18.2.0
     dev: false
 
-  /@mantine/hooks/5.0.2_react@18.2.0:
-    resolution: {integrity: sha512-TZsHUmsuPnl+hX6Jt5z8aPU0TWCUC2kuvr1CUBMUbQ2ff0UldcYeuOYmgb7pHlX79BXsGaRKIThLTcLHToYxbA==}
+  /@mantine/hooks/5.2.3_react@18.2.0:
+    resolution: {integrity: sha512-8JuNVnC9Df1MsbQLbRxp6PakwakM2O+P6zXYYfFQNUmsHqBzvU8u7fzeiRVCefW7rP3o1+39Qpm3pkQUz+T90w==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/hooks/-/hooks-5.2.3.tgz}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
       react: 18.2.0
     dev: false
 
-  /@mantine/next/5.0.2_kwjmcdwflwvih3sdpc7dflnd6e:
-    resolution: {integrity: sha512-mWB4qPPrWLI4n/JC8f1oUf0Vxi2TFb/6lpnSAf7dGu1FUyICBph0UmYAF2QV59mpnAtfQIpCGsAtdBN2PGBInQ==}
+  /@mantine/next/5.2.3_kwjmcdwflwvih3sdpc7dflnd6e:
+    resolution: {integrity: sha512-HURlXgNo0Cfgrx5EV7lnhV9mp23L02ppXltfkHRbpbraPCJbXMLKq5P/vTPy3O9saBTzjA+Tt43MD/nOOIflcA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/next/-/next-5.2.3.tgz}
     peerDependencies:
       next: '*'
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/ssr': 5.0.2_f4mhxzmjvffij27rnlwlqfoeom
-      '@mantine/styles': 5.0.2_rhnqe6iecjnt44nnqdgjif53uu
+      '@mantine/ssr': 5.2.3_f4mhxzmjvffij27rnlwlqfoeom
+      '@mantine/styles': 5.2.3_rhnqe6iecjnt44nnqdgjif53uu
       next: 12.2.2_qugu52izettqdqqm5qcjcltcia
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
@@ -535,39 +536,39 @@ packages:
       - '@emotion/server'
     dev: false
 
-  /@mantine/notifications/5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq:
-    resolution: {integrity: sha512-EicBoabJAV2G9y/g+/id76ERfz9ap+veN5rd3gkuYJssYnm98kfbgO73pLLm7ZaacNEGNlqWIIN2OYLcaoQ4Dw==}
+  /@mantine/notifications/5.2.3_gtpyizsqksopg24uajf25sqkj4:
+    resolution: {integrity: sha512-zhk6slPnWYurK1E26kOJJDJBouanBkgR3uAvyLFtTdUk1T/9p9i1wPVrexNQ2/74W78IgcsUaJW1XvGO4cgVpg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/notifications/-/notifications-5.2.3.tgz}
     peerDependencies:
-      '@mantine/core': 5.0.2
-      '@mantine/hooks': 5.0.2
+      '@mantine/core': 5.2.3
+      '@mantine/hooks': 5.2.3
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.0.2_rzoqdthat7zppl2mohsyufa5he
-      '@mantine/hooks': 5.0.2_react@18.2.0
-      '@mantine/utils': 5.0.2_react@18.2.0
+      '@mantine/core': 5.2.3_sgtqbaslgztszshypeuedokiga
+      '@mantine/hooks': 5.2.3_react@18.2.0
+      '@mantine/utils': 5.2.3_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
       react-transition-group: 4.4.2_biqbaboplfbrettd7655fr4n2y
     dev: false
 
-  /@mantine/nprogress/5.0.2_f5i4p2fqdv3bljtxlpxuzn73sq:
-    resolution: {integrity: sha512-LNUlwhvbxabj9ZAsa27ipGsydMtbky66KDxchETTKAeW9dQAo6Zio0wnJBXg3I4U9+UXeJr/p4dpmUuX4Jafeg==}
+  /@mantine/nprogress/5.2.3_gtpyizsqksopg24uajf25sqkj4:
+    resolution: {integrity: sha512-sOv1w60jSDDcpPwuOm1MHBN9Cn47jfYfHOe19Dl++HaaiJvlX7VOCZP4JCkgE1VqzsvJHnmBplskkgeOFX0JBw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/nprogress/-/nprogress-5.2.3.tgz}
     peerDependencies:
-      '@mantine/core': 5.0.2
-      '@mantine/hooks': 5.0.2
+      '@mantine/core': 5.2.3
+      '@mantine/hooks': 5.2.3
       react: '>=16.8.0'
       react-dom: '>=16.8.0'
     dependencies:
-      '@mantine/core': 5.0.2_rzoqdthat7zppl2mohsyufa5he
-      '@mantine/hooks': 5.0.2_react@18.2.0
-      '@mantine/utils': 5.0.2_react@18.2.0
+      '@mantine/core': 5.2.3_sgtqbaslgztszshypeuedokiga
+      '@mantine/hooks': 5.2.3_react@18.2.0
+      '@mantine/utils': 5.2.3_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/ssr/5.0.2_f4mhxzmjvffij27rnlwlqfoeom:
-    resolution: {integrity: sha512-gFdEvx6NSEt4TR3+ooVQvWu9r866W2xtOgz0+EG9Be+rOuMLBdksmBUMnlXOQ/8z0H1kAle/9lws84Y9hZAbZQ==}
+  /@mantine/ssr/5.2.3_f4mhxzmjvffij27rnlwlqfoeom:
+    resolution: {integrity: sha512-bvevdAojMedpdsOwvWfygOd4b0ApeLiAtlroule97+CX5bE3Xgets8KfviJmPtiy3JklHDPgWSexrDZve8k/YQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/ssr/-/ssr-5.2.3.tgz}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       '@emotion/server': '>=11.4.0'
@@ -576,14 +577,14 @@ packages:
     dependencies:
       '@emotion/react': 11.9.3_szkdlbnthht4v3jvm76fn7u6na
       '@emotion/server': 11.4.0
-      '@mantine/styles': 5.0.2_rhnqe6iecjnt44nnqdgjif53uu
+      '@mantine/styles': 5.2.3_rhnqe6iecjnt44nnqdgjif53uu
       html-react-parser: 1.4.12_react@18.2.0
       react: 18.2.0
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/styles/5.0.2_rhnqe6iecjnt44nnqdgjif53uu:
-    resolution: {integrity: sha512-0brNmE+skz7CEOXnTzW6mVH7fLn40oDvqGxh72LfQj0RS0sQOav4ZFq8sulhOcpM3nYjcF+930DMY+GKKxIsCw==}
+  /@mantine/styles/5.2.3_rhnqe6iecjnt44nnqdgjif53uu:
+    resolution: {integrity: sha512-26zn+xUdlS4wwgbpSzbSybrUszS6nJlI3BMk1CPPy3A98r5bEqjNUYJh8bLsfSIKUwUFFKfD4ROLd8UpAw2orw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/styles/-/styles-5.2.3.tgz}
     peerDependencies:
       '@emotion/react': '>=11.9.0'
       react: '>=16.8.0'
@@ -596,8 +597,8 @@ packages:
       react-dom: 18.2.0_react@18.2.0
     dev: false
 
-  /@mantine/utils/5.0.2_react@18.2.0:
-    resolution: {integrity: sha512-WCuUL+mJ0+8n3anMYb5no93ohyuMilIG49ZJ7XNZUN3g/ZxoKnKF3dEUpXqIUxKgUIwzAsiS9AFFpZSStgAPvw==}
+  /@mantine/utils/5.2.3_react@18.2.0:
+    resolution: {integrity: sha512-5JOKj8UHaqZmJeciDWQXlbJCNYGKzUrKONMT1kmttbxB6PmGFN8Vy/kTQoSEe09g05S8E79/xLCYGGL8s1N5Yg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@mantine/utils/-/utils-5.2.3.tgz}
     peerDependencies:
       react: '>=16.8.0'
     dependencies:
@@ -757,19 +758,19 @@ packages:
     dev: true
 
   /@radix-ui/number/1.0.0:
-    resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==}
+    resolution: {integrity: sha512-Ofwh/1HX69ZfJRiRBMTy7rgjAzHmwe4kW9C9Y99HTRUcYLUuVT0KESFj15rPjRgKJs20GPq8Bm5aEDJ8DuA3vA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/number/-/number-1.0.0.tgz}
     dependencies:
       '@babel/runtime': 7.18.6
     dev: false
 
   /@radix-ui/primitive/1.0.0:
-    resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==}
+    resolution: {integrity: sha512-3e7rn8FDMin4CgeL7Z/49smCA3rFYY3Ha2rUQ7HRWFadS5iCRw08ZgVT1LaNTCNqgvrUiyczLflrVrF0SRQtNA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/primitive/-/primitive-1.0.0.tgz}
     dependencies:
       '@babel/runtime': 7.18.6
     dev: false
 
   /@radix-ui/react-compose-refs/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-0KaSv6sx787/hK3eF53iOkiSLwAGlFMx5lotrqD2pTjB18KbybKoEIgkNZTKC60YECDQTKGTRcDBILwZVqVKvA==}
+    resolution: {integrity: sha512-0KaSv6sx787/hK3eF53iOkiSLwAGlFMx5lotrqD2pTjB18KbybKoEIgkNZTKC60YECDQTKGTRcDBILwZVqVKvA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-compose-refs/-/react-compose-refs-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -778,7 +779,7 @@ packages:
     dev: false
 
   /@radix-ui/react-context/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-1pVM9RfOQ+n/N5PJK33kRSKsr1glNxomxONs5c49MliinBY6Yw2Q995qfBUUo0/Mbg05B/sGA0gkgPI7kmSHBg==}
+    resolution: {integrity: sha512-1pVM9RfOQ+n/N5PJK33kRSKsr1glNxomxONs5c49MliinBY6Yw2Q995qfBUUo0/Mbg05B/sGA0gkgPI7kmSHBg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-context/-/react-context-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -787,7 +788,7 @@ packages:
     dev: false
 
   /@radix-ui/react-direction/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-2HV05lGUgYcA6xgLQ4BKPDmtL+QbIZYH5fCOTAOOcJ5O0QbWS3i9lKaurLzliYUDhORI2Qr3pyjhJh44lKA3rQ==}
+    resolution: {integrity: sha512-2HV05lGUgYcA6xgLQ4BKPDmtL+QbIZYH5fCOTAOOcJ5O0QbWS3i9lKaurLzliYUDhORI2Qr3pyjhJh44lKA3rQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-direction/-/react-direction-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -796,7 +797,7 @@ packages:
     dev: false
 
   /@radix-ui/react-presence/1.0.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-A+6XEvN01NfVWiKu38ybawfHsBjWum42MRPnEuqPsBZ4eV7e/7K321B5VgYMPv3Xx5An6o1/l9ZuDBgmcmWK3w==}
+    resolution: {integrity: sha512-A+6XEvN01NfVWiKu38ybawfHsBjWum42MRPnEuqPsBZ4eV7e/7K321B5VgYMPv3Xx5An6o1/l9ZuDBgmcmWK3w==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-presence/-/react-presence-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
@@ -809,7 +810,7 @@ packages:
     dev: false
 
   /@radix-ui/react-primitive/1.0.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-EyXe6mnRlHZ8b6f4ilTDrXmkLShICIuOTTj0GX4w1rp+wSxf3+TD05u1UOITC8VsJ2a9nwHvdXtOXEOl0Cw/zQ==}
+    resolution: {integrity: sha512-EyXe6mnRlHZ8b6f4ilTDrXmkLShICIuOTTj0GX4w1rp+wSxf3+TD05u1UOITC8VsJ2a9nwHvdXtOXEOl0Cw/zQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-primitive/-/react-primitive-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
@@ -821,7 +822,7 @@ packages:
     dev: false
 
   /@radix-ui/react-scroll-area/1.0.0_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-3SNFukAjS5remgtpAVR9m3Zgo23ZojBZ8V3TCyR3A+56x2mtVqKlPV4+e8rScZUFMuvtbjIdQCmsJBFBazKZig==}
+    resolution: {integrity: sha512-3SNFukAjS5remgtpAVR9m3Zgo23ZojBZ8V3TCyR3A+56x2mtVqKlPV4+e8rScZUFMuvtbjIdQCmsJBFBazKZig==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-scroll-area/-/react-scroll-area-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
       react-dom: ^16.8 || ^17.0 || ^18.0
@@ -841,7 +842,7 @@ packages:
     dev: false
 
   /@radix-ui/react-slot/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-3mrKauI/tWXo1Ll+gN5dHcxDPdm/Df1ufcDLCecn+pnCIVcdWE7CujXo8QaXOWRJyZyQWWbpB8eFwHzWXlv5mQ==}
+    resolution: {integrity: sha512-3mrKauI/tWXo1Ll+gN5dHcxDPdm/Df1ufcDLCecn+pnCIVcdWE7CujXo8QaXOWRJyZyQWWbpB8eFwHzWXlv5mQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-slot/-/react-slot-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -851,7 +852,7 @@ packages:
     dev: false
 
   /@radix-ui/react-use-callback-ref/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-GZtyzoHz95Rhs6S63D2t/eqvdFCm7I+yHMLVQheKM7nBD8mbZIt+ct1jz4536MDnaOGKIxynJ8eHTkVGVVkoTg==}
+    resolution: {integrity: sha512-GZtyzoHz95Rhs6S63D2t/eqvdFCm7I+yHMLVQheKM7nBD8mbZIt+ct1jz4536MDnaOGKIxynJ8eHTkVGVVkoTg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-use-callback-ref/-/react-use-callback-ref-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -860,7 +861,7 @@ packages:
     dev: false
 
   /@radix-ui/react-use-layout-effect/1.0.0_react@18.2.0:
-    resolution: {integrity: sha512-6Tpkq+R6LOlmQb1R5NNETLG0B4YP0wc+klfXafpUCj6JGyaUc8il7/kUZ7m59rGbXGczE9Bs+iz2qloqsZBduQ==}
+    resolution: {integrity: sha512-6Tpkq+R6LOlmQb1R5NNETLG0B4YP0wc+klfXafpUCj6JGyaUc8il7/kUZ7m59rGbXGczE9Bs+iz2qloqsZBduQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/@radix-ui/react-use-layout-effect/-/react-use-layout-effect-1.0.0.tgz}
     peerDependencies:
       react: ^16.8 || ^17.0 || ^18.0
     dependencies:
@@ -1093,7 +1094,7 @@ packages:
     dev: true
 
   /aria-hidden/1.1.3:
-    resolution: {integrity: sha512-RhVWFtKH5BiGMycI72q2RAFMLQi8JP9bLuQXgR5a8Znp7P5KOIADSJeyfI8PCVxLEp067B2HbP5JIiI/PXIZeA==}
+    resolution: {integrity: sha512-RhVWFtKH5BiGMycI72q2RAFMLQi8JP9bLuQXgR5a8Znp7P5KOIADSJeyfI8PCVxLEp067B2HbP5JIiI/PXIZeA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/aria-hidden/-/aria-hidden-1.1.3.tgz}
     engines: {node: '>=8.5.0'}
     dependencies:
       tslib: 1.14.1
@@ -1240,7 +1241,7 @@ packages:
     dev: true
 
   /clsx/1.1.1:
-    resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==}
+    resolution: {integrity: sha512-6/bPho624p3S2pMyvP5kKBPXnI3ufHLObBFCfgx+LkeR5lg2XYy2hqZqUf45ypD8COn2bhgGJSUE+l5dhNBieA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/clsx/-/clsx-1.1.1.tgz}
     engines: {node: '>=6'}
     dev: false
 
@@ -1310,7 +1311,7 @@ packages:
     dev: true
 
   /csstype/3.0.9:
-    resolution: {integrity: sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==}
+    resolution: {integrity: sha512-rpw6JPxK6Rfg1zLOYCSwle2GFOOsnjmDYDaBwEcwoOg4qlsIVCN789VkBZDJAGi4T07gI4YSutR43t9Zz4Lzuw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/csstype/-/csstype-3.0.9.tgz}
     dev: false
 
   /csstype/3.1.0:
@@ -1397,14 +1398,14 @@ packages:
     dev: true
 
   /dom-helpers/5.2.1:
-    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==}
+    resolution: {integrity: sha512-nRCa7CK3VTrM2NmGkIy4cbK7IZlgBE/PYMn55rrXefr5xXDP0LdtfPnblFDoVdcAfslJ7or6iqAUnx0CCGIWQA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/dom-helpers/-/dom-helpers-5.2.1.tgz}
     dependencies:
       '@babel/runtime': 7.18.6
       csstype: 3.1.0
     dev: false
 
   /dom-serializer/1.4.1:
-    resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==}
+    resolution: {integrity: sha512-VHwB3KfrcOOkelEG2ZOfxqLZdfkil8PtJi4P8N2MMXucZq2yLp75ClViUlOVwyoHEDjYU433Aq+5zWP61+RGag==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/dom-serializer/-/dom-serializer-1.4.1.tgz}
     dependencies:
       domelementtype: 2.3.0
       domhandler: 4.3.1
@@ -1412,18 +1413,18 @@ packages:
     dev: false
 
   /domelementtype/2.3.0:
-    resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==}
+    resolution: {integrity: sha512-OLETBj6w0OsagBwdXnPdN0cnMfF9opN69co+7ZrbfPGrdpPVNBUj02spi6B1N7wChLQiPn4CSH/zJvXw56gmHw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/domelementtype/-/domelementtype-2.3.0.tgz}
     dev: false
 
   /domhandler/4.3.1:
-    resolution: {integrity: sha512-GrwoxYN+uWlzO8uhUXRl0P+kHE4GtVPfYzVLcUxPL7KNdHKj66vvlhiweIHqYYXWlw+T8iLMp42Lm67ghw4WMQ==}
+    resolution: {integrity: sha512-GrwoxYN+uWlzO8uhUXRl0P+kHE4GtVPfYzVLcUxPL7KNdHKj66vvlhiweIHqYYXWlw+T8iLMp42Lm67ghw4WMQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/domhandler/-/domhandler-4.3.1.tgz}
     engines: {node: '>= 4'}
     dependencies:
       domelementtype: 2.3.0
     dev: false
 
   /domutils/2.8.0:
-    resolution: {integrity: sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==}
+    resolution: {integrity: sha512-w96Cjofp72M5IIhpjgobBimYEfoPjx1Vx0BSX9P30WBdZW2WIKU0T1Bd0kz2eNZ9ikjKgHbEyKx8BB6H1L3h3A==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/domutils/-/domutils-2.8.0.tgz}
     dependencies:
       dom-serializer: 1.4.1
       domelementtype: 2.3.0
@@ -1444,11 +1445,11 @@ packages:
     dev: true
 
   /entities/2.2.0:
-    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==}
+    resolution: {integrity: sha512-p92if5Nz619I0w+akJrLZH0MX0Pb5DX39XOwQTtXSdQQOaYH03S1uIQp4mhOZtAXrxq4ViO67YTiLBo2638o9A==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/entities/-/entities-2.2.0.tgz}
     dev: false
 
   /entities/3.0.1:
-    resolution: {integrity: sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==}
+    resolution: {integrity: sha512-WiyBqoomrwMdFG1e0kqvASYfnlb0lp8M5o5Fw2OFq1hNZxxcNk8Ik0Xm7LxzBhuidnZB/UtBqVCgUz3kBOP51Q==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/entities/-/entities-3.0.1.tgz}
     engines: {node: '>=0.12'}
     dev: false
 
@@ -1815,8 +1816,7 @@ packages:
     dev: false
 
   /fast-deep-equal/3.1.3:
-    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==}
-    dev: true
+    resolution: {integrity: sha512-f3qQ9oQy9j2AhBe/H9VC91wLmKBCCU/gDOnKNAYG5hswO7BLKj09Hc5HYNz9cGI++xlpDCIgDaitVs03ATR84Q==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/fast-deep-equal/-/fast-deep-equal-3.1.3.tgz}
 
   /fast-glob/3.2.11:
     resolution: {integrity: sha512-xrO3+1bxSo3ZVHAnqzyuewYT6aMFHRAd4Kcs92MAonjwQZLsK9d0SF1IyQ3k5PoirxTW0Oe/RqFgMQ6TcNE5Ew==}
@@ -2028,14 +2028,14 @@ packages:
     dev: false
 
   /html-dom-parser/1.2.0:
-    resolution: {integrity: sha512-2HIpFMvvffsXHFUFjso0M9LqM+1Lm22BF+Df2ba+7QHJXjk63pWChEnI6YG27eaWqUdfnh5/Vy+OXrNTtepRsg==}
+    resolution: {integrity: sha512-2HIpFMvvffsXHFUFjso0M9LqM+1Lm22BF+Df2ba+7QHJXjk63pWChEnI6YG27eaWqUdfnh5/Vy+OXrNTtepRsg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/html-dom-parser/-/html-dom-parser-1.2.0.tgz}
     dependencies:
       domhandler: 4.3.1
       htmlparser2: 7.2.0
     dev: false
 
   /html-react-parser/1.4.12_react@18.2.0:
-    resolution: {integrity: sha512-nqYQzr4uXh67G9ejAG7djupTHmQvSTgjY83zbXLRfKHJ0F06751jXx6WKSFARDdXxCngo2/7H4Rwtfeowql4gQ==}
+    resolution: {integrity: sha512-nqYQzr4uXh67G9ejAG7djupTHmQvSTgjY83zbXLRfKHJ0F06751jXx6WKSFARDdXxCngo2/7H4Rwtfeowql4gQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/html-react-parser/-/html-react-parser-1.4.12.tgz}
     peerDependencies:
       react: 0.14 || 15 || 16 || 17 || 18
     dependencies:
@@ -2058,7 +2058,7 @@ packages:
     dev: false
 
   /htmlparser2/7.2.0:
-    resolution: {integrity: sha512-H7MImA4MS6cw7nbyURtLPO1Tms7C5H602LRETv95z1MxO/7CP7rDVROehUYeYBUYEON94NXXDEPmZuq+hX4sog==}
+    resolution: {integrity: sha512-H7MImA4MS6cw7nbyURtLPO1Tms7C5H602LRETv95z1MxO/7CP7rDVROehUYeYBUYEON94NXXDEPmZuq+hX4sog==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/htmlparser2/-/htmlparser2-7.2.0.tgz}
     dependencies:
       domelementtype: 2.3.0
       domhandler: 4.3.1
@@ -2094,7 +2094,7 @@ packages:
     resolution: {integrity: sha512-k/vGaX4/Yla3WzyMCvTQOXYeIHvqOKtnqBduzTHpzpQZzAskKMhZ2K+EnBiSM9zGSoIFeMpXKxa4dYeZIQqewQ==}
 
   /inline-style-parser/0.1.1:
-    resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==}
+    resolution: {integrity: sha512-7NXolsK4CAS5+xvdj5OMMbI962hU/wvwoxk+LWR9Ek9bVtyuuYScDN6eS0rUm6TxApFpw7CX1o4uJzcd4AyD3Q==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/inline-style-parser/-/inline-style-parser-0.1.1.tgz}
     dev: false
 
   /internal-slot/1.0.3:
@@ -2272,7 +2272,7 @@ packages:
     dev: true
 
   /klona/2.0.5:
-    resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==}
+    resolution: {integrity: sha512-pJiBpiXMbt7dkzXe8Ghj/u4FfXOOa98fPW+bihOJ4SjnoijweJrNThJfd3ifXpXhREjpoF2mZVH1GfS9LV3kHQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/klona/-/klona-2.0.5.tgz}
     engines: {node: '>= 8'}
     dev: false
 
@@ -2633,11 +2633,11 @@ packages:
     resolution: {integrity: sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==}
 
   /react-property/2.0.0:
-    resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==}
+    resolution: {integrity: sha512-kzmNjIgU32mO4mmH5+iUyrqlpFQhF8K2k7eZ4fdLSOPFrD1XgEuSBv9LDEgxRXTMBqMd8ppT0x6TIzqE5pdGdw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/react-property/-/react-property-2.0.0.tgz}
     dev: false
 
   /react-textarea-autosize/8.3.4_3hx2ussxxho4jajbwrd6gq34qe:
-    resolution: {integrity: sha512-CdtmP8Dc19xL8/R6sWvtknD/eCXkQr30dtvC4VmGInhRsfF8X/ihXCq6+9l9qbxmKRiq407/7z5fxE7cVWQNgQ==}
+    resolution: {integrity: sha512-CdtmP8Dc19xL8/R6sWvtknD/eCXkQr30dtvC4VmGInhRsfF8X/ihXCq6+9l9qbxmKRiq407/7z5fxE7cVWQNgQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/react-textarea-autosize/-/react-textarea-autosize-8.3.4.tgz}
     engines: {node: '>=10'}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -2651,7 +2651,7 @@ packages:
     dev: false
 
   /react-transition-group/4.4.2_biqbaboplfbrettd7655fr4n2y:
-    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==}
+    resolution: {integrity: sha512-/RNYfRAMlZwDSr6z4zNKV6xu53/e2BuaBbGhbyYIXTrmgu/bGHzmqOs7mJSJBHy9Ud+ApHx3QjrkKSp1pxvlFg==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/react-transition-group/-/react-transition-group-4.4.2.tgz}
     peerDependencies:
       react: '>=16.6.0'
       react-dom: '>=16.6.0'
@@ -2861,13 +2861,13 @@ packages:
     dev: true
 
   /style-to-js/1.1.0:
-    resolution: {integrity: sha512-1OqefPDxGrlMwcbfpsTVRyzwdhr4W0uxYQzeA2F1CBc8WG04udg2+ybRnvh3XYL4TdHQrCahLtax2jc8xaE6rA==}
+    resolution: {integrity: sha512-1OqefPDxGrlMwcbfpsTVRyzwdhr4W0uxYQzeA2F1CBc8WG04udg2+ybRnvh3XYL4TdHQrCahLtax2jc8xaE6rA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/style-to-js/-/style-to-js-1.1.0.tgz}
     dependencies:
       style-to-object: 0.3.0
     dev: false
 
   /style-to-object/0.3.0:
-    resolution: {integrity: sha512-CzFnRRXhzWIdItT3OmF8SQfWyahHhjq3HwcMNCNLn+N7klOOqPjMeG/4JSu77D7ypZdGvSzvkrbyeTMizz2VrA==}
+    resolution: {integrity: sha512-CzFnRRXhzWIdItT3OmF8SQfWyahHhjq3HwcMNCNLn+N7klOOqPjMeG/4JSu77D7ypZdGvSzvkrbyeTMizz2VrA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/style-to-object/-/style-to-object-0.3.0.tgz}
     dependencies:
       inline-style-parser: 0.1.1
     dev: false
@@ -3040,7 +3040,7 @@ packages:
     dev: true
 
   /use-composed-ref/1.3.0_react@18.2.0:
-    resolution: {integrity: sha512-GLMG0Jc/jiKov/3Ulid1wbv3r54K9HlMW29IWcDFPEqFkSO2nS0MuefWgMJpeHQ9YJeXDL3ZUF+P3jdXlZX/cQ==}
+    resolution: {integrity: sha512-GLMG0Jc/jiKov/3Ulid1wbv3r54K9HlMW29IWcDFPEqFkSO2nS0MuefWgMJpeHQ9YJeXDL3ZUF+P3jdXlZX/cQ==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/use-composed-ref/-/use-composed-ref-1.3.0.tgz}
     peerDependencies:
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
     dependencies:
@@ -3048,7 +3048,7 @@ packages:
     dev: false
 
   /use-isomorphic-layout-effect/1.1.2_3hx2ussxxho4jajbwrd6gq34qe:
-    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==}
+    resolution: {integrity: sha512-49L8yCO3iGT/ZF9QttjwLF/ZD9Iwto5LnH5LmEdk/6cFmXddqi2ulF0edxTwjj+7mqvpVVGQWvbXZdn32wRSHA==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/use-isomorphic-layout-effect/-/use-isomorphic-layout-effect-1.1.2.tgz}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
@@ -3061,7 +3061,7 @@ packages:
     dev: false
 
   /use-latest/1.2.1_3hx2ussxxho4jajbwrd6gq34qe:
-    resolution: {integrity: sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==}
+    resolution: {integrity: sha512-xA+AVm/Wlg3e2P/JiItTziwS7FK92LWrDB0p+hgXloIMuVCeJJ8v6f0eeHyPZaJrM+usM1FkFfbNCrJGs8A/zw==, tarball: https://artifacts.chemaxon.com:443/artifactory/api/npm/npm-release/use-latest/-/use-latest-1.2.1.tgz}
     peerDependencies:
       '@types/react': '*'
       react: ^16.8.0 || ^17.0.0 || ^18.0.0
