@@ -1,8 +1,9 @@
-import { Icon as TablerIcon, Tooltip, UnstyledButton } from "@mantine/core";
+import { Tooltip, UnstyledButton } from "@mantine/core";
+import { Icon } from "tabler-icons-react";
 import { useStyles } from "./Navbar.styles";
 
 interface NavbarButtonProps {
-  icon: TablerIcon;
+  icon: Icon;
   label: string;
   onClick: () => void;
 }

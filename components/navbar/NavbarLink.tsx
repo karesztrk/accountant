@@ -1,10 +1,11 @@
-import { Icon as TablerIcon, Tooltip, UnstyledButton } from "@mantine/core";
+import { Tooltip, UnstyledButton } from "@mantine/core";
 import NextLink from "next/link";
 import { useRouter } from "next/router";
 import { useStyles } from "./Navbar.styles";
+import { Icon } from "tabler-icons-react";
 
 interface NavbarLinkProps {
-  icon: TablerIcon;
+  icon: Icon;
   label: string;
   href: string;
 }
