@@ -62,6 +62,9 @@ const PartnerForm: FC = () => {
           message: error.message,
           color: "red",
         });
+      })
+      .finally(() => {
+        setLoading(false);
       });
   };
 

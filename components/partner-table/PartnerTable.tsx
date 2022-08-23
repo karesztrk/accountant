@@ -59,7 +59,7 @@ const PartnerTable: FC = ({}) => {
   };
 
   const onDelete = () => {
-    if (onDeleteProp && selection.length > 0) {
+    if (selection.length > 0) {
       trigger(selection)
         .then(() => {
           mutate();

@@ -29,7 +29,6 @@ const TaxForm: FC = () => {
 
   const id = router.query.id;
   const { mutate } = useSWRConfig();
-  console.log("🚀 ~ file: TaxForm.tsx ~ line 33 ~ id", id);
   const { data: tax } = useTax(id ? id[0] : undefined);
   const { trigger } = useTaxMutation();
 
