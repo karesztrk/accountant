@@ -3,6 +3,8 @@ import { FC, PropsWithChildren } from "react";
 import Navbar from "./navbar/Navbar";
 import { useStyles } from "./Layout.styles";
 import { useUser } from "@supabase/auth-helpers-react";
+import Header from "./header/Header";
+import { useDisclosure } from "@mantine/hooks";
 
 type LayoutProps = PropsWithChildren<{
   size?: MantineNumberSize;
@@ -12,11 +14,13 @@ type LayoutProps = PropsWithChildren<{
 const Layout: FC<LayoutProps> = ({ size, title, children }) => {
   const { classes } = useStyles();
   const { user } = useUser();
+  const [opened, handlers] = useDisclosure(false);
 
   return (
     <AppShell
-      padding="md"
-      navbar={user ? <Navbar /> : undefined}
+      padding="sm"
+      navbar={user ? <Navbar hidden={!opened} /> : undefined}
+      header={<Header opened={opened} onToggle={handlers.toggle} />}
       styles={(theme) => ({
         main: {
           backgroundColor:
