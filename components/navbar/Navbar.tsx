@@ -1,13 +1,20 @@
-import { Center, Navbar as MantineNavbar, Stack } from "@mantine/core";
+import { Navbar as MantineNavbar, Stack } from "@mantine/core";
 import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
+import { FC } from "react";
 import { Logout } from "tabler-icons-react";
+import { useStyles } from "./Navbar.styles";
 import NavbarButton from "./NavbarButton";
 import NavbarLink from "./NavbarLink";
 import { loginPage, pages } from "./pages";
 
-const Navbar = () => {
+interface NavbarProps {
+  hidden?: boolean;
+}
+
+const Navbar: FC<NavbarProps> = ({ hidden }) => {
   const { push } = useRouter();
+  const { classes, cx } = useStyles();
 
   const onLogout = () => {
     supabaseClient.auth.signOut();
@@ -15,10 +22,11 @@ const Navbar = () => {
   };
 
   return (
-    <MantineNavbar width={{ base: 80 }} p="md">
-      <Center>💰</Center>
+    <MantineNavbar
+      className={cx(classes.wrapper, { [classes.hidden]: hidden })}
+    >
       <MantineNavbar.Section grow mt={50}>
-        <Stack align="center" spacing={4}>
+        <Stack spacing={4}>
           {pages.map((link) => (
             <NavbarLink {...link} key={link.label} />
           ))}
