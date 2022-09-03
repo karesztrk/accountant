@@ -39,11 +39,11 @@ const SignIn = () => {
         email,
         password,
       })
-      .then(({ error }) => {
+      .then(async ({ error }) => {
         if (error) {
           form.setErrors({ password: error.message });
         } else {
-          router.push("/");
+          await router.push("/");
         }
       })
       .finally(() => setLoading(false));
@@ -51,7 +51,7 @@ const SignIn = () => {
 
   return (
     <Container size={420} my={40}>
-      <Title align="center">Welcome back!</Title>
+      <Title align="center">Welcome back</Title>
 
       <Paper withBorder shadow="md" p={30} mt={30} radius="md">
         <form onSubmit={form.onSubmit(onSubmit)}>
