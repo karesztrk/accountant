@@ -137,7 +137,11 @@ const TaxTable: FC = () => {
                   ).toLocaleDateString(router.locale)}
                 </td>
                 <td>
-                  {tax.transaction.amount} {tax.transaction.currency}
+                  {new Intl.NumberFormat(router.locale, {
+                    style: "currency",
+                    currency: tax.transaction.currency,
+                    currencyDisplay: "narrowSymbol",
+                  }).format(tax.transaction.amount)}
                 </td>
                 <td>{tax.system}</td>
                 <td>{tax.description}</td>

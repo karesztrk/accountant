@@ -1,4 +1,5 @@
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import { useRouter } from "next/router";
 import React, { FC, useMemo } from "react";
 import {
   ArrowDownRight,
@@ -11,11 +12,9 @@ import {
 import { Expense, Income } from "types/database";
 import { useStyles } from "./Dashboard.styles";
 import {
-  getProfitCurrency,
-  getProfitValue,
-  getRevenueCurrency,
+  getProfit,
   getRevenueDiff,
-  getRevenueValue,
+  getRevenue,
   getProfitDiff,
 } from "./Dashboard.util";
 
@@ -35,21 +34,20 @@ interface DashboardProps {
 
 const Dashboard: FC<DashboardProps> = ({ data: { income, expense } }) => {
   const { classes } = useStyles();
+  const router = useRouter();
 
   const data = useMemo(
     () => [
       {
         title: "Revenue",
         icon: "receipt",
-        value: `${getRevenueValue(income)} ${getRevenueCurrency(income)}`,
+        value: `${getRevenue(income, router.locale)}`,
         diff: getRevenueDiff(income),
       },
       {
         title: "Profit",
         icon: "coin",
-        value: `${getProfitValue(income, expense)} ${getProfitCurrency(
-          expense
-        )}`,
+        value: `${getProfit(income, expense, router.locale)}`,
         diff: getProfitDiff(income, expense),
       },
     ],

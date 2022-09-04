@@ -138,7 +138,11 @@ const PaymentTable: FC = ({}) => {
                   ).toLocaleDateString(router.locale)}
                 </td>
                 <td>
-                  {payment.transaction.amount} {payment.transaction.currency}
+                  {new Intl.NumberFormat(router.locale, {
+                    style: "currency",
+                    currency: payment.transaction.currency,
+                    currencyDisplay: "narrowSymbol",
+                  }).format(payment.transaction.amount)}
                 </td>
               </tr>
             ) : null
