@@ -139,7 +139,11 @@ const InvoiceTable: FC = () => {
               </td>
               <td>{invoice.partner.name}</td>
               <td>
-                {invoice.amount} {invoice.currency}
+                {new Intl.NumberFormat(router.locale, {
+                  style: "currency",
+                  currency: invoice.currency,
+                  currencyDisplay: "narrowSymbol",
+                }).format(invoice.amount)}
               </td>
             </tr>
           ))}
