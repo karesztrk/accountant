@@ -1,4 +1,5 @@
 import { Group, Paper, SimpleGrid, Text } from "@mantine/core";
+import IncomeChart from "components/income-chart/IncomeChart";
 import { useRouter } from "next/router";
 import React, { FC, useMemo } from "react";
 import {
@@ -10,13 +11,13 @@ import {
   UserPlus,
 } from "tabler-icons-react";
 import { Expense, Income } from "types/database";
-import { useStyles } from "./Dashboard.styles";
+import { useStyles } from "./Stats.styles";
 import {
   getProfit,
   getRevenueDiff,
   getRevenue,
   getProfitDiff,
-} from "./Dashboard.util";
+} from "./Stats.util";
 
 const icons = {
   user: UserPlus,
@@ -25,14 +26,14 @@ const icons = {
   coin: Coin,
 };
 
-interface DashboardProps {
+interface StatsProps {
   data: {
     income: Income[];
     expense: Expense[];
   };
 }
 
-const Dashboard: FC<DashboardProps> = ({ data: { income, expense } }) => {
+const Stats: FC<StatsProps> = ({ data: { income, expense } }) => {
   const { classes } = useStyles();
   const router = useRouter();
 
@@ -101,4 +102,4 @@ const Dashboard: FC<DashboardProps> = ({ data: { income, expense } }) => {
   );
 };
 
-export default Dashboard;
+export default Stats;
