@@ -33,16 +33,15 @@ const IncomeChart: FC<IncomeChartProps> = ({ data }) => {
         data={chartData}
         keys={["income", "expense"]}
         indexBy="period"
-        margin={{ top: 50, right: 25, bottom: 50, left: 75 }}
+        margin={{ top: 25, right: 25, bottom: 35, left: 75 }}
         padding={0.3}
         valueScale={{ type: "linear" }}
         indexScale={{ type: "band", round: true }}
         colors={[theme.colors.green[7], theme.colors.red[7]]}
+        borderColor={{ from: "background", modifiers: [["opacity", 0.5]] }}
+        borderWidth={2}
+        labelTextColor={{ from: "color", modifiers: [["darker", 2.5]] }}
         theme={chartTheme}
-        borderColor={{
-          from: "color",
-          modifiers: [["darker", 1.6]],
-        }}
         axisTop={null}
         axisRight={null}
         axisBottom={{
@@ -59,13 +58,17 @@ const IncomeChart: FC<IncomeChartProps> = ({ data }) => {
           tickPadding: 5,
           tickRotation: 0,
           tickValues: 5,
+          format: (value) =>
+            new Intl.NumberFormat(router.locale, {
+              style: "currency",
+              currency: currency,
+              currencyDisplay: "narrowSymbol",
+              notation: "compact",
+              compactDisplay: "long",
+            }).format(value),
         }}
         labelSkipWidth={12}
         labelSkipHeight={12}
-        labelTextColor={{
-          from: "color",
-          modifiers: [["darker", 1.6]],
-        }}
         role="application"
         ariaLabel="Income versus Expense chart per periods"
         valueFormat={(value) =>
