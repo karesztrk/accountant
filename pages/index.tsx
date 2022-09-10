@@ -2,11 +2,12 @@ import {
   supabaseServerClient,
   withPageAuth,
 } from "@supabase/auth-helpers-nextjs";
+import IncomeChart from "components/income-chart/IncomeChart";
 import { loginPage } from "components/navbar/pages";
 import { useDashboardData } from "hooks/dashboard/use-dashboard-data";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { Expense, Income } from "types/database";
-import Dashboard from "../components/dashboard/Dashboard";
+import Stats from "../components/stats/Stats";
 import Layout from "../components/Layout";
 
 interface HomeProps {
@@ -16,7 +17,17 @@ interface HomeProps {
 
 const Home: NextPage<HomeProps> = ({ income, expense }) => {
   const { data } = useDashboardData({ income, expense });
-  return <Layout title="Dashboard">{data && <Dashboard data={data} />}</Layout>;
+
+  return (
+    <Layout title="Dashboard">
+      {data && (
+        <>
+          <Stats data={data} />
+          <IncomeChart data={data} />
+        </>
+      )}
+    </Layout>
+  );
 };
 
 export const getServerSideProps: GetServerSideProps = withPageAuth({
