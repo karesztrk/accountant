@@ -6,6 +6,10 @@ import {
 } from "@mantine/nprogress";
 import { useRouter } from "next/router";
 
+interface Options {
+  shallow: boolean;
+}
+
 const NavigationProgress = () => {
   const router = useRouter();
 
@@ -17,9 +21,11 @@ const NavigationProgress = () => {
   );
 
   useEffect(() => {
-    const handleStart = () => {
-      setProgress(0);
-      interval.start();
+    const handleStart = (_: string, { shallow }: Options) => {
+      if (!shallow) {
+        setProgress(0);
+        interval.start();
+      }
     };
 
     const handleComplete = () => {

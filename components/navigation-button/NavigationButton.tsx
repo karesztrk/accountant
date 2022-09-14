@@ -6,11 +6,17 @@ interface NavigationButton {
   href: string;
   text: string;
   variant?: ButtonVariant;
+  shallow?: boolean;
 }
 
-const NavigationButton: FC<NavigationButton> = ({ href, text, variant }) => {
+const NavigationButton: FC<NavigationButton> = ({
+  href,
+  text,
+  variant,
+  shallow,
+}) => {
   return (
-    <Link href={href} passHref>
+    <Link href={href} passHref shallow={shallow}>
       <Button variant={variant} component="a">
         {text}
       </Button>

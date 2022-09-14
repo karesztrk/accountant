@@ -100,7 +100,7 @@ const PartnerForm: FC = () => {
         />
 
         <Group position="right" mt="md">
-          <NavigationButton variant="outline" text="Cancel" href="/partners" />
+          <NavigationButton variant="outline" text="Cancel" href="/partner" />
           <Button type="submit" loading={loading}>
             Submit
           </Button>

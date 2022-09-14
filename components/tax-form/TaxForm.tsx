@@ -1,20 +1,20 @@
 import { Button, Group, Stack, Textarea, TextInput } from "@mantine/core";
 import { DatePicker } from "@mantine/dates";
 import { useForm } from "@mantine/form";
+import { showNotification } from "@mantine/notifications";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import { taxesPage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
-import { FC, useState } from "react";
-import { Tax as ClientTax } from "types/client";
-import { toRemoteTax, toTax } from "./TaxForm.util";
-import { Calendar } from "tabler-icons-react";
-import { useRouter } from "next/router";
-import { useSWRConfig } from "swr";
+import useFinance from "hooks/finance/use-finance";
+import { useTax } from "hooks/tax/use-tax";
 import { useTaxMutation } from "hooks/tax/use-tax-mutation";
 import { cacheKeys } from "lib";
-import { showNotification } from "@mantine/notifications";
-import { useTax } from "hooks/tax/use-tax";
+import { useRouter } from "next/router";
+import { FC, useState } from "react";
+import { mutate } from "swr";
+import { Calendar } from "tabler-icons-react";
+import { Tax as ClientTax } from "types/client";
+import { toRemoteTax, toTax } from "./TaxForm.util";
 
 const initialValues: ClientTax = {
   amount: 0,
@@ -27,9 +27,8 @@ const TaxForm: FC = () => {
 
   const router = useRouter();
 
-  const id = router.query.id;
-  const { mutate } = useSWRConfig();
-  const { data: tax } = useTax(id ? id[0] : undefined);
+  const { mutate: mutateFinanceState } = useFinance();
+  const { data: tax } = useTax(router.query.id as string | undefined);
   const { trigger } = useTaxMutation();
 
   const [loading, setLoading] = useState(false);
@@ -58,8 +57,20 @@ const TaxForm: FC = () => {
           color: "red",
         });
       })
-      .finally(() => {
-        setLoading(false);
+      .finally(onClose);
+  };
+
+  const onClose = () => {
+    router
+      .push(
+        {
+          pathname: taxesPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: false });
       });
   };
 
@@ -98,11 +109,9 @@ const TaxForm: FC = () => {
         />
 
         <Group position="right" mt="md">
-          <NavigationButton
-            variant="outline"
-            text="Cancel"
-            href={taxesPage.href}
-          />
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="submit" loading={loading}>
             Submit
           </Button>
