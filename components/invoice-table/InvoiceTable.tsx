@@ -6,20 +6,26 @@ import {
   Table,
   Transition,
 } from "@mantine/core";
+import { useListState } from "@mantine/hooks";
+import { showNotification } from "@mantine/notifications";
+import { invoicesPage, newInvoicePage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import useFinance from "hooks/finance/use-finance";
+import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
+import { useInvoices } from "hooks/invoice/use-invoices";
+import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent } from "react";
-import { useStyles } from "../DataTable.styles";
+import { mutate } from "swr";
 import { InvoiceWithPartner } from "types/database";
-import { useListState } from "@mantine/hooks";
-import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
-import { showNotification } from "@mantine/notifications";
-import { useInvoices } from "hooks/invoice/use-invoices";
+import { useStyles } from "../DataTable.styles";
 
 const InvoiceTable: FC = () => {
   const router = useRouter();
 
-  const { data: invoices = [], mutate } = useInvoices();
+  const { mutate: mutateFinanceState } = useFinance();
+
+  const { data: invoices = [], mutate: mutateInvoices } = useInvoices();
   const { trigger } = useInvoiceDeletion();
 
   const [selection, handlers] = useListState<number>([]);
@@ -35,7 +41,19 @@ const InvoiceTable: FC = () => {
   const onRowClick =
     (invoice: InvoiceWithPartner) => (e: MouseEvent<HTMLTableRowElement>) => {
       if (!(e.target instanceof HTMLInputElement) && invoice.id) {
-        router.push(`/invoices/${invoice.id}`);
+        Promise.all([
+          mutate(cacheKeys.invoice(`${invoice.id}`), invoice),
+          router.push(
+            {
+              pathname: invoicesPage.href,
+              query: { id: invoice.id },
+            },
+            undefined,
+            { shallow: true }
+          ),
+        ]).then(() => {
+          mutateFinanceState({ opened: true });
+        });
       }
     };
 
@@ -63,7 +81,7 @@ const InvoiceTable: FC = () => {
     if (selection.length > 0) {
       trigger(selection)
         .then(() => {
-          mutate();
+          mutateInvoices();
         })
         .catch((error) => {
           showNotification({
@@ -84,9 +102,24 @@ const InvoiceTable: FC = () => {
   const isChecked = (item: InvoiceWithPartner) =>
     !!item.id && selection.includes(item.id);
 
+  const onNewClick = () => {
+    router
+      .push(
+        {
+          pathname: newInvoicePage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: true });
+      });
+  };
+
   return (
     <Stack>
-      <Group position="right">
+      <Group>
+        <Button onClick={onNewClick}>New</Button>
         <Transition
           mounted={selection.length > 0}
           transition="fade"
@@ -99,7 +132,6 @@ const InvoiceTable: FC = () => {
             </Button>
           )}
         </Transition>
-        <NavigationButton href="/invoices/new" text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>

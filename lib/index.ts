@@ -22,9 +22,13 @@ export const cacheKeys = {
 
   payments: [tableNames.payment],
   payment: (id?: string) => (id ? [tableNames.payment, { id }] : null),
+  selectedPaymentId: () => "selectedPaymentId",
 
   taxes: [tableNames.tax],
   tax: (id?: string) => (id ? [tableNames.tax, { id }] : null),
+  selecetdTaxId: () => "selecetdTaxId",
 
   dashboardData: () => [viewNames.income],
+
+  finance: () => ["finance"],
 };

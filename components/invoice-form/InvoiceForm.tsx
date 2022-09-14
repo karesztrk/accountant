@@ -5,17 +5,17 @@ import { showNotification } from "@mantine/notifications";
 import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import { invoicesPage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
+import useFinance from "hooks/finance/use-finance";
 import { useInvoice } from "hooks/invoice/use-invoice";
 import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { usePartners } from "hooks/partner/use-partners";
 import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
-import { FC, useMemo, useState } from "react";
-import { useSWRConfig } from "swr";
+import { useMemo, useState } from "react";
 import { Calendar } from "tabler-icons-react";
 import { Invoice as ClientInvoice } from "types/client";
 import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
+import { mutate } from "swr";
 
 const initialValues: ClientInvoice = {
   partner_id: "0",
@@ -25,15 +25,16 @@ const initialValues: ClientInvoice = {
   currency: "EUR",
 };
 
-const InvoiceForm: FC = () => {
+const InvoiceForm = () => {
   const { user } = useUser();
 
   const router = useRouter();
 
-  const id = router.query.id;
-  const { mutate } = useSWRConfig();
-  const { data: invoice } = useInvoice(id ? id[0] : undefined);
+  const { mutate: mutateFinanceState } = useFinance();
+
+  const { data: invoice } = useInvoice(router.query.id as string | undefined);
   const { data: partners = [] } = usePartners();
+
   const { trigger } = useInvoiceMutation();
 
   const [loading, setLoading] = useState(false);
@@ -54,7 +55,6 @@ const InvoiceForm: FC = () => {
     trigger(data)
       .then(() => {
         mutate(cacheKeys.invoices());
-        router.push(invoicesPage.href);
       })
       .catch((error) => {
         showNotification({
@@ -64,8 +64,20 @@ const InvoiceForm: FC = () => {
           color: "red",
         });
       })
-      .finally(() => {
-        setLoading(false);
+      .finally(onClose);
+  };
+
+  const onClose = () => {
+    router
+      .push(
+        {
+          pathname: invoicesPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: false });
       });
   };
 
@@ -108,7 +120,9 @@ const InvoiceForm: FC = () => {
         />
 
         <Group position="right" mt="md">
-          <NavigationButton variant="outline" text="Cancel" href="/invoices" />
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="submit" loading={loading}>
             Submit
           </Button>

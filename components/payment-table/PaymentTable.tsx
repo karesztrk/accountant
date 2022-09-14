@@ -8,19 +8,22 @@ import {
   Transition,
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
-import { newPaymentPage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
 import { useRouter } from "next/router";
 import { Payment } from "types/database";
 import { useStyles } from "../DataTable.styles";
 import { usePayments } from "hooks/payment/use-payments";
 import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
 import { showNotification } from "@mantine/notifications";
+import { cacheKeys } from "lib";
+import useFinance from "hooks/finance/use-finance";
+import { newPaymentPage, paymentsPage } from "components/navbar/pages";
+import { mutate } from "swr";
 
-const PaymentTable: FC = ({}) => {
+const PaymentTable: FC = () => {
   const router = useRouter();
 
-  const { data: payments = [], mutate } = usePayments();
+  const { mutate: mutateFinanceState } = useFinance();
+  const { data: payments = [], mutate: mutatePayments } = usePayments();
   const { trigger } = usePaymentDeletion();
 
   const [selection, handlers] = useListState<number>([]);
@@ -36,7 +39,19 @@ const PaymentTable: FC = ({}) => {
   const onRowClick =
     (payment: Payment) => (e: MouseEvent<HTMLTableRowElement>) => {
       if (!(e.target instanceof HTMLInputElement) && payment.id) {
-        router.push(`/payments/${payment.id}`);
+        Promise.all([
+          mutate(cacheKeys.payment(`${payment.id}`), payment),
+          router.push(
+            {
+              pathname: paymentsPage.href,
+              query: { id: payment.id },
+            },
+            undefined,
+            { shallow: true }
+          ),
+        ]).then(() => {
+          mutateFinanceState({ opened: true });
+        });
       }
     };
 
@@ -64,7 +79,7 @@ const PaymentTable: FC = ({}) => {
     if (selection.length > 0) {
       trigger(selection)
         .then(() => {
-          mutate();
+          mutatePayments();
         })
         .catch((error) => {
           showNotification({
@@ -84,9 +99,24 @@ const PaymentTable: FC = ({}) => {
 
   const isChecked = (item: Payment) => !!item.id && selection.includes(item.id);
 
+  const onNewClick = () => {
+    router
+      .push(
+        {
+          pathname: newPaymentPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: true });
+      });
+  };
+
   return (
     <Stack>
-      <Group position="right">
+      <Group>
+        <Button onClick={onNewClick}>New</Button>
         <Transition
           mounted={selection.length > 0}
           transition="fade"
@@ -99,7 +129,6 @@ const PaymentTable: FC = ({}) => {
             </Button>
           )}
         </Transition>
-        <NavigationButton href={newPaymentPage.href} text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>

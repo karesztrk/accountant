@@ -8,12 +8,14 @@ import {
 } from "@mantine/core";
 import { useListState } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import { newTaxPage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
+import { newTaxPage, taxesPage } from "components/navbar/pages";
+import useFinance from "hooks/finance/use-finance";
 import { useTaxDeletion } from "hooks/tax/use-tax-deletion";
 import { useTaxes } from "hooks/tax/use-taxes";
+import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
 import { ChangeEvent, FC, MouseEvent } from "react";
+import { mutate } from "swr";
 import { Tax } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
@@ -22,7 +24,8 @@ const TaxTable: FC = () => {
 
   const { classes } = useStyles();
 
-  const { data: taxes = [], mutate } = useTaxes();
+  const { mutate: mutateFinanceState } = useFinance();
+  const { data: taxes = [], mutate: mutateTaxes } = useTaxes();
   const { trigger } = useTaxDeletion();
 
   const [selection, handlers] = useListState<number>([]);
@@ -34,7 +37,19 @@ const TaxTable: FC = () => {
 
   const onRowClick = (tax: Tax) => (e: MouseEvent<HTMLTableRowElement>) => {
     if (!(e.target instanceof HTMLInputElement) && tax.id) {
-      router.push(`/taxes/${tax.id}`);
+      Promise.all([
+        mutate(cacheKeys.tax(`${tax.id}`), tax),
+        router.push(
+          {
+            pathname: taxesPage.href,
+            query: { id: tax.id },
+          },
+          undefined,
+          { shallow: true }
+        ),
+      ]).then(() => {
+        mutateFinanceState({ opened: true });
+      });
     }
   };
 
@@ -61,7 +76,7 @@ const TaxTable: FC = () => {
     if (selection.length > 0) {
       trigger(selection)
         .then(() => {
-          mutate();
+          mutateTaxes();
         })
         .catch((error) => {
           showNotification({
@@ -81,9 +96,24 @@ const TaxTable: FC = () => {
 
   const isChecked = (item: Tax) => !!item.id && selection.includes(item.id);
 
+  const onNewClick = () => {
+    router
+      .push(
+        {
+          pathname: newTaxPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: true });
+      });
+  };
+
   return (
     <Stack>
-      <Group position="right">
+      <Group>
+        <Button onClick={onNewClick}>New</Button>
         <Transition
           mounted={selection.length > 0}
           transition="fade"
@@ -96,7 +126,6 @@ const TaxTable: FC = () => {
             </Button>
           )}
         </Transition>
-        <NavigationButton href={newTaxPage.href} text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>

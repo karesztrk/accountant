@@ -14,6 +14,7 @@ import CurrencyInput from "components/currency-input/CurrencyInput";
 import DetailedSelectItem from "components/detailed-select-item/SelectItem";
 import { paymentsPage } from "components/navbar/pages";
 import NavigationButton from "components/navigation-button/NavigationButton";
+import useFinance from "hooks/finance/use-finance";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { usePartners } from "hooks/partner/use-partners";
 import { usePayment } from "hooks/payment/use-payment";
@@ -21,7 +22,7 @@ import { usePaymentMutation } from "hooks/payment/use-payment-mutation";
 import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
 import { FC, useMemo, useState } from "react";
-import { useSWRConfig } from "swr";
+import { mutate } from "swr";
 import { Calendar } from "tabler-icons-react";
 import { Payment as ClientPayment } from "types/client";
 import { PaymentType } from "types/database";
@@ -51,9 +52,8 @@ const PaymentForm: FC = () => {
 
   const router = useRouter();
 
-  const id = router.query.id;
-  const { mutate } = useSWRConfig();
-  const { data: payment } = usePayment(id ? id[0] : undefined);
+  const { mutate: mutateFinanceState } = useFinance();
+  const { data: payment } = usePayment(router.query.id as string | undefined);
   const { trigger } = usePaymentMutation();
   const { data: partners = [] } = usePartners();
 
@@ -91,9 +91,7 @@ const PaymentForm: FC = () => {
           color: "red",
         });
       })
-      .finally(() => {
-        setLoading(false);
-      });
+      .finally(onClose);
   };
 
   const { onChange, ...invoiceInputProps } = form.getInputProps("invoice_id");
@@ -107,6 +105,20 @@ const PaymentForm: FC = () => {
       form.setFieldValue("amount", invoice.amount);
       form.setFieldValue("currency", invoice.currency);
     }
+  };
+
+  const onClose = () => {
+    router
+      .push(
+        {
+          pathname: paymentsPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: false });
+      });
   };
 
   return (
@@ -176,11 +188,9 @@ const PaymentForm: FC = () => {
         />
 
         <Group position="right" mt="md">
-          <NavigationButton
-            variant="outline"
-            text="Cancel"
-            href={paymentsPage.href}
-          />
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="submit" loading={loading}>
             Submit
           </Button>

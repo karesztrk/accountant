@@ -3,7 +3,7 @@ import { Tax } from "types/database";
 
 export const toTax = (tax: Tax): ClientTax => {
   return {
-    amount: tax.transaction.amount,
+    amount: tax?.transaction.amount,
     currency: tax.transaction.currency,
     paid_on: tax?.transaction.transaction_date
       ? new Date(tax.transaction.transaction_date)

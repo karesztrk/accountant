@@ -34,7 +34,7 @@ const PartnerTable: FC = ({}) => {
   const onRowClick =
     (partner: Partner) => (e: MouseEvent<HTMLTableRowElement>) => {
       if (!(e.target instanceof HTMLInputElement) && partner.id) {
-        router.push(`/partners/${partner.id}`);
+        router.push(`/partner/${partner.id}`);
       }
     };
 
@@ -97,7 +97,7 @@ const PartnerTable: FC = ({}) => {
             </Button>
           )}
         </Transition>
-        <NavigationButton href="/partners/new" text="New" />
+        <NavigationButton href="/partner/new" text="New" />
       </Group>
       <Table highlightOnHover>
         <thead>
