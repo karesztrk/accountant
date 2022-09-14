@@ -50,6 +50,7 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
               ],
             },
             primaryColor: "brand",
+            focusRing: "always",
           }}
         >
           <NavigationProgress />
