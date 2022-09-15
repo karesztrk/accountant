@@ -112,7 +112,7 @@ const IncomeChart: FC<IncomeChartProps> = ({ data }) => {
             id: "lines",
           },
         ]}
-        animate={false}
+        motionConfig="stiff"
       />
     </Paper>
   );
