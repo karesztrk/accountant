@@ -13,6 +13,7 @@ export interface Invoice {
   issued_on: string;
   currency: string;
   invoice_number: string;
+  url?: string;
 }
 
 export interface Partner {
