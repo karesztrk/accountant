@@ -1,22 +1,23 @@
 import {
+  ActionIcon,
   Button,
-  Checkbox,
   Group,
+  Modal,
   Stack,
   Table,
-  Transition,
+  Tooltip,
 } from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { useDisclosure, useTimeout } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
 import { invoicesPage, newInvoicePage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
 import useFinance from "hooks/finance/use-finance";
 import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
-import { ChangeEvent, FC, MouseEvent } from "react";
+import { FC, MouseEvent, useState } from "react";
 import { mutate } from "swr";
+import { AlertCircle, Plus, Trash } from "tabler-icons-react";
 import { InvoiceWithPartner } from "types/database";
 import { useStyles } from "../DataTable.styles";
 
@@ -28,15 +29,11 @@ const InvoiceTable: FC = () => {
   const { data: invoices = [], mutate: mutateInvoices } = useInvoices();
   const { trigger } = useInvoiceDeletion();
 
-  const [selection, handlers] = useListState<number>([]);
-
-  const allChecked =
-    invoices.length > 0 && selection.length === invoices.length;
-
-  const indeterminate =
-    selection.length > 0 && selection.length !== invoices.length;
-
   const { classes } = useStyles();
+
+  const [selected, setSelected] = useState<InvoiceWithPartner>();
+
+  const { start, clear } = useTimeout(() => setSelected(undefined), 2500);
 
   const onRowClick =
     (invoice: InvoiceWithPartner) => (e: MouseEvent<HTMLTableRowElement>) => {
@@ -57,29 +54,9 @@ const InvoiceTable: FC = () => {
       }
     };
 
-  const onToggleRow =
-    (invoice: InvoiceWithPartner) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (!invoice.id) {
-        return;
-      }
-      if (e.target.checked) {
-        handlers.append(invoice.id);
-      } else {
-        handlers.filter((item) => item !== invoice.id);
-      }
-    };
-
-  const onToggleAll = () => {
-    if (allChecked) {
-      handlers.setState([]);
-    } else {
-      handlers.setState(invoices.map((item) => item.id || 0).filter(Boolean));
-    }
-  };
-
-  const onDelete = () => {
-    if (selection.length > 0) {
-      trigger(selection)
+  const onConfirmDelete = () => {
+    if (selected) {
+      trigger([selected.id])
         .then(() => {
           mutateInvoices();
         })
@@ -91,16 +68,8 @@ const InvoiceTable: FC = () => {
             color: "red",
           });
         });
-      handlers.filter((item) => !selection.includes(item));
     }
   };
-
-  const onSelectionCellClick = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const isChecked = (item: InvoiceWithPartner) =>
-    !!item.id && selection.includes(item.id);
 
   const onNewClick = () => {
     router
@@ -116,37 +85,31 @@ const InvoiceTable: FC = () => {
       });
   };
 
+  const onDelete = (invoice: InvoiceWithPartner) => (e: MouseEvent) => {
+    e.stopPropagation();
+    clear();
+    if (selected?.id === invoice?.id) {
+      onConfirmDelete();
+    } else {
+      setSelected(invoice);
+      start();
+    }
+  };
+
+  const onActionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
     <Stack>
-      <Group>
-        <Button onClick={onNewClick}>New</Button>
-        <Transition
-          mounted={selection.length > 0}
-          transition="fade"
-          duration={250}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button variant="outline" onClick={onDelete} style={styles}>
-              Delete
-            </Button>
-          )}
-        </Transition>
-      </Group>
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th className={classes.selectionCell}>
-              <Checkbox
-                onChange={onToggleAll}
-                checked={allChecked}
-                indeterminate={indeterminate}
-              />
-            </th>
             <th>Number</th>
             <th>Issused on</th>
             <th>Partner</th>
             <th>Price</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -156,15 +119,6 @@ const InvoiceTable: FC = () => {
               className={classes.row}
               onClick={onRowClick(invoice)}
             >
-              <td
-                className={classes.selectionCell}
-                onClick={onSelectionCellClick}
-              >
-                <Checkbox
-                  checked={isChecked(invoice)}
-                  onChange={onToggleRow(invoice)}
-                />
-              </td>
               <td>{invoice.invoice_number}</td>
               <td>
                 {new Date(invoice.issued_on).toLocaleDateString(router.locale)}
@@ -177,8 +131,33 @@ const InvoiceTable: FC = () => {
                   currencyDisplay: "narrowSymbol",
                 }).format(invoice.amount)}
               </td>
+              <td className={classes.actionCell} onClick={onActionCellClick}>
+                <ActionIcon variant="transparent" onClick={onDelete(invoice)}>
+                  {selected?.id === invoice.id ? (
+                    <Tooltip label="Click to confirm" withArrow>
+                      <span>
+                        <AlertCircle size={18} />
+                      </span>
+                    </Tooltip>
+                  ) : (
+                    <Trash size={18} />
+                  )}
+                </ActionIcon>
+              </td>
             </tr>
           ))}
+          <tr>
+            <td colSpan={5}>
+              <ActionIcon
+                className={classes.addButton}
+                variant="light"
+                color="brand"
+                onClick={onNewClick}
+              >
+                <Plus size={18} />
+              </ActionIcon>
+            </td>
+          </tr>
         </tbody>
       </Table>
     </Stack>

@@ -7,4 +7,10 @@ export const useStyles = createStyles(() => ({
   selectionCell: {
     width: "40px",
   },
+  actionCell: {
+    width: "40px",
+  },
+  addButton: {
+    margin: "0 auto",
+  },
 }));

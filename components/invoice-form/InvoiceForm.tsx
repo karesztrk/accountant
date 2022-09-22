@@ -119,6 +119,13 @@ const InvoiceForm = () => {
           {...form.getInputProps("issued_on")}
         />
 
+        <TextInput
+          label="URL"
+          placeholder="Your downloadable invoice link"
+          type="url"
+          {...form.getInputProps("url")}
+        />
+
         <Group position="right" mt="md">
           <Button variant="outline" onClick={onClose}>
             Cancel
