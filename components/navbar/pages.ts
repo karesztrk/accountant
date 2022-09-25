@@ -26,6 +26,12 @@ export const partnersPage: NavbarPage = {
   href: "/partner",
 };
 
+export const newPartnerPage: NavbarPage = {
+  icon: Cash,
+  label: "New Tax",
+  href: "/partner/new",
+};
+
 export const financePage: NavbarPage = {
   icon: Cash,
   label: "Finance",
