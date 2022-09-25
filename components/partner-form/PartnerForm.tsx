@@ -25,7 +25,11 @@ const validate = {
   email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
 };
 
-const PartnerForm: FC = () => {
+interface PartnerFormProps {
+  onClose?: () => void;
+}
+
+const PartnerForm: FC<PartnerFormProps> = ({ onClose: onCloseProp }) => {
   const { user } = useUser();
 
   const router = useRouter();
@@ -68,6 +72,22 @@ const PartnerForm: FC = () => {
       });
   };
 
+  const onClose = () => {
+    router
+      .push(
+        {
+          pathname: partnersPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        if (onCloseProp) {
+          onCloseProp();
+        }
+      });
+  };
+
   return (
     <form onSubmit={form.onSubmit(onSubmit)}>
       <Stack spacing="md">
@@ -100,7 +120,9 @@ const PartnerForm: FC = () => {
         />
 
         <Group position="right" mt="md">
-          <NavigationButton variant="outline" text="Cancel" href="/partner" />
+          <Button variant="outline" onClick={onClose}>
+            Cancel
+          </Button>
           <Button type="submit" loading={loading}>
             Submit
           </Button>

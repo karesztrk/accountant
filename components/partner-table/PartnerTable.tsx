@@ -1,68 +1,49 @@
-import {
-  Button,
-  Checkbox,
-  Group,
-  Stack,
-  Table,
-  Transition,
-} from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { Modal, Table } from "@mantine/core";
+import { useDisclosure } from "@mantine/hooks";
 import { showNotification } from "@mantine/notifications";
-import NavigationButton from "components/navigation-button/NavigationButton";
+import CreateButton from "components/create-button/CreateButton";
+import DeleteButton from "components/delete-button/DeleteButton";
+import { newPartnerPage, partnersPage } from "components/navbar/pages";
+import PartnerForm from "components/partner-form/PartnerForm";
 import { usePartnerDeletion } from "hooks/partner/use-partner-deletion";
 import { usePartners } from "hooks/partner/use-partners";
+import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
-import { ChangeEvent, FC, MouseEvent } from "react";
+import { FC, MouseEvent } from "react";
 import { Partner } from "types/database";
 import { useStyles } from "../DataTable.styles";
+import { mutate } from "swr";
 
 const PartnerTable: FC = ({}) => {
   const router = useRouter();
   const { classes } = useStyles();
+  const [opened, handlers] = useDisclosure(false);
 
-  const { data: partners = [], mutate } = usePartners();
+  const { data: partners = [], mutate: mutatePartners } = usePartners();
   const { trigger } = usePartnerDeletion();
-
-  const [selection, handlers] = useListState<number>([]);
-
-  const allChecked =
-    partners.length > 0 && selection.length === partners.length;
-
-  const indeterminate =
-    selection.length > 0 && selection.length !== partners.length;
 
   const onRowClick =
     (partner: Partner) => (e: MouseEvent<HTMLTableRowElement>) => {
       if (!(e.target instanceof HTMLInputElement) && partner.id) {
-        router.push(`/partner/${partner.id}`);
+        Promise.all([
+          mutate(cacheKeys.partner(`${partner.id}`), partner),
+          router.push(
+            {
+              pathname: partnersPage.href,
+              query: { id: partner.id },
+            },
+            undefined,
+            { shallow: true }
+          ),
+        ]).then(handlers.open);
       }
     };
 
-  const onToggleRow =
-    (partner: Partner) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (!partner.id) {
-        return;
-      }
-      if (e.target.checked) {
-        handlers.append(partner.id);
-      } else {
-        handlers.filter((item) => item !== partner.id);
-      }
-    };
-
-  const onToggleAll = () => {
-    if (allChecked) {
-      handlers.setState([]);
-    } else {
-      handlers.setState(partners.map((item) => item.id || 0).filter(Boolean));
-    }
-  };
-
-  const onDelete = () => {
-    if (selection.length > 0) {
-      trigger(selection)
+  const onConfirmDelete = (partner: Partner) => () => {
+    if (partner) {
+      trigger([partner.id])
         .then(() => {
-          mutate();
+          mutatePartners();
         })
         .catch((error) => {
           showNotification({
@@ -72,47 +53,35 @@ const PartnerTable: FC = ({}) => {
             color: "red",
           });
         });
-      handlers.filter((item) => !selection.includes(item));
     }
   };
 
-  const onSelectionCellClick = (e: MouseEvent) => {
+  const onNewClick = () => {
+    router
+      .push(
+        {
+          pathname: newPartnerPage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(handlers.open);
+  };
+
+  const onActionCellClick = (e: MouseEvent) => {
     e.stopPropagation();
   };
 
-  const isChecked = (item: Partner) => !!item.id && selection.includes(item.id);
-
   return (
-    <Stack>
-      <Group position="right">
-        <Transition
-          mounted={selection.length > 0}
-          transition="fade"
-          duration={250}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button variant="outline" onClick={onDelete} style={styles}>
-              Delete
-            </Button>
-          )}
-        </Transition>
-        <NavigationButton href="/partner/new" text="New" />
-      </Group>
+    <>
       <Table highlightOnHover>
         <thead>
           <tr>
-            <th className={classes.selectionCell}>
-              <Checkbox
-                onChange={onToggleAll}
-                checked={allChecked}
-                indeterminate={indeterminate}
-              />
-            </th>
             <th>Name</th>
             <th>Address</th>
             <th>VAT</th>
             <th>Email</th>
+            <th></th>
           </tr>
         </thead>
         <tbody>
@@ -123,25 +92,27 @@ const PartnerTable: FC = ({}) => {
                 className={classes.row}
                 onClick={onRowClick(partner)}
               >
-                <td
-                  className={classes.selectionCell}
-                  onClick={onSelectionCellClick}
-                >
-                  <Checkbox
-                    checked={isChecked(partner)}
-                    onChange={onToggleRow(partner)}
-                  />
-                </td>
                 <td>{partner.name}</td>
                 <td>{partner.address}</td>
                 <td>{partner.vat}</td>
                 <td>{partner.email}</td>
+                <td className={classes.actionCell} onClick={onActionCellClick}>
+                  <DeleteButton onConfirm={onConfirmDelete(partner)} />
+                </td>
               </tr>
             ) : null
           )}
+          <tr>
+            <td colSpan={5}>
+              <CreateButton onClick={onNewClick} />
+            </td>
+          </tr>
         </tbody>
       </Table>
-    </Stack>
+      <Modal opened={opened} onClose={handlers.close} title={`Edit Partner`}>
+        <PartnerForm onClose={handlers.close} />
+      </Modal>
+    </>
   );
 };
 
