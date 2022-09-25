@@ -1,23 +1,17 @@
-import { ChangeEvent, FC, MouseEvent } from "react";
-import {
-  Button,
-  Checkbox,
-  Group,
-  Stack,
-  Table,
-  Transition,
-} from "@mantine/core";
-import { useListState } from "@mantine/hooks";
+import { Table } from "@mantine/core";
+import { showNotification } from "@mantine/notifications";
+import CreateButton from "components/create-button/CreateButton";
+import DeleteButton from "components/delete-button/DeleteButton";
+import { newPaymentPage, paymentsPage } from "components/navbar/pages";
+import useFinance from "hooks/finance/use-finance";
+import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
+import { usePayments } from "hooks/payment/use-payments";
+import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
+import { FC, MouseEvent } from "react";
+import { mutate } from "swr";
 import { Payment } from "types/database";
 import { useStyles } from "../DataTable.styles";
-import { usePayments } from "hooks/payment/use-payments";
-import { usePaymentDeletion } from "hooks/payment/use-payment-deletion";
-import { showNotification } from "@mantine/notifications";
-import { cacheKeys } from "lib";
-import useFinance from "hooks/finance/use-finance";
-import { newPaymentPage, paymentsPage } from "components/navbar/pages";
-import { mutate } from "swr";
 
 const PaymentTable: FC = () => {
   const router = useRouter();
@@ -26,15 +20,7 @@ const PaymentTable: FC = () => {
   const { data: payments = [], mutate: mutatePayments } = usePayments();
   const { trigger } = usePaymentDeletion();
 
-  const [selection, handlers] = useListState<number>([]);
-
   const { classes } = useStyles();
-
-  const allChecked =
-    payments.length > 0 && selection.length === payments.length;
-
-  const indeterminate =
-    selection.length > 0 && selection.length !== payments.length;
 
   const onRowClick =
     (payment: Payment) => (e: MouseEvent<HTMLTableRowElement>) => {
@@ -55,29 +41,9 @@ const PaymentTable: FC = () => {
       }
     };
 
-  const onToggleRow =
-    (payment: Payment) => (e: ChangeEvent<HTMLInputElement>) => {
-      if (!payment.id) {
-        return;
-      }
-      if (e.target.checked) {
-        handlers.append(payment.id);
-      } else {
-        handlers.filter((item) => item !== payment.id);
-      }
-    };
-
-  const onToggleAll = () => {
-    if (allChecked) {
-      handlers.setState([]);
-    } else {
-      handlers.setState(payments.map((item) => item.id || 0).filter(Boolean));
-    }
-  };
-
-  const onDelete = () => {
-    if (selection.length > 0) {
-      trigger(selection)
+  const onConfirmDelete = (payment: Payment) => () => {
+    if (payment) {
+      trigger([payment.id])
         .then(() => {
           mutatePayments();
         })
@@ -89,15 +55,8 @@ const PaymentTable: FC = () => {
             color: "red",
           });
         });
-      handlers.filter((item) => !selection.includes(item));
     }
   };
-
-  const onSelectionCellClick = (e: MouseEvent) => {
-    e.stopPropagation();
-  };
-
-  const isChecked = (item: Payment) => !!item.id && selection.includes(item.id);
 
   const onNewClick = () => {
     router
@@ -113,72 +72,51 @@ const PaymentTable: FC = () => {
       });
   };
 
+  const onActionCellClick = (e: MouseEvent) => {
+    e.stopPropagation();
+  };
+
   return (
-    <Stack>
-      <Group>
-        <Button onClick={onNewClick}>New</Button>
-        <Transition
-          mounted={selection.length > 0}
-          transition="fade"
-          duration={250}
-          timingFunction="ease"
-        >
-          {(styles) => (
-            <Button variant="outline" onClick={onDelete} style={styles}>
-              Delete
-            </Button>
-          )}
-        </Transition>
-      </Group>
-      <Table highlightOnHover>
-        <thead>
-          <tr>
-            <th className={classes.selectionCell}>
-              <Checkbox
-                onChange={onToggleAll}
-                checked={allChecked}
-                indeterminate={indeterminate}
-              />
-            </th>
-            <th>Received on</th>
-            <th>Price</th>
-          </tr>
-        </thead>
-        <tbody>
-          {payments.map((payment) =>
-            payment.id ? (
-              <tr
-                key={payment.id}
-                onClick={onRowClick(payment)}
-                className={classes.row}
-              >
-                <td
-                  className={classes.selectionCell}
-                  onClick={onSelectionCellClick}
-                >
-                  <Checkbox
-                    checked={isChecked(payment)}
-                    onChange={onToggleRow(payment)}
-                  />
-                </td>
-                <td>
-                  {new Date(
-                    payment.transaction.transaction_date
-                  ).toLocaleDateString(router.locale)}
-                </td>
-                <td>
-                  {new Intl.NumberFormat(router.locale, {
-                    style: "currency",
-                    currency: payment.transaction.currency,
-                    currencyDisplay: "narrowSymbol",
-                  }).format(payment.transaction.amount)}
-                </td>
-              </tr>
-            ) : null
-          )}
-        </tbody>
-      </Table>
-    </Stack>
+    <Table highlightOnHover>
+      <thead>
+        <tr>
+          <th>Received on</th>
+          <th>Price</th>
+        </tr>
+      </thead>
+      <tbody>
+        {payments.map((payment) =>
+          payment.id ? (
+            <tr
+              key={payment.id}
+              onClick={onRowClick(payment)}
+              className={classes.row}
+            >
+              <td>
+                {new Date(
+                  payment.transaction.transaction_date
+                ).toLocaleDateString(router.locale)}
+              </td>
+              <td>
+                {new Intl.NumberFormat(router.locale, {
+                  style: "currency",
+                  currency: payment.transaction.currency,
+                  currencyDisplay: "narrowSymbol",
+                }).format(payment.transaction.amount)}
+              </td>
+              <td className={classes.actionCell} onClick={onActionCellClick}>
+                <DeleteButton onConfirm={onConfirmDelete(payment)} />
+              </td>
+            </tr>
+          ) : null
+        )}
+        <tr>
+          <td colSpan={5}>
+            <CreateButton onClick={onNewClick} />
+          </td>
+        </tr>
+      </tbody>
+    </Table>
   );
 };
 
