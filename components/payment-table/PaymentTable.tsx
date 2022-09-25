@@ -82,6 +82,7 @@ const PaymentTable: FC = () => {
         <tr>
           <th>Received on</th>
           <th>Price</th>
+          <th></th>
         </tr>
       </thead>
       <tbody>
