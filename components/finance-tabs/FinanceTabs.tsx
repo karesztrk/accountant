@@ -1,6 +1,8 @@
 import { Modal, Tabs, TabsValue } from "@mantine/core";
 import InvoiceForm from "components/invoice-form/InvoiceForm";
 import InvoiceTable from "components/invoice-table/InvoiceTable";
+import InvoiceUploader from "components/invoice-uploader/InvoiceUploader";
+import { uploadInvoicePage } from "components/navbar/pages";
 import PaymentForm from "components/payment-form/PaymentForm";
 import PaymentTable from "components/payment-table/PaymentTable";
 import TaxForm from "components/tax-form/TaxForm";
@@ -35,7 +37,11 @@ const FinanceTabs = () => {
   const renderForm = () => {
     switch (activeTab) {
       case invoiceTab:
-        return <InvoiceForm />;
+        return router.asPath === uploadInvoicePage.href ? (
+          <InvoiceUploader />
+        ) : (
+          <InvoiceForm />
+        );
       case taxTab:
         return <TaxForm />;
       case paymentTab:

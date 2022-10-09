@@ -1,8 +1,13 @@
-import { Table } from "@mantine/core";
+import { Group, Table } from "@mantine/core";
 import { showNotification } from "@mantine/notifications";
 import CreateButton from "components/create-button/CreateButton";
 import DeleteButton from "components/delete-button/DeleteButton";
-import { invoicesPage, newInvoicePage } from "components/navbar/pages";
+import {
+  invoicesPage,
+  newInvoicePage,
+  uploadInvoicePage,
+} from "components/navbar/pages";
+import UploadButton from "components/upload-button/UploadButton";
 import useFinance from "hooks/finance/use-finance";
 import { useInvoiceDeletion } from "hooks/invoice/use-invoice-deletion";
 import { useInvoices } from "hooks/invoice/use-invoices";
@@ -73,6 +78,20 @@ const InvoiceTable: FC = () => {
       });
   };
 
+  const onUploadClick = () => {
+    router
+      .push(
+        {
+          pathname: uploadInvoicePage.href,
+        },
+        undefined,
+        { shallow: true }
+      )
+      .then(() => {
+        mutateFinanceState({ opened: true });
+      });
+  };
+
   const onActionCellClick = (e: MouseEvent) => {
     e.stopPropagation();
   };
@@ -114,7 +133,16 @@ const InvoiceTable: FC = () => {
         ))}
         <tr>
           <td colSpan={5}>
-            <CreateButton onClick={onNewClick} />
+            <Group position="center">
+              <CreateButton
+                className={classes.actionButton}
+                onClick={onNewClick}
+              />
+              <UploadButton
+                className={classes.actionButton}
+                onClick={onUploadClick}
+              />
+            </Group>
           </td>
         </tr>
       </tbody>

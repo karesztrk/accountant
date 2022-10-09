@@ -1,14 +1,14 @@
 import { ActionIcon } from "@mantine/core";
 import React, { FC } from "react";
-import { Plus } from "tabler-icons-react";
-import { useStyles } from "./CreateButton.styles";
+import { Upload } from "tabler-icons-react";
+import { useStyles } from "./UploadButton.styles";
 
-interface CreateButtonProps {
+interface UploadButtonProps {
   onClick: () => void;
   className?: string;
 }
 
-const CreateButton: FC<CreateButtonProps> = ({ onClick, className }) => {
+const UploadButton: FC<UploadButtonProps> = ({ onClick, className }) => {
   const { classes, cx } = useStyles();
   return (
     <ActionIcon
@@ -17,9 +17,9 @@ const CreateButton: FC<CreateButtonProps> = ({ onClick, className }) => {
       color="brand"
       onClick={onClick}
     >
-      <Plus size={18} />
+      <Upload size={18} />
     </ActionIcon>
   );
 };
 
-export default CreateButton;
+export default UploadButton;

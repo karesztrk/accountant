@@ -11,9 +11,9 @@ import { useInvoiceMutation } from "hooks/invoice/use-invoice-mutation";
 import { usePartners } from "hooks/partner/use-partners";
 import { cacheKeys } from "lib";
 import { useRouter } from "next/router";
-import { useMemo, useState } from "react";
+import { FC, useMemo, useState } from "react";
 import { Calendar } from "tabler-icons-react";
-import { Invoice as ClientInvoice } from "types/client";
+import { Invoice as ClientInvoice, Invoice } from "types/client";
 import { toInvoice, toPartners, toRemoteInvoice } from "./InvoiceForm.util";
 import { mutate } from "swr";
 
@@ -25,7 +25,11 @@ const initialValues: ClientInvoice = {
   currency: "EUR",
 };
 
-const InvoiceForm = () => {
+interface InvoiceProps {
+  invoice?: Invoice;
+}
+
+const InvoiceForm: FC<InvoiceProps> = ({ invoice: invoiceProp }) => {
   const { user } = useUser();
 
   const router = useRouter();
@@ -40,7 +44,8 @@ const InvoiceForm = () => {
   const [loading, setLoading] = useState(false);
 
   const form = useForm<ClientInvoice>({
-    initialValues: invoice ? toInvoice(invoice) : initialValues,
+    initialValues:
+      invoiceProp || (invoice ? toInvoice(invoice) : initialValues),
   });
 
   const partnerData = useMemo(() => toPartners(partners), [partners]);
