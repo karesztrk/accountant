@@ -23,7 +23,7 @@ const initialValues: ClientTax = {
 };
 
 const TaxForm: FC = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   const router = useRouter();
 

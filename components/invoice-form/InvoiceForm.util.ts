@@ -1,9 +1,13 @@
-import { Invoice, Partner } from "types/database";
+import { Invoice, Partner, InvoiceInsert } from "types/database";
 import { Invoice as ClientInvoice } from "types/client";
 
 export const toInvoice = (invoice: Invoice): ClientInvoice => {
   return {
     ...invoice,
+    amount: invoice.amount,
+    currency: invoice.currency,
+    invoice_number: invoice.invoice_number,
+    url: invoice.url || undefined,
     issued_on: invoice?.issued_on ? new Date(invoice.issued_on) : new Date(),
     partner_id: String(invoice.partner_id),
   };
@@ -26,7 +30,7 @@ export const toRemoteInvoice = (
     url,
   }: ClientInvoice,
   id?: number
-): Invoice => ({
+): InvoiceInsert => ({
   id,
   invoice_number,
   amount,
@@ -35,5 +39,5 @@ export const toRemoteInvoice = (
     issued_on.getMonth() + 1
   ).padStart(2, "0")}-${String(issued_on.getDate()).padStart(2, "0")}`,
   partner_id: Number(partner_id),
-  url,
+  url: url || null,
 });

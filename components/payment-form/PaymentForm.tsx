@@ -13,7 +13,6 @@ import { useUser } from "@supabase/auth-helpers-react";
 import CurrencyInput from "components/currency-input/CurrencyInput";
 import DetailedSelectItem from "components/detailed-select-item/SelectItem";
 import { paymentsPage } from "components/navbar/pages";
-import NavigationButton from "components/navigation-button/NavigationButton";
 import useFinance from "hooks/finance/use-finance";
 import { useInvoices } from "hooks/invoice/use-invoices";
 import { usePartners } from "hooks/partner/use-partners";
@@ -48,7 +47,7 @@ const paymentTypeOptions: { label: string; value: PaymentType }[] = [
 ];
 
 const PaymentForm: FC = () => {
-  const { user } = useUser();
+  const user = useUser();
 
   const router = useRouter();
 

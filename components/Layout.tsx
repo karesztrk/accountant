@@ -13,7 +13,7 @@ type LayoutProps = PropsWithChildren<{
 
 const Layout: FC<LayoutProps> = ({ size, title, children }) => {
   const { classes } = useStyles();
-  const { user } = useUser();
+  const user = useUser();
   const [opened, handlers] = useDisclosure(false);
 
   return (

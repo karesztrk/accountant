@@ -30,7 +30,7 @@ interface InvoiceProps {
 }
 
 const InvoiceForm: FC<InvoiceProps> = ({ invoice: invoiceProp }) => {
-  const { user } = useUser();
+  const user = useUser();
 
   const router = useRouter();
 

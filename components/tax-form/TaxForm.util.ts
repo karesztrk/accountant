@@ -1,15 +1,18 @@
 import { Tax as ClientTax } from "types/client";
-import { Tax } from "types/database";
+import {
+  TaxmentWithTransactionInsert,
+  TaxWithTransaction,
+} from "types/database";
 
-export const toTax = (tax: Tax): ClientTax => {
+export const toTax = (tax: TaxWithTransaction): ClientTax => {
   return {
     amount: tax?.transaction.amount,
     currency: tax.transaction.currency,
     paid_on: tax?.transaction.transaction_date
       ? new Date(tax.transaction.transaction_date)
       : new Date(),
-    description: tax.description,
-    system: tax.system,
+    description: tax.description || "",
+    system: tax.system || "",
   };
 };
 
@@ -17,7 +20,7 @@ export const toRemoteTax = (
   userId: string,
   tax: ClientTax,
   id?: number
-): Tax => ({
+): TaxmentWithTransactionInsert => ({
   id,
   transaction: {
     amount: tax.amount,

@@ -1,7 +1,12 @@
-import { InvoiceWithPartner, Partner, Payment } from "types/database";
 import { Payment as ClientPayment } from "types/client";
+import {
+  InvoiceWithPartner,
+  Partner,
+  PaymentWithTransaction,
+  PaymentWithTransactionInsert,
+} from "types/database";
 
-export const toPayment = (payment: Payment): ClientPayment => {
+export const toPayment = (payment: PaymentWithTransaction): ClientPayment => {
   return {
     received_on: payment?.transaction.transaction_date
       ? new Date(payment.transaction.transaction_date)
@@ -11,8 +16,8 @@ export const toPayment = (payment: Payment): ClientPayment => {
     amount: payment.transaction.amount,
     currency: payment.transaction.currency,
     type: payment.type,
-    local_amount: payment.local_amount,
-    local_currency: payment.local_currency,
+    local_amount: payment.local_amount || 0,
+    local_currency: payment.local_currency || "",
   };
 };
 
@@ -36,7 +41,7 @@ export const toRemotePayment = (
   userId: string,
   payment: ClientPayment,
   id?: number
-): Payment => ({
+): PaymentWithTransactionInsert => ({
   id,
   transaction: {
     amount: payment.amount,

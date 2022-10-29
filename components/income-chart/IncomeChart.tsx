@@ -61,7 +61,7 @@ const IncomeChart: FC<IncomeChartProps> = ({ data }) => {
           format: (value) =>
             new Intl.NumberFormat(router.locale, {
               style: "currency",
-              currency: currency,
+              currency: currency || undefined,
               currencyDisplay: "narrowSymbol",
               notation: "compact",
               compactDisplay: "long",
@@ -74,7 +74,7 @@ const IncomeChart: FC<IncomeChartProps> = ({ data }) => {
         valueFormat={(value) =>
           new Intl.NumberFormat(router.locale, {
             style: "currency",
-            currency: currency,
+            currency: currency || undefined,
             currencyDisplay: "narrowSymbol",
           }).format(value)
         }

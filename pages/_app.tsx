@@ -1,15 +1,24 @@
 import { Global, MantineProvider } from "@mantine/core";
 import { NotificationsProvider } from "@mantine/notifications";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { UserProvider } from "@supabase/auth-helpers-react";
+import { createBrowserSupabaseClient } from "@supabase/auth-helpers-nextjs";
+import { SessionContextProvider } from "@supabase/auth-helpers-react";
 import NavigationProgress from "components/navigation-progress/NavigationProgress";
 import { AppProps } from "next/app";
 import Head from "next/head";
+import { useState } from "react";
+import { Session } from "@supabase/supabase-js";
+import { Database } from "lib/database.types";
 
 const fontFamily = "Inter";
 const headingFontFamily = "Barlow";
 
-const MyApp = ({ Component, pageProps }: AppProps) => {
+export const browserSupabaseClient = createBrowserSupabaseClient<Database>();
+
+const MyApp = ({
+  Component,
+  pageProps,
+}: AppProps<{ initialSession: Session }>) => {
+  const [supabaseClient] = useState(browserSupabaseClient);
   return (
     <>
       <Head>
@@ -89,9 +98,12 @@ const MyApp = ({ Component, pageProps }: AppProps) => {
         />
         <NavigationProgress />
         <NotificationsProvider>
-          <UserProvider supabaseClient={supabaseClient}>
+          <SessionContextProvider
+            supabaseClient={supabaseClient}
+            initialSession={pageProps.initialSession}
+          >
             <Component {...pageProps} />
-          </UserProvider>
+          </SessionContextProvider>
         </NotificationsProvider>
       </MantineProvider>
     </>

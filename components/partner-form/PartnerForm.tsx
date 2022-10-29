@@ -14,7 +14,7 @@ import { useSWRConfig } from "swr";
 import { Partner as ClientPartner } from "types/client";
 import { toRemotePartner } from "./PartnerForm.util";
 
-const initialValues: ClientPartner = {
+const defaultValues: ClientPartner = {
   name: "",
   address: "",
   vat: "",
@@ -30,7 +30,7 @@ interface PartnerFormProps {
 }
 
 const PartnerForm: FC<PartnerFormProps> = ({ onClose: onCloseProp }) => {
-  const { user } = useUser();
+  const user = useUser();
 
   const router = useRouter();
 
@@ -42,8 +42,11 @@ const PartnerForm: FC<PartnerFormProps> = ({ onClose: onCloseProp }) => {
 
   const [loading, setLoading] = useState(false);
 
+  const initialValues = partner
+    ? { ...partner, email: partner.email || undefined }
+    : defaultValues;
   const form = useForm<ClientPartner>({
-    initialValues: partner || initialValues,
+    initialValues,
     validate,
   });
 

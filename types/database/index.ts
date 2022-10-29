@@ -1,72 +1,48 @@
+import { Database } from "./gen";
+
 export interface Base {
-  id?: any;
+  id?: number;
 }
 
 export interface InvoiceWithPartner extends Invoice {
   partner: Pick<Partner, "name">;
 }
 
-export interface Invoice {
-  id?: number;
-  partner_id: number;
-  amount: number;
-  issued_on: string;
-  currency: string;
-  invoice_number: string;
-  url?: string;
-}
+export type Invoice = Database["public"]["Tables"]["invoice"]["Row"];
+export type InvoiceInsert = Database["public"]["Tables"]["invoice"]["Insert"];
 
-export interface Partner {
-  id?: number;
-  name: string;
-  address: string;
-  vat: string;
-  email?: string;
-  user_id: string;
-}
+export type Partner = Database["public"]["Tables"]["partner"]["Row"];
+export type PartnerInsert = Database["public"]["Tables"]["partner"]["Insert"];
 
 export type PartnerName = Pick<Partner, "id" | "name">;
 
-export type PaymentType = "simple" | "foreign";
+export type PaymentType = string;
 
-export interface Transaction {
-  id?: number;
-  amount: number;
-  currency: string;
-  transaction_date: string;
-  user_id: string;
-}
+export type Transaction = Database["public"]["Tables"]["transaction"]["Row"];
+export type TransactionInsert =
+  Database["public"]["Tables"]["transaction"]["Insert"];
 
-export interface Payment {
-  id?: number;
-  invoice_id?: number;
-  type: PaymentType;
-  local_amount?: number;
-  local_currency?: string;
-  partner_id: number;
-  transaction_id: number;
-  transaction: Transaction;
-}
+export type Payment = Database["public"]["Tables"]["payment"]["Row"];
+export type PaymentInsert = Database["public"]["Tables"]["payment"]["Insert"];
 
-export interface Tax {
-  id?: number;
-  system?: string;
-  description?: string;
-  transaction_id: number;
-  transaction: Transaction;
-  user_id: string;
-}
+export type PaymentWithTransaction = Payment & { transaction: Transaction };
+export type PaymentWithTransactionInsert = PaymentInsert & {
+  transaction: TransactionInsert;
+};
 
-export interface Income {
-  period: string;
-  amount: number;
-  currency: string;
-  local_amount: number;
-  local_currency: string;
-}
+export type Tax = Database["public"]["Tables"]["tax"]["Row"];
+export type TaxInsert = Database["public"]["Tables"]["tax"]["Insert"];
 
-export interface Expense {
-  period: string;
-  amount: number;
-  currency: string;
-}
+export type TaxWithTransaction = Tax & { transaction: Transaction };
+export type TaxmentWithTransactionInsert = TaxInsert & {
+  transaction: TransactionInsert;
+};
+
+export type Income = Database["public"]["Views"]["income_per_month"]["Row"];
+
+export type Expense = Database["public"]["Views"]["expense_per_month"]["Row"];
+
+export type Tables = keyof Database["public"]["Tables"];
+export type Views = keyof Database["public"]["Views"];
+
+export type Upsert = Database["public"]["Tables"][Tables]["Insert"];

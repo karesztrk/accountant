@@ -1,5 +1,4 @@
 import {
-  Alert,
   Button,
   Container,
   Paper,
@@ -8,9 +7,10 @@ import {
   Title,
 } from "@mantine/core";
 import { useForm } from "@mantine/form";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { useState } from "react";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Database } from "lib/database.types";
 
 interface FormValues {
   email: string;
@@ -29,13 +29,14 @@ const SignIn = () => {
     initialValues: { email: "", password: "" },
     validate,
   });
+  const supabaseClient = useSupabaseClient<Database>();
 
   const [loading, setLoading] = useState(false);
 
   const onSubmit = ({ email, password }: FormValues) => {
     setLoading(true);
     supabaseClient.auth
-      .signIn({
+      .signInWithPassword({
         email,
         password,
       })

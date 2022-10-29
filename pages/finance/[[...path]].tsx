@@ -1,14 +1,11 @@
-import {
-  supabaseServerClient,
-  withPageAuth,
-} from "@supabase/auth-helpers-nextjs";
+import { withPageAuth } from "@supabase/auth-helpers-nextjs";
 import FinanceTabs from "components/finance-tabs/FinanceTabs";
 import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { SWRConfig, unstable_serialize } from "swr";
-import { InvoiceWithPartner, Payment, Tax } from "types/database";
+import { Database } from "types/database/gen";
 
 interface FinanceProps {
   fallback: Record<string, unknown>;
@@ -24,23 +21,26 @@ const Finance: NextPage<FinanceProps> = ({ fallback }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withPageAuth({
+export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   redirectTo: loginPage.href,
-  async getServerSideProps(ctx): Promise<
+  async getServerSideProps(
+    _ctx,
+    supabase
+  ): Promise<
     GetServerSidePropsResult<{
       fallback: Record<string, unknown>;
     }>
   > {
-    const { data: invoices } = await supabaseServerClient(ctx)
-      .from<InvoiceWithPartner>(tableNames.invoice)
+    const { data: invoices } = await supabase
+      .from(tableNames.invoice)
       .select(`*, partner!inner(name)`);
 
-    const { data: payments } = await supabaseServerClient(ctx)
-      .from<Payment>(tableNames.payment)
+    const { data: payments } = await supabase
+      .from(tableNames.payment)
       .select("*, transaction!inner(*)");
 
-    const { data: taxes } = await supabaseServerClient(ctx)
-      .from<Tax>(tableNames.tax)
+    const { data: taxes } = await supabase
+      .from(tableNames.tax)
       .select("*, transaction!inner(*)");
 
     return {
