@@ -7,4 +7,7 @@ export const useStyles = createStyles(() => ({
   actionCell: {
     width: "40px",
   },
+  actionButton: {
+    margin: 0,
+  },
 }));

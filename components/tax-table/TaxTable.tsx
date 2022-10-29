@@ -91,9 +91,9 @@ const TaxTable: FC = () => {
           tax.id ? (
             <tr key={tax.id} className={classes.row} onClick={onRowClick(tax)}>
               <td>
-                {new Date(tax.transaction.transaction_date).toLocaleDateString(
-                  router.locale
-                )}
+                {new Date(
+                  tax.transaction.transaction_date || 0
+                ).toLocaleDateString(router.locale)}
               </td>
               <td>
                 {new Intl.NumberFormat(router.locale, {

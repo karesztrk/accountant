@@ -1,5 +1,4 @@
 import { Navbar as MantineNavbar, Stack } from "@mantine/core";
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/router";
 import { FC } from "react";
 import { Logout } from "tabler-icons-react";
@@ -7,6 +6,8 @@ import { useStyles } from "./Navbar.styles";
 import NavbarButton from "./NavbarButton";
 import NavbarLink from "./NavbarLink";
 import { loginPage, pages } from "./pages";
+import { useSupabaseClient } from "@supabase/auth-helpers-react";
+import { Database } from "lib/database.types";
 
 interface NavbarProps {
   hidden?: boolean;
@@ -15,6 +16,7 @@ interface NavbarProps {
 const Navbar: FC<NavbarProps> = ({ hidden }) => {
   const { push } = useRouter();
   const { classes, cx } = useStyles();
+  const supabaseClient = useSupabaseClient<Database>();
 
   const onLogout = () => {
     supabaseClient.auth.signOut();

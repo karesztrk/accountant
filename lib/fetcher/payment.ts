@@ -1,11 +1,15 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tableNames } from "lib";
-import { Payment, Transaction } from "types/database";
+import { browserSupabaseClient } from "pages/_app";
+import {
+  PaymentInsert,
+  PaymentWithTransaction,
+  PaymentWithTransactionInsert,
+} from "types/database";
 
 export const paymentFetcher = async (_: string, condition: { id: number }) => {
-  const { data } = await supabaseClient
-    .from<Payment>(tableNames.payment)
-    .select("*, transaction!inner(*)")
+  const { data } = await browserSupabaseClient
+    .from(tableNames.payment)
+    .select<string, PaymentWithTransaction>("*, transaction!inner(*)")
     .eq("id", condition.id)
     .throwOnError()
     .single();
@@ -13,28 +17,34 @@ export const paymentFetcher = async (_: string, condition: { id: number }) => {
 };
 
 export const paymentsFetcher = async () => {
-  const { data } = await supabaseClient
-    .from<Payment>(tableNames.payment)
-    .select("*, transaction!inner(*)");
+  const { data } = await browserSupabaseClient
+    .from(tableNames.payment)
+    .select<string, PaymentWithTransaction>("*, transaction!inner(*)");
   return data || [];
 };
 
 export const paymentMutationFetcher =
-  (_: string) => async (values: Payment) => {
-    const { data: transaction } = await supabaseClient
-      .from<Transaction>(tableNames.transaction)
+  (_: string) => async (values: PaymentWithTransactionInsert) => {
+    const { data: transaction } = await browserSupabaseClient
+      .from(tableNames.transaction)
       .upsert(values.transaction)
+      .select()
       .throwOnError()
       .single();
 
-    const payment: Partial<Payment> = {
-      ...values,
-      transaction_id: transaction?.id,
-    };
-    delete payment.transaction;
+    if (!transaction) {
+      throw Error(`Transaction ${values.id} not found during update`);
+    }
 
-    const { data } = await supabaseClient
-      .from<Transaction>(tableNames.payment)
+    const { transaction: tx, ...paymentValues } = values;
+
+    const payment: PaymentInsert = {
+      ...paymentValues,
+      transaction_id: transaction.id,
+    };
+
+    const { data } = await browserSupabaseClient
+      .from(tableNames.payment)
       .upsert(payment)
       .throwOnError()
       .single();

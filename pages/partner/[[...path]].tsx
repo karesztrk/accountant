@@ -1,14 +1,11 @@
-import {
-  supabaseServerClient,
-  withPageAuth,
-} from "@supabase/auth-helpers-nextjs";
+import { withPageAuth } from "@supabase/auth-helpers-nextjs";
 import Layout from "components/Layout";
 import { loginPage } from "components/navbar/pages";
 import PartnerTable from "components/partner-table/PartnerTable";
 import { cacheKeys, tableNames } from "lib";
 import { GetServerSideProps, GetServerSidePropsResult, NextPage } from "next";
 import { SWRConfig, unstable_serialize } from "swr";
-import { Partner } from "types/database";
+import { Database } from "types/database/gen";
 
 interface PartnersProps {
   fallback: Record<string, unknown>;
@@ -24,16 +21,17 @@ const Partners: NextPage<PartnersProps> = ({ fallback }) => {
   );
 };
 
-export const getServerSideProps: GetServerSideProps = withPageAuth({
+export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   redirectTo: loginPage.href,
-  async getServerSideProps(ctx): Promise<
+  async getServerSideProps(
+    _ctx,
+    supabase
+  ): Promise<
     GetServerSidePropsResult<{
       fallback: Record<string, unknown>;
     }>
   > {
-    const { data } = await supabaseServerClient(ctx)
-      .from<Partner>(tableNames.partner)
-      .select("*");
+    const { data } = await supabase.from(tableNames.partner).select("*");
     return {
       props: {
         fallback: {

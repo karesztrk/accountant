@@ -1,14 +1,18 @@
 import { PostgrestError } from "@supabase/supabase-js";
 import { cacheKeys } from "lib";
-import { singleFetcher } from "lib/fetcher";
+import { taxFetcher } from "lib/fetcher/tax";
 import useSWR from "swr";
-import { Tax } from "types/database";
+import { TaxWithTransaction } from "types/database";
 
 export const useTax = (id?: string) => {
   const key = cacheKeys.tax(id);
-  return useSWR<Tax | undefined, PostgrestError>(key, singleFetcher, {
-    revalidateIfStale: false,
-    revalidateOnFocus: false,
-    revalidateOnReconnect: false,
-  });
+  return useSWR<TaxWithTransaction | undefined, PostgrestError>(
+    key,
+    taxFetcher,
+    {
+      revalidateIfStale: false,
+      revalidateOnFocus: false,
+      revalidateOnReconnect: false,
+    }
+  );
 };

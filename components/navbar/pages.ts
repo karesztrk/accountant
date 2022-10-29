@@ -62,6 +62,12 @@ export const newInvoicePage: NavbarPage = {
   href: "/finance/invoice/new",
 };
 
+export const uploadInvoicePage: NavbarPage = {
+  icon: Cash,
+  label: "Upload Invoice",
+  href: "/finance/invoice/upload",
+};
+
 export const newPaymentPage: NavbarPage = {
   icon: Cash,
   label: "New Payment",

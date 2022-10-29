@@ -1,29 +1,32 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
-import { Base } from "types/database";
+import { browserSupabaseClient } from "pages/_app";
+import { Base, Tables, Upsert } from "types/database";
 
 export const singleFetcher = async <T extends Base>(
-  table: string,
+  table: Tables,
   condition: { id: T[keyof T] }
 ) => {
-  const { data } = await supabaseClient
-    .from<T>(table)
-    .select()
+  const { data } = await browserSupabaseClient
+    .from(table)
+    .select("*")
     .eq("id", condition.id)
     .throwOnError()
     .single();
   return data || undefined;
 };
 
-export const listFetcher = async <T extends Base>(table: string) => {
-  const { data } = await supabaseClient.from<T>(table).throwOnError().select();
+export const listFetcher = async (table: Tables) => {
+  const { data } = await browserSupabaseClient
+    .from(table)
+    .select()
+    .throwOnError();
   return data || [];
 };
 
 export const deletionFetcher =
-  (table: string) =>
+  (table: Tables) =>
   async <T extends Base>(ids: T[keyof T][]) => {
-    const { data } = await supabaseClient
-      .from<T>(table)
+    const { data } = await browserSupabaseClient
+      .from(table)
       .delete()
       .in("id", ids)
       .throwOnError();
@@ -31,13 +34,11 @@ export const deletionFetcher =
     return data || undefined;
   };
 
-export const mutationFetcher =
-  (table: string) =>
-  async <T extends Base>(values: T) => {
-    const { data } = await supabaseClient
-      .from<T>(table)
-      .upsert(values)
-      .throwOnError()
-      .single();
-    return data || undefined;
-  };
+export const mutationFetcher = (table: Tables) => async (values: Upsert) => {
+  const { data } = await browserSupabaseClient
+    .from(table)
+    .upsert(values)
+    .throwOnError()
+    .single();
+  return data || undefined;
+};

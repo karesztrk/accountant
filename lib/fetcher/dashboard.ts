@@ -1,14 +1,13 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { viewNames } from "lib";
-import { Income } from "types/database";
+import { browserSupabaseClient } from "pages/_app";
 
 export const dashboardFetcher = async () => {
-  const { data: income } = await supabaseClient
-    .from<Income>(viewNames.income)
+  const { data: income } = await browserSupabaseClient
+    .from(viewNames.income)
     .select("*");
 
-  const { data: expense } = await supabaseClient
-    .from<Income>(viewNames.income)
+  const { data: expense } = await browserSupabaseClient
+    .from(viewNames.income)
     .select("*");
   return {
     income: income || [],

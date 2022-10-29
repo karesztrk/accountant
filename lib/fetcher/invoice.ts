@@ -1,6 +1,5 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tableNames } from "lib";
-import { InvoiceWithPartner } from "types/database";
+import { browserSupabaseClient } from "pages/_app";
 
 export const invoiceWithPartnerFetcher = async (
   _tableName: string,
@@ -8,7 +7,7 @@ export const invoiceWithPartnerFetcher = async (
     partner_id: number;
   }
 ) => {
-  const table = supabaseClient.from<InvoiceWithPartner>(tableNames.invoice);
+  const table = browserSupabaseClient.from(tableNames.invoice);
 
   let data = undefined;
   if (condition) {

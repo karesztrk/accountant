@@ -95,7 +95,7 @@ const PaymentTable: FC = () => {
             >
               <td>
                 {new Date(
-                  payment.transaction.transaction_date
+                  payment.transaction.transaction_date || 0
                 ).toLocaleDateString(router.locale)}
               </td>
               <td>

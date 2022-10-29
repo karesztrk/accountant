@@ -6,30 +6,38 @@ export const toChartData = (data: { income: Income[]; expense: Expense[] }) => {
     return [];
   }
   const datum = new Map<string, BarDatum>(
-    data.income.map(({ period, local_amount }) => [
-      period,
-      {
-        period,
-        income: local_amount,
-        expense: 0,
-        total: local_amount,
-      },
-    ])
+    data.income.map(({ period = "", local_amount = "" }) => {
+      const key = period || "";
+      const income = local_amount || 0;
+      const expense = 0;
+      const total = local_amount || 0;
+      return [
+        key,
+        {
+          period: key,
+          income,
+          expense,
+          total,
+        },
+      ];
+    })
   );
 
-  data.expense.forEach(({ period, amount }) => {
-    const entry = datum.get(period);
+  data.expense.forEach(({ period = "", amount = 0 }) => {
+    const key = period || "";
+    const amt = amount || 0;
+    const entry = datum.get(key);
     if (entry) {
-      datum.set(period, {
+      datum.set(key, {
         ...entry,
-        income: (entry.income as number) + amount,
-        expense: amount * -1,
+        income: (entry.income as number) + amt,
+        expense: amt * -1,
       });
     } else {
-      datum.set(period, {
-        period: period,
+      datum.set(key, {
+        period: key,
         income: 0,
-        expense: amount * -1,
+        expense: amt * -1,
       });
     }
   });

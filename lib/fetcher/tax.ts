@@ -1,11 +1,16 @@
-import { supabaseClient } from "@supabase/auth-helpers-nextjs";
 import { tableNames } from "lib";
-import { Tax, Transaction } from "types/database";
+import { browserSupabaseClient } from "pages/_app";
+import {
+  Tax,
+  TaxInsert,
+  TaxmentWithTransactionInsert,
+  TaxWithTransaction,
+} from "types/database";
 
 export const taxFetcher = async (_: string, condition: { id: number }) => {
-  const { data } = await supabaseClient
-    .from<Tax>(tableNames.tax)
-    .select("*, transaction!inner(*)")
+  const { data } = await browserSupabaseClient
+    .from(tableNames.tax)
+    .select<string, TaxWithTransaction>("*, transaction!inner(*)")
     .eq("id", condition.id)
     .throwOnError()
     .single();
@@ -13,30 +18,37 @@ export const taxFetcher = async (_: string, condition: { id: number }) => {
 };
 
 export const taxesFetcher = async () => {
-  const { data } = await supabaseClient
-    .from<Tax>(tableNames.payment)
-    .select("*, transaction!inner(*)");
+  const { data } = await browserSupabaseClient
+    .from(tableNames.payment)
+    .select<string, TaxWithTransaction>("*, transaction!inner(*)");
   return data || [];
 };
 
-export const taxMutationFetcher = (_: string) => async (values: Tax) => {
-  const { data: transaction } = await supabaseClient
-    .from<Transaction>(tableNames.transaction)
-    .upsert(values.transaction)
-    .throwOnError()
-    .single();
+export const taxMutationFetcher =
+  (_: string) => async (values: TaxmentWithTransactionInsert) => {
+    const { data: transaction } = await browserSupabaseClient
+      .from(tableNames.transaction)
+      .upsert(values.transaction)
+      .select()
+      .throwOnError()
+      .single();
 
-  const tax: Partial<Tax> = {
-    ...values,
-    transaction_id: transaction?.id,
+    if (!transaction) {
+      throw Error(`Transaction ${values.id} not found during update`);
+    }
+
+    const { transaction: tx, ...taxValues } = values;
+
+    const tax: TaxInsert = {
+      ...taxValues,
+      transaction_id: transaction.id,
+    };
+
+    const { data } = await browserSupabaseClient
+      .from(tableNames.tax)
+      .upsert(tax)
+      .throwOnError()
+      .single();
+
+    return data || undefined;
   };
-  delete tax.transaction;
-
-  const { data } = await supabaseClient
-    .from<Transaction>(tableNames.tax)
-    .upsert(tax)
-    .throwOnError()
-    .single();
-
-  return data || undefined;
-};

@@ -11,7 +11,7 @@ interface DashboardData {
 }
 
 export const useDashboardData = (fallbackData?: DashboardData) => {
-  const { user } = useUser();
+  const user = useUser();
   const key = user ? cacheKeys.dashboardData() : null;
   return useSWR<DashboardData, PostgrestError>(key, dashboardFetcher, {
     revalidateIfStale: false,
