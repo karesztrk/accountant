@@ -1,5 +1,6 @@
 import { Group, Text } from "@mantine/core";
 import { Dropzone, FileWithPath, PDF_MIME_TYPE } from "@mantine/dropzone";
+import { data } from "components/currency-input/data";
 import { FC, useState } from "react";
 import { Photo, Upload, X } from "tabler-icons-react";
 import { Invoice } from "types/client";
@@ -26,11 +27,6 @@ const InvoiceDropArea: FC<InvoiceDropAreaProps> = ({ onFinish }) => {
         .then((response) => response.json())
         .then((response) => {
           if (response && Array.isArray(response) && response.length > 0) {
-            console.log(
-              "🚀 ~ file: InvoiceTable.tsx ~ line 111 ~ .then ~ response",
-              response
-            );
-
             const amount = Number(
               response[0][4].replace(/[^0-9.]+/g, "").replace(",", "")
             );
@@ -43,7 +39,7 @@ const InvoiceDropArea: FC<InvoiceDropAreaProps> = ({ onFinish }) => {
             if (onFinish) {
               onFinish({
                 amount,
-                currency: "",
+                currency: data[0].value,
                 invoice_number: invoiceNumber,
                 issued_on: issuedOn,
                 partner_id: "",
