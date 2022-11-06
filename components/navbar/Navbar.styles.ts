@@ -9,6 +9,7 @@ export const useStyles = createStyles((theme) => ({
       width: "80px",
       transform: "translateX(0)",
     },
+    color: "red",
   },
 
   hidden: {
@@ -24,6 +25,7 @@ export const useStyles = createStyles((theme) => ({
           ? theme.colors.dark[5]
           : theme.colors.gray[0],
     },
+    color: theme.colors.dark[0],
   },
 
   icon: {
