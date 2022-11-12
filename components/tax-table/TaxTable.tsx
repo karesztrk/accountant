@@ -32,7 +32,7 @@ const TaxTable: FC = () => {
             query: { id: tax.id },
           },
           undefined,
-          { shallow: true }
+          { shallow: true },
         ),
       ]).then(() => {
         mutateFinanceState({ opened: true });
@@ -64,7 +64,7 @@ const TaxTable: FC = () => {
           pathname: newTaxPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: true });
@@ -92,7 +92,7 @@ const TaxTable: FC = () => {
             <tr key={tax.id} className={classes.row} onClick={onRowClick(tax)}>
               <td>
                 {new Date(
-                  tax.transaction.transaction_date || 0
+                  tax.transaction.transaction_date || 0,
                 ).toLocaleDateString(router.locale)}
               </td>
               <td>
@@ -108,7 +108,7 @@ const TaxTable: FC = () => {
                 <DeleteButton onConfirm={onConfirmDelete(tax)} />
               </td>
             </tr>
-          ) : null
+          ) : null,
         )}
         <tr>
           <td colSpan={5}>

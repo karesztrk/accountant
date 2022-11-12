@@ -17,7 +17,7 @@ const NavigationProgress = () => {
 
   const interval = useInterval(
     () => setProgress((percent) => (percent + 5 > 90 ? percent : percent + 5)),
-    200
+    200,
   );
 
   useEffect(() => {

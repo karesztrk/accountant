@@ -52,7 +52,7 @@ const Stats: FC<StatsProps> = ({ data: { income, expense } }) => {
         diff: getProfitDiff(income, expense),
       },
     ],
-    [income, expense]
+    [income, expense],
   );
 
   const stats = data.map((stat) => {

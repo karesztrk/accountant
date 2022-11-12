@@ -82,7 +82,7 @@ const PartnerForm: FC<PartnerFormProps> = ({ onClose: onCloseProp }) => {
           pathname: partnersPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         if (onCloseProp) {

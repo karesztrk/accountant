@@ -67,7 +67,7 @@ const TaxForm: FC = () => {
           pathname: taxesPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: false });

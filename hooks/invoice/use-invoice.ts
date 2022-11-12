@@ -13,6 +13,6 @@ export const useInvoice = (id?: string) => {
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-    }
+    },
   );
 };

@@ -98,7 +98,7 @@ const PaymentForm: FC = () => {
   const onInvoiceChange = (id: string) => {
     onChange(id);
     const invoice = invoices.find(
-      (invoice) => invoice.id && String(invoice.id) === id
+      (invoice) => invoice.id && String(invoice.id) === id,
     );
     if (invoice) {
       form.setFieldValue("amount", invoice.amount);
@@ -113,7 +113,7 @@ const PaymentForm: FC = () => {
           pathname: paymentsPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: false });

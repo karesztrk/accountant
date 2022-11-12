@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   redirectTo: loginPage.href,
   async getServerSideProps(
     _ctx,
-    supabase
+    supabase,
   ): Promise<
     GetServerSidePropsResult<{
       fallback: Record<string, unknown>;
@@ -33,7 +33,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   > {
     const { data: invoices } = await supabase
       .from(tableNames.invoice)
-      .select(`*, partner!inner(name)`);
+      .select("*, partner!inner(name)");
 
     const { data: payments } = await supabase
       .from(tableNames.payment)

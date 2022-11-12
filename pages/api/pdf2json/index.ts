@@ -9,7 +9,7 @@ import { Line, PdfReader } from "pdfreader";
 function addTextToLines(textLines: Line[], item: Line) {
   const existingLine = textLines.find(({ y }) => y === item.y);
   if (existingLine) {
-    existingLine.text += " " + item.text;
+    existingLine.text += ` ${item.text}`;
   } else {
     textLines.push(item);
   }
@@ -50,7 +50,7 @@ const parsePdf = (data: Buffer) =>
  */
 export default function handler(
   req: NextApiRequest,
-  res: NextApiResponse<string[][] | Record<string, string>>
+  res: NextApiResponse<string[][] | Record<string, string>>,
 ) {
   if (
     req.method !== "POST" ||

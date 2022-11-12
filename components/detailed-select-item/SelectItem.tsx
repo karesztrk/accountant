@@ -16,7 +16,7 @@ const DetailedSelectItem = forwardRef<HTMLDivElement, DetailedItemProps>(
         </Text>
       </Group>
     </div>
-  )
+  ),
 );
 
 DetailedSelectItem.displayName = "DetailedSelectItem";

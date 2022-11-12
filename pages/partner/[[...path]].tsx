@@ -25,7 +25,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   redirectTo: loginPage.href,
   async getServerSideProps(
     _ctx,
-    supabase
+    supabase,
   ): Promise<
     GetServerSidePropsResult<{
       fallback: Record<string, unknown>;

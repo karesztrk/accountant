@@ -33,7 +33,7 @@ const PaymentTable: FC = () => {
               query: { id: payment.id },
             },
             undefined,
-            { shallow: true }
+            { shallow: true },
           ),
         ]).then(() => {
           mutateFinanceState({ opened: true });
@@ -65,7 +65,7 @@ const PaymentTable: FC = () => {
           pathname: newPaymentPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: true });
@@ -95,7 +95,7 @@ const PaymentTable: FC = () => {
             >
               <td>
                 {new Date(
-                  payment.transaction.transaction_date || 0
+                  payment.transaction.transaction_date || 0,
                 ).toLocaleDateString(router.locale)}
               </td>
               <td>
@@ -109,7 +109,7 @@ const PaymentTable: FC = () => {
                 <DeleteButton onConfirm={onConfirmDelete(payment)} />
               </td>
             </tr>
-          ) : null
+          ) : null,
         )}
         <tr>
           <td colSpan={5}>

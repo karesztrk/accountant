@@ -5,7 +5,7 @@ export const invoiceWithPartnerFetcher = async (
   _tableName: string,
   condition?: {
     partner_id: number;
-  }
+  },
 ) => {
   const table = browserSupabaseClient.from(tableNames.invoice);
 

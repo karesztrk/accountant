@@ -20,7 +20,7 @@ export const toChartData = (data: { income: Income[]; expense: Expense[] }) => {
           total,
         },
       ];
-    })
+    }),
   );
 
   data.expense.forEach(({ period = "", amount = 0 }) => {
@@ -43,7 +43,7 @@ export const toChartData = (data: { income: Income[]; expense: Expense[] }) => {
   });
 
   return Array.from(datum.values()).sort((a, b) =>
-    (a.period as string).localeCompare(b.period as string)
+    (a.period as string).localeCompare(b.period as string),
   );
 };
 

@@ -39,7 +39,7 @@ const InvoiceTable: FC = () => {
               query: { id: invoice.id },
             },
             undefined,
-            { shallow: true }
+            { shallow: true },
           ),
         ]).then(() => {
           mutateFinanceState({ opened: true });
@@ -71,7 +71,7 @@ const InvoiceTable: FC = () => {
           pathname: newInvoicePage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: true });
@@ -85,7 +85,7 @@ const InvoiceTable: FC = () => {
           pathname: uploadInvoicePage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: true });

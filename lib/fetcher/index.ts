@@ -3,7 +3,7 @@ import { Base, Tables, Upsert } from "types/database";
 
 export const singleFetcher = async <T extends Base>(
   table: Tables,
-  condition: { id: T[keyof T] }
+  condition: { id: T[keyof T] },
 ) => {
   const { data } = await browserSupabaseClient
     .from(table)
@@ -23,8 +23,7 @@ export const listFetcher = async (table: Tables) => {
 };
 
 export const deletionFetcher =
-  (table: Tables) =>
-  async <T extends Base>(ids: T[keyof T][]) => {
+  (table: Tables) => async <T extends Base>(ids: T[keyof T][]) => {
     const { data } = await browserSupabaseClient
       .from(table)
       .delete()

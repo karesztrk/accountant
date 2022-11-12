@@ -18,7 +18,7 @@ export const getRevenueDiff = (income: Income[]) =>
 export const getProfit = (
   income: Income[],
   expense: Expense[],
-  locale?: string
+  locale?: string,
 ) => {
   const amount =
     income.length > 0 &&

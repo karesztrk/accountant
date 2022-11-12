@@ -14,6 +14,6 @@ export const usePartners = (fallbackData?: Partner[]) => {
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
       fallbackData,
-    }
+    },
   );
 };

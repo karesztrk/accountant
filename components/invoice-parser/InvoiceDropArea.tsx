@@ -28,12 +28,12 @@ const InvoiceDropArea: FC<InvoiceDropAreaProps> = ({ onFinish }) => {
         .then((response) => {
           if (response && Array.isArray(response) && response.length > 0) {
             const amount = Number(
-              response[0][4].replace(/[^0-9.]+/g, "").replace(",", "")
+              response[0][4].replace(/[^0-9.]+/g, "").replace(",", ""),
             );
 
             const invoiceNumber = response[0][12].replace("Invoice ", "");
             const issuedOn = new Date(
-              response[0][13].replace("Issued on ", "")
+              response[0][13].replace("Issued on ", ""),
             );
 
             if (onFinish) {

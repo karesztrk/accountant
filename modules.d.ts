@@ -19,7 +19,7 @@ declare module "pdfreader" {
   export class PdfReader {
     parseBuffer: (
       data: Buffer,
-      cb: (err: any, item: Line | Page) => void
+      cb: (err: any, item: Line | Page) => void,
     ) => void;
   }
 }

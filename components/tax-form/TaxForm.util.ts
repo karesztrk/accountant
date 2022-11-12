@@ -19,14 +19,14 @@ export const toTax = (tax: TaxWithTransaction): ClientTax => {
 export const toRemoteTax = (
   userId: string,
   tax: ClientTax,
-  id?: number
+  id?: number,
 ): TaxmentWithTransactionInsert => ({
   id,
   transaction: {
     amount: tax.amount,
     currency: tax.currency,
     transaction_date: `${tax.paid_on.getFullYear()}-${String(
-      tax.paid_on.getMonth() + 1
+      tax.paid_on.getMonth() + 1,
     ).padStart(2, "0")}-${String(tax.paid_on.getDate()).padStart(2, "0")}`,
     user_id: userId,
   },

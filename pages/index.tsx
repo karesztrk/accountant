@@ -32,7 +32,7 @@ export const getServerSideProps: GetServerSideProps = withPageAuth<Database>({
   redirectTo: loginPage.href,
   async getServerSideProps(
     _ctx,
-    supabase
+    supabase,
   ): Promise<
     GetServerSidePropsResult<{
       income: Income[];

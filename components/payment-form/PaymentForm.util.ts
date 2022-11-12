@@ -40,17 +40,17 @@ export const toPartnerOptions = (partners: Partner[]) => {
 export const toRemotePayment = (
   userId: string,
   payment: ClientPayment,
-  id?: number
+  id?: number,
 ): PaymentWithTransactionInsert => ({
   id,
   transaction: {
     amount: payment.amount,
     currency: payment.currency,
     transaction_date: `${payment.received_on.getFullYear()}-${String(
-      payment.received_on.getMonth() + 1
+      payment.received_on.getMonth() + 1,
     ).padStart(2, "0")}-${String(payment.received_on.getDate()).padStart(
       2,
-      "0"
+      "0",
     )}`,
     user_id: userId,
   },

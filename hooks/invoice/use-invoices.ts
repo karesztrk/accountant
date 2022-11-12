@@ -13,6 +13,6 @@ export const useInvoices = (condition?: { partner_id: string }) => {
       revalidateIfStale: false,
       revalidateOnFocus: false,
       revalidateOnReconnect: false,
-    }
+    },
   );
 };

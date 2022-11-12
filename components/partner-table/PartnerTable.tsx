@@ -33,7 +33,7 @@ const PartnerTable: FC = ({}) => {
               query: { id: partner.id },
             },
             undefined,
-            { shallow: true }
+            { shallow: true },
           ),
         ]).then(handlers.open);
       }
@@ -63,7 +63,7 @@ const PartnerTable: FC = ({}) => {
           pathname: newPartnerPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(handlers.open);
   };
@@ -100,7 +100,7 @@ const PartnerTable: FC = ({}) => {
                   <DeleteButton onConfirm={onConfirmDelete(partner)} />
                 </td>
               </tr>
-            ) : null
+            ) : null,
           )}
           <tr>
             <td colSpan={5}>

@@ -4,7 +4,7 @@ import { PartnerInsert } from "types/database";
 export const toRemotePartner = (
   userId: string,
   { name, address, vat, email }: ClientPartner,
-  id?: number
+  id?: number,
 ): PartnerInsert => ({
   id,
   name,

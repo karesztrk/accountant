@@ -8,7 +8,7 @@ const InvoiceDropArea = dynamic(
   () => import("components/invoice-parser/InvoiceDropArea"),
   {
     suspense: true,
-  }
+  },
 );
 
 const InvoiceUploader = () => {

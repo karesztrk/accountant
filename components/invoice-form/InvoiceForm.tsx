@@ -79,7 +79,7 @@ const InvoiceForm: FC<InvoiceProps> = ({ invoice: invoiceProp }) => {
           pathname: invoicesPage.href,
         },
         undefined,
-        { shallow: true }
+        { shallow: true },
       )
       .then(() => {
         mutateFinanceState({ opened: false });
