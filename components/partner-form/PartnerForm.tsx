@@ -22,7 +22,12 @@ const defaultValues: ClientPartner = {
 };
 
 const validate = {
-  email: (value: string) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
+  email: (value?: string) => {
+    if (value === undefined) {
+      return false;
+    }
+    return /^\S+@\S+$/.test(value) ? null : "Invalid email";
+  }
 };
 
 interface PartnerFormProps {
